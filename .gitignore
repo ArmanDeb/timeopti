@@ -9,6 +9,8 @@ venv/
 node_modules/
 dist/
 .angular/
+src/environments/environment.ts
+src/environments/environment.prod.ts
 
 # OS
 .DS_Store
