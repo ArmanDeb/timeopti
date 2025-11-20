@@ -14,12 +14,19 @@ const envConfigFile = `export const environment = {
 const targetPath = path.join(__dirname, '../src/environments/environment.prod.ts');
 const targetPathDev = path.join(__dirname, '../src/environments/environment.ts');
 
+// Ensure the directory exists
+const dirPath = path.dirname(targetPath);
+if (!fs.existsSync(dirPath)) {
+  fs.mkdirSync(dirPath, { recursive: true });
+  console.log(`Created directory: ${dirPath}`);
+}
+
 // Generate environment.prod.ts
 fs.writeFile(targetPath, envConfigFile, function (err) {
-    if (err) {
-        console.log(err);
-    }
-    console.log(`Output generated at ${targetPath}`);
+  if (err) {
+    console.log(err);
+  }
+  console.log(`Output generated at ${targetPath}`);
 });
 
 // Generate environment.ts (for dev compatibility if needed, though usually dev has its own)
@@ -31,8 +38,8 @@ const envConfigFileDev = `export const environment = {
 `;
 
 fs.writeFile(targetPathDev, envConfigFileDev, function (err) {
-    if (err) {
-        console.log(err);
-    }
-    console.log(`Output generated at ${targetPathDev}`);
+  if (err) {
+    console.log(err);
+  }
+  console.log(`Output generated at ${targetPathDev}`);
 });
