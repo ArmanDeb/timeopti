@@ -2,6 +2,9 @@
   command = "npm install && npm run build"
   publish = "dist/timeopti/browser"
   base = "frontend"
+  
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "CLERK_PUBLISHABLE_KEY"
 
 [[redirects]]
   from = "/*"
