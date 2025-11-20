@@ -7,7 +7,8 @@ dotenv.config();
 
 const envConfigFile = `export const environment = {
   production: true,
-  clerkPublishableKey: '${process.env.CLERK_PUBLISHABLE_KEY}'
+  clerkPublishableKey: '${process.env.CLERK_PUBLISHABLE_KEY}',
+  apiUrl: 'https://timeopti.onrender.com'
 };
 `;
 
@@ -29,11 +30,11 @@ fs.writeFile(targetPath, envConfigFile, function (err) {
   console.log(`Output generated at ${targetPath}`);
 });
 
-// Generate environment.ts (for dev compatibility if needed, though usually dev has its own)
-// For now, we'll make them identical for simplicity in this fix, or we can check NODE_ENV
+// Generate environment.ts
 const envConfigFileDev = `export const environment = {
   production: false,
-  clerkPublishableKey: '${process.env.CLERK_PUBLISHABLE_KEY}'
+  clerkPublishableKey: '${process.env.CLERK_PUBLISHABLE_KEY}',
+  apiUrl: 'http://localhost:8000'
 };
 `;
 

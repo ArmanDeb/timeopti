@@ -5,6 +5,9 @@
     <button *ngIf="!clerkService.user" (click)="clerkService.signIn()">Sign In</button>
   </header>
   <main>
+    <div class="backend-status">
+      <p>Backend Status: {{ backendMessage }}</p>
+    </div>
     <router-outlet></router-outlet>
   </main>
 </div>
