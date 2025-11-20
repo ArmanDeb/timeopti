@@ -1,0 +1,10 @@
+<div class="container">
+  <header>
+    <h1>TimeOpti</h1>
+    <div #userButton></div>
+    <button *ngIf="!clerkService.user" (click)="clerkService.signIn()">Sign In</button>
+  </header>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>
