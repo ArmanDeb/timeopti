@@ -1,0 +1,122 @@
+<div class="legal-container">
+    <nav class="legal-nav">
+        <a routerLink="/" class="back-link">← Back to Home</a>
+    </nav>
+
+    <main class="legal-content">
+        <h1>{{ title }}</h1>
+        <p class="last-updated">Last Updated: {{ lastUpdated }}</p>
+
+        <!-- Privacy Policy Content -->
+        <div *ngIf="type === 'privacy'" class="legal-text">
+            <section>
+                <h2>1. Introduction</h2>
+                <p>Welcome to TimeOpti ("we," "our," or "us"). We are committed to protecting your personal information
+                    and your right to privacy. This Privacy Policy explains how we collect, use, disclosure, and
+                    safeguard your information when you use our application.</p>
+            </section>
+
+            <section>
+                <h2>2. Information We Collect</h2>
+                <p>We collect information that you voluntarily provide to us when you register on the application,
+                    express an interest in obtaining information about us or our products and services, when you
+                    participate in activities on the application, or otherwise when you contact us.</p>
+                <ul>
+                    <li><strong>Personal Information:</strong> Name, email address, and profile picture provided via
+                        authentication services (Clerk).</li>
+                    <li><strong>Calendar Data:</strong> When you connect your Google Calendar, we access your calendar
+                        events solely for the purpose of optimizing your schedule. We do not store your calendar events
+                        permanently; they are processed in real-time.</li>
+                    <li><strong>Task Data:</strong> Tasks, priorities, and deadlines you input into the application.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>3. How We Use Your Information</h2>
+                <p>We use the information we collect or receive:</p>
+                <ul>
+                    <li>To provide the schedule optimization service.</li>
+                    <li>To facilitate account creation and logon process.</li>
+                    <li>To send you administrative information.</li>
+                    <li>To protect our Services.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>4. Sharing Your Information</h2>
+                <p>We do not sell, trade, or rent your personal identification information to others. We may share
+                    generic aggregated demographic information not linked to any personal identification information
+                    regarding visitors and users with our business partners, trusted affiliates, and advertisers.</p>
+            </section>
+
+            <section>
+                <h2>5. Security of Your Information</h2>
+                <p>We use administrative, technical, and physical security measures to help protect your personal
+                    information. While we have taken reasonable steps to secure the personal information you provide to
+                    us, please be aware that despite our efforts, no security measures are perfect or impenetrable, and
+                    no method of data transmission can be guaranteed against any interception or other type of misuse.
+                </p>
+            </section>
+
+            <section>
+                <h2>6. Contact Us</h2>
+                <p>If you have questions or comments about this policy, you may email us at support@timeopti.com.</p>
+            </section>
+        </div>
+
+        <!-- Terms of Service Content -->
+        <div *ngIf="type === 'terms'" class="legal-text">
+            <section>
+                <h2>1. Agreement to Terms</h2>
+                <p>These Terms of Service constitute a legally binding agreement made between you, whether personally or
+                    on behalf of an entity ("you") and TimeOpti ("we," "us" or "our"), concerning your access to and use
+                    of the TimeOpti application.</p>
+            </section>
+
+            <section>
+                <h2>2. Intellectual Property Rights</h2>
+                <p>Unless otherwise indicated, the Application is our proprietary property and all source code,
+                    databases, functionality, software, website designs, audio, video, text, photographs, and graphics
+                    on the Application (collectively, the "Content") and the trademarks, service marks, and logos
+                    contained therein (the "Marks") are owned or controlled by us or licensed to us.</p>
+            </section>
+
+            <section>
+                <h2>3. User Representations</h2>
+                <p>By using the Application, you represent and warrant that: (1) all registration information you submit
+                    will be true, accurate, current, and complete; (2) you will maintain the accuracy of such
+                    information and promptly update such registration information as necessary; (3) you have the legal
+                    capacity and you agree to comply with these Terms of Service.</p>
+            </section>
+
+            <section>
+                <h2>4. Prohibited Activities</h2>
+                <p>You may not access or use the Application for any purpose other than that for which we make the
+                    Application available. The Application may not be used in connection with any commercial endeavors
+                    except those that are specifically endorsed or approved by us.</p>
+            </section>
+
+            <section>
+                <h2>5. Limitation of Liability</h2>
+                <p>In no event will we or our directors, employees, or agents be liable to you or any third party for
+                    any direct, indirect, consequential, exemplary, incidental, special, or punitive damages, including
+                    lost profit, lost revenue, loss of data, or other damages arising from your use of the application.
+                </p>
+            </section>
+
+            <section>
+                <h2>6. Contact Us</h2>
+                <p>In order to resolve a complaint regarding the Application or to receive further information regarding
+                    use of the Application, please contact us at support@timeopti.com.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">TimeOpti</div>
+            <div class="copyright">© 2024 TimeOpti. All rights reserved.</div>
+        </div>
+    </footer>
+</div>

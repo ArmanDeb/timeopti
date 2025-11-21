@@ -1,0 +1,187 @@
+<div class="flex h-full">
+
+    <!-- Main Calendar Grid (Day View) -->
+    <div class="flex-1 flex flex-col h-full overflow-hidden bg-gray-900 relative">
+
+        <!-- Day Header -->
+        <div class="flex-none h-20 border-b border-gray-700 flex">
+            <div class="w-16 flex-none border-r border-gray-700 bg-gray-900"></div> <!-- Time axis header spacer -->
+            <div class="flex-1 flex flex-col justify-center pl-4 border-l border-gray-700">
+                <span class="text-xs font-medium text-primary uppercase">Today</span>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-4xl font-normal text-white">{{ currentDate | date:'d' }}</span>
+                    <span class="text-gray-400">{{ currentDate | date:'EEEE' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scrollable Grid -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar relative flex">
+
+            <!-- Time Axis -->
+            <div
+                class="w-16 flex-none border-r border-gray-700 bg-gray-900 text-xs text-gray-400 text-right pr-2 pt-2 select-none">
+                <div *ngFor="let hour of hours" class="h-[60px] relative">
+                    <span class="-top-3 relative">{{hour}}</span>
+                </div>
+            </div>
+
+            <!-- Grid Content -->
+            <div class="flex-1 relative min-h-[600px] border-l border-gray-700 bg-gray-900">
+
+                <!-- Horizontal Grid Lines -->
+                <div *ngFor="let hour of hours" class="h-[60px] border-b border-gray-800 w-full pointer-events-none">
+                </div>
+
+                <!-- Current Time Line (Mock) -->
+                <div class="absolute w-full border-t-2 border-red-500 z-20 pointer-events-none" style="top: 300px;">
+                    <div class="absolute -left-1.5 -top-1.5 w-3 h-3 rounded-full bg-red-500"></div>
+                </div>
+
+                <!-- Events Layer -->
+                <div class="absolute inset-0 w-full">
+                    <!-- Existing Calendar Events -->
+                    <div *ngFor="let event of events"
+                        class="absolute left-0 right-4 mx-2 rounded-lg border-l-4 border-gray-500 bg-gray-700/80 hover:bg-gray-700 text-xs p-2 cursor-pointer transition-colors z-10 shadow-sm overflow-hidden"
+                        [style.top]="getTopPosition(event.start_time)"
+                        [style.height]="getHeight(event.start_time, event.end_time)">
+                        <div class="font-medium text-white truncate">{{event.title}}</div>
+                        <div class="text-gray-300">{{event.start_time}} - {{event.end_time}}</div>
+                    </div>
+
+                    <!-- Optimized Tasks -->
+                    <ng-container *ngIf="scheduleResult">
+                        <div *ngFor="let task of scheduleResult.schedule.scheduled_tasks"
+                            class="absolute left-0 right-4 mx-2 rounded-lg border-l-4 text-xs p-2 cursor-pointer transition-all hover:brightness-110 z-10 shadow-md overflow-hidden group"
+                            [ngClass]="{
+                               'bg-red-900/80 border-red-500': task.task.priority === 'high',
+                               'bg-yellow-900/80 border-yellow-500': task.task.priority === 'medium',
+                               'bg-blue-900/80 border-blue-500': task.task.priority === 'low'
+                             }" [style.top]="getTopPosition(task.start_time)"
+                            [style.height]="getHeight(task.start_time, task.end_time)">
+                            <div class="flex justify-between items-start">
+                                <div class="font-medium text-white truncate">{{task.task.title}}</div>
+                                <div class="hidden group-hover:block bg-black/50 rounded px-1 text-[10px]">
+                                    {{task.fit_score | number:'1.0-0'}}% match</div>
+                            </div>
+                            <div class="text-white/80">{{task.start_time}} - {{task.end_time}}</div>
+                        </div>
+                    </ng-container>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Sidebar (Tasks & Controls) -->
+    <div class="w-80 bg-gray-900 border-l border-gray-700 flex flex-col h-full shadow-xl z-20">
+
+        <!-- Header -->
+        <div class="h-16 flex items-center justify-between px-4 border-b border-gray-700">
+            <h2 class="font-medium text-lg text-white flex items-center gap-2">
+                <span class="text-blue-500">✓</span> Tasks
+            </h2>
+            <button class="text-gray-400 hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Task List -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4">
+
+            <!-- Add New Task Input -->
+            <div class="bg-gray-800 rounded-lg p-3 shadow-sm border border-gray-700">
+                <input type="text" [(ngModel)]="newTask.title" placeholder="Add a task"
+                    class="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none mb-3 text-sm font-medium"
+                    (keyup.enter)="addTask()">
+
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <input type="number" [(ngModel)]="newTask.duration_minutes" placeholder="30m"
+                            class="w-16 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white focus:ring-1 focus:ring-blue-500 outline-none">
+
+                        <select [(ngModel)]="newTask.priority"
+                            class="bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white focus:ring-1 focus:ring-blue-500 outline-none">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <button (click)="addTask()" [disabled]="!newTask.title"
+                        class="text-blue-400 hover:text-blue-300 text-sm font-medium disabled:opacity-50">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- List of Tasks -->
+            <div class="space-y-2">
+                <div *ngFor="let task of tasks; let i = index"
+                    class="group flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 border border-transparent hover:border-gray-700 transition-all cursor-pointer">
+
+                    <!-- Checkbox style circle -->
+                    <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0" [ngClass]="{
+                           'border-red-500': task.priority === 'high',
+                           'border-yellow-500': task.priority === 'medium',
+                           'border-blue-500': task.priority === 'low'
+                         }">
+                        <div class="w-2.5 h-2.5 rounded-full bg-current opacity-0 group-hover:opacity-100 transition-opacity"
+                            [ngClass]="{
+                                'bg-red-500': task.priority === 'high',
+                                'bg-yellow-500': task.priority === 'medium',
+                                'bg-blue-500': task.priority === 'low'
+                              }"></div>
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="text-sm text-gray-200 truncate">{{task.title}}</div>
+                        <div class="text-xs text-gray-500">{{task.duration_minutes}} min</div>
+                    </div>
+
+                    <button (click)="removeTask(task.id)"
+                        class="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="tasks.length === 0" class="text-center py-8">
+                <div class="inline-block p-3 rounded-full bg-gray-800 mb-3">
+                    <span class="text-2xl">📝</span>
+                </div>
+                <p class="text-sm text-gray-400">No tasks yet</p>
+                <p class="text-xs text-gray-500">Add tasks to start optimizing</p>
+            </div>
+
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="p-4 border-t border-gray-700 bg-gray-900">
+            <div class="flex items-center justify-between mb-4 text-xs text-gray-400">
+                <span>Work Hours:</span>
+                <div class="flex items-center gap-1">
+                    <input type="time" [(ngModel)]="startWindow"
+                        class="bg-gray-800 border border-gray-700 rounded px-1 py-0.5 text-white w-16">
+                    <span>-</span>
+                    <input type="time" [(ngModel)]="endWindow"
+                        class="bg-gray-800 border border-gray-700 rounded px-1 py-0.5 text-white w-16">
+                </div>
+            </div>
+
+            <button (click)="optimizeSchedule()" [disabled]="isOptimizing || tasks.length === 0"
+                class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 px-4 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                <span *ngIf="isOptimizing" class="animate-spin">↻</span>
+                <span>{{ isOptimizing ? 'Optimizing...' : 'Optimize Schedule' }}</span>
+            </button>
+        </div>
+
+    </div>
+</div>
