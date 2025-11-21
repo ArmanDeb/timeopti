@@ -75,4 +75,27 @@ export class AppComponent implements AfterViewInit {
       }
     });
   }
+
+  analyzePriorities() {
+    this.isLoadingAI = true;
+    const tasks: Task[] = this.tasksInput.split('\n').map((line, index) => {
+      return {
+        id: index.toString(),
+        title: line,
+        duration_minutes: 30,
+        priority: 'medium'
+      };
+    });
+
+    this.agendaService.analyzePriorities({ tasks }).subscribe({
+      next: (res) => {
+        this.optimizedResult = res.priorities;
+        this.isLoadingAI = false;
+      },
+      error: (err) => {
+        this.optimizedResult = 'Error analyzing priorities.';
+        this.isLoadingAI = false;
+      }
+    });
+  }
 }

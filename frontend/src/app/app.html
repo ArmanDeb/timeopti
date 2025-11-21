@@ -12,9 +12,10 @@
     <div class="ai-demo" *ngIf="clerkService.user">
       <h2>AI Agenda Optimizer</h2>
       <textarea [(ngModel)]="tasksInput" rows="5" placeholder="Enter tasks..."></textarea>
-      <button (click)="optimizeAgenda()" [disabled]="isLoadingAI">
-        {{ isLoadingAI ? 'Optimizing...' : 'Optimize Agenda' }}
-      </button>
+      <div class="button-group">
+        <button (click)="optimizeAgenda()" [disabled]="isLoadingAI">Optimize Agenda</button>
+        <button (click)="analyzePriorities()" [disabled]="isLoadingAI">Analyze Priorities</button>
+      </div>
 
       <div *ngIf="optimizedResult" class="result">
         <h3>Optimized Schedule:</h3>
