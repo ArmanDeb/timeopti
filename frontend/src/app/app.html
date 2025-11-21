@@ -8,6 +8,20 @@
     <div class="backend-status">
       <p>Backend Status: {{ backendMessage }}</p>
     </div>
+
+    <div class="ai-demo" *ngIf="clerkService.user">
+      <h2>AI Agenda Optimizer</h2>
+      <textarea [(ngModel)]="tasksInput" rows="5" placeholder="Enter tasks..."></textarea>
+      <button (click)="optimizeAgenda()" [disabled]="isLoadingAI">
+        {{ isLoadingAI ? 'Optimizing...' : 'Optimize Agenda' }}
+      </button>
+
+      <div *ngIf="optimizedResult" class="result">
+        <h3>Optimized Schedule:</h3>
+        <pre>{{ optimizedResult }}</pre>
+      </div>
+    </div>
+
     <router-outlet></router-outlet>
   </main>
 </div>
