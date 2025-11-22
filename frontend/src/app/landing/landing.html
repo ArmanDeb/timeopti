@@ -1,208 +1,80 @@
-<div class="min-h-screen bg-gray-900 text-white font-sans selection:bg-primary selection:text-white">
+<div class="min-h-screen bg-white text-gray-900 font-sans">
+    
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800">
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl">⚡</span>
-                    <span class="font-extrabold text-xl tracking-tight text-white">TimeOpti</span>
+                    <span class="font-bold text-xl tracking-tight text-gray-900">TimeAgent</span>
                 </div>
                 <div class="hidden md:flex items-center gap-8">
-                    <a (click)="scrollToSection('features')"
-                        class="text-gray-300 hover:text-white cursor-pointer transition-colors font-medium">Features</a>
-                    <a (click)="scrollToSection('how-it-works')"
-                        class="text-gray-300 hover:text-white cursor-pointer transition-colors font-medium">How it
-                        Works</a>
-                    <button *ngIf="!clerkService.user" (click)="clerkService.signIn()"
-                        class="text-gray-300 hover:text-white font-medium transition-colors">Sign In</button>
-                    <a *ngIf="clerkService.user" routerLink="/app"
-                        class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors font-medium border border-gray-700">Go
-                        to App</a>
+                    <a routerLink="/pricing" class="text-gray-500 hover:text-primary transition-colors font-medium">Tarifs</a>
+                    <button *ngIf="!clerkService.user" (click)="clerkService.signIn()" class="text-gray-500 hover:text-primary font-medium transition-colors">Se connecter</button>
+                    <a *ngIf="clerkService.user" routerLink="/app/dashboard" class="btn btn-primary text-sm">Dashboard</a>
+                    <button *ngIf="!clerkService.user" (click)="clerkService.signIn()" class="btn btn-primary text-sm">S'inscrire</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="text-center lg:text-left">
-                    <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6">
-                        Master Your Time with <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">AI-Powered</span>
-                        Scheduling
-                    </h1>
-                    <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                        Stop struggling with calendar gaps. TimeOpti intelligently matches your tasks to your free time,
-                        ensuring you get the important things done.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <button *ngIf="!clerkService.user" (click)="clerkService.signIn()"
-                            class="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg shadow-primary/25">
-                            Get Started for Free
-                        </button>
-                        <a *ngIf="clerkService.user" routerLink="/app"
-                            class="bg-gradient-to-r from-primary to-accent hover:from-primary-hover hover:to-accent-hover text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg shadow-primary/25 inline-block">
-                            Optimize My Schedule
-                        </a>
-                        <button (click)="scrollToSection('how-it-works')"
-                            class="bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all border border-gray-700">
-                            See How It Works
-                        </button>
-                    </div>
-                </div>
+    <header class="pt-32 pb-20 lg:pt-48 lg:pb-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6 text-gray-900">
+                Votre agenda est plein.<br>
+                <span class="text-primary">Votre temps est vide.</span>
+            </h1>
+            <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+                L'IA qui planifie vos objectifs à votre place. Finissez-en avec le Tetris calendaire.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button (click)="clerkService.signIn()" class="btn btn-primary text-lg px-8 py-4 rounded-xl">
+                    Optimiser ma semaine
+                </button>
+            </div>
 
-                <!-- Hero Visual -->
-                <div class="relative hidden lg:block">
-                    <div
-                        class="absolute -inset-4 bg-gradient-to-r from-primary to-accent rounded-2xl blur-2xl opacity-30 animate-pulse">
-                    </div>
-                    <div
-                        class="relative bg-gray-800 rounded-2xl border border-gray-700 shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500 p-6">
-                        <!-- Mockup Header -->
-                        <div class="flex items-center gap-2 mb-6 border-b border-gray-700 pb-4">
-                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        </div>
-                        <!-- Mockup Body -->
-                        <div class="space-y-4">
-                            <div class="bg-gray-700/50 p-4 rounded-lg border-l-4 border-gray-500 text-gray-300">
-                                <div class="font-medium">Team Meeting</div>
-                                <div class="text-sm opacity-70">10:00 AM - 11:00 AM</div>
-                            </div>
-                            <div class="p-2 border-2 border-dashed border-gray-700 rounded-lg bg-gray-800/50">
-                                <div
-                                    class="bg-gray-700 p-3 rounded border-l-4 border-red-500 flex justify-between items-center">
-                                    <div>
-                                        <div class="font-bold text-white">Write Report</div>
-                                        <div class="text-xs text-gray-400">High Priority</div>
-                                    </div>
-                                    <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">AI Pick</span>
-                                </div>
-                            </div>
-                            <div class="bg-gray-700/50 p-4 rounded-lg border-l-4 border-gray-500 text-gray-300">
-                                <div class="font-medium">Lunch Break</div>
-                                <div class="text-sm opacity-70">12:00 PM - 1:00 PM</div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Demo Visual (CSS Animation Placeholder) -->
+            <div class="mt-16 max-w-4xl mx-auto bg-gray-50 rounded-2xl border border-gray-200 p-8 shadow-xl h-64 flex items-center justify-center">
+                <div class="text-gray-400 animate-pulse">
+                    [Démo: Input "Finir le rapport" -> Bloc Calendrier]
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Features Section -->
-    <section id="features" class="py-24 bg-gray-800/50">
+    <!-- Features Grid -->
+    <section class="py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose TimeOpti?</h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Built for professionals who want to maximize every minute
-                    without the stress.</p>
-            </div>
-
             <div class="grid md:grid-cols-3 gap-8">
-                <div
-                    class="bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-primary/50 transition-colors group">
-                    <div
-                        class="text-4xl mb-6 bg-gray-900 w-16 h-16 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                        🧠</div>
-                    <h3 class="text-xl font-bold mb-3">Smart Matching</h3>
-                    <p class="text-gray-400 leading-relaxed">Our AI algorithm analyzes your priorities and deadlines to
-                        find the perfect time slot for every task.</p>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="text-3xl mb-4 text-primary">⚡</div>
+                    <h3 class="text-xl font-bold mb-2">Analyse des trous</h3>
+                    <p class="text-gray-500">Nous trouvons les créneaux invisibles entre vos réunions pour y glisser vos tâches.</p>
                 </div>
-                <div
-                    class="bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-primary/50 transition-colors group">
-                    <div
-                        class="text-4xl mb-6 bg-gray-900 w-16 h-16 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                        📅</div>
-                    <h3 class="text-xl font-bold mb-3">Calendar Sync</h3>
-                    <p class="text-gray-400 leading-relaxed">Seamlessly integrates with Google Calendar to read your
-                        existing events and find real availability.</p>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="text-3xl mb-4 text-primary">🎯</div>
+                    <h3 class="text-xl font-bold mb-2">Priorisation IA</h3>
+                    <p class="text-gray-500">Dites simplement ce qui compte. L'algorithme réorganise votre journée pour l'accomplir.</p>
                 </div>
-                <div
-                    class="bg-gray-800 p-8 rounded-2xl border border-gray-700 hover:border-primary/50 transition-colors group">
-                    <div
-                        class="text-4xl mb-6 bg-gray-900 w-16 h-16 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                        ⚡</div>
-                    <h3 class="text-xl font-bold mb-3">Instant Optimization</h3>
-                    <p class="text-gray-400 leading-relaxed">Turn a chaotic to-do list into a structured, achievable
-                        plan in seconds.</p>
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="text-3xl mb-4 text-primary">🔒</div>
+                    <h3 class="text-xl font-bold mb-2">Privé par défaut</h3>
+                    <p class="text-gray-500">Vos données calendrier ne servent qu'à vous optimiser. Rien n'est partagé.</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section id="how-it-works" class="py-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
-                <p class="text-gray-400">Three simple steps to a perfect schedule.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-12 relative">
-                <!-- Connector Line (Desktop) -->
-                <div class="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gray-800 -z-10"></div>
-
-                <div class="text-center relative">
-                    <div
-                        class="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-gray-900 text-3xl font-bold text-primary shadow-xl">
-                        1</div>
-                    <h3 class="text-xl font-bold mb-2">Connect Calendar</h3>
-                    <p class="text-gray-400">Link your Google Calendar so we know when you're busy.</p>
-                </div>
-                <div class="text-center relative">
-                    <div
-                        class="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-gray-900 text-3xl font-bold text-primary shadow-xl">
-                        2</div>
-                    <h3 class="text-xl font-bold mb-2">Add Tasks</h3>
-                    <p class="text-gray-400">List what you need to do and set priorities.</p>
-                </div>
-                <div class="text-center relative">
-                    <div
-                        class="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 border-4 border-gray-900 text-3xl font-bold text-primary shadow-xl">
-                        3</div>
-                    <h3 class="text-xl font-bold mb-2">Get Optimized</h3>
-                    <p class="text-gray-400">We instantly generate the most efficient schedule for you.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-24 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20"></div>
-        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to reclaim your time?</h2>
-            <p class="text-xl text-gray-300 mb-10">Join thousands of productive professionals using TimeOpti.</p>
-            <button *ngIf="!clerkService.user" (click)="clerkService.signIn()"
-                class="bg-white text-gray-900 px-10 py-4 rounded-xl font-bold text-xl hover:bg-gray-100 transition-colors shadow-xl">
-                Start Optimizing Now
-            </button>
-            <a *ngIf="clerkService.user" routerLink="/app"
-                class="bg-white text-gray-900 px-10 py-4 rounded-xl font-bold text-xl hover:bg-gray-100 transition-colors shadow-xl inline-block">
-                Go to Dashboard
-            </a>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 border-t border-gray-800 py-12">
-        <div
-            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-2">
-                <span class="text-xl">⚡</span>
-                <span class="font-bold text-lg">TimeOpti</span>
+    <footer class="bg-white border-t border-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="font-bold text-lg text-gray-900">TimeAgent</div>
+            <div class="flex gap-8 text-gray-500 text-sm">
+                <a routerLink="/legal/mentions" class="hover:text-primary transition-colors">Mentions Légales</a>
+                <a routerLink="/legal/privacy" class="hover:text-primary transition-colors">Confidentialité</a>
             </div>
-            <div class="flex gap-8 text-gray-400">
-                <a routerLink="/privacy" class="hover:text-white transition-colors">Privacy</a>
-                <a routerLink="/terms" class="hover:text-white transition-colors">Terms</a>
-                <a href="#" class="hover:text-white transition-colors">Contact</a>
-            </div>
-            <div class="text-gray-500 text-sm">
-                © 2024 TimeOpti. All rights reserved.
+            <div class="text-gray-400 text-sm">
+                © 2024 TimeAgent.
             </div>
         </div>
     </footer>

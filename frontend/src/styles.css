@@ -2,31 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Scrollbar for Dark Mode */
+/* Minimalist Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #111827;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #374151;
+    background: #D1D5DB; /* gray-300 */
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4B5563;
+    background: #9CA3AF; /* gray-400 */
 }
 
 html,
 body {
     height: 100%;
     margin: 0;
-    background-color: #111827;
-    /* Dark background */
-    color: #F9FAFB;
-    /* Light text */
+    background-color: #F9FAFB; /* gray-50 */
+    color: #1F2937; /* gray-800 */
+    font-family: 'Inter', sans-serif;
+}
+
+/* App Shell Styles */
+.btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary;
+}
+
+.btn-primary {
+    @apply bg-primary text-white hover:bg-primary-hover;
+}
+
+.btn-secondary {
+    @apply bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-gray-200;
+}
+
+.input-hero {
+    @apply w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm text-lg;
+}
+
+.card {
+    @apply bg-white rounded-xl border border-gray-100 shadow-sm;
 }

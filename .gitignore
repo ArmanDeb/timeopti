@@ -18,3 +18,5 @@ frontend/src/environments/environment.prod.ts
 
 # OS
 .DS_Store
+backend/backend_log.txt
+frontend/frontend_log.txt

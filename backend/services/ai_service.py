@@ -2,6 +2,7 @@ import os
 from openai import OpenAI
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime, timedelta
 
 class Task(BaseModel):
     id: str
@@ -61,40 +62,72 @@ class AIService:
             return "Failed to optimize agenda."
 
     def analyze_calendar_gaps(self, events: List[Event], start_window: str, end_window: str) -> List[Gap]:
-        # Simple logic-based gap analysis (assuming HH:MM for simplicity in this demo)
-        # In a real app, use datetime objects
-        from datetime import datetime, timedelta
-
-        fmt = "%H:%M"
-        sorted_events = sorted(events, key=lambda x: x.start_time)
+        # Analyze gaps based on events
+        # If events are in ISO format, extract time for simple gap analysis
+        # or perform full datetime analysis
+        
         gaps = []
         
-        current_time = datetime.strptime(start_window, fmt)
-        end_time = datetime.strptime(end_window, fmt)
+        # For now, we'll try to extract HH:MM from ISO strings if necessary
+        # to maintain compatibility with existing logic that expects HH:MM
+        
+        processed_events = []
+        for event in events:
+            start = event.start_time
+            end = event.end_time
+            
+            # Try to convert ISO to HH:MM if it contains 'T'
+            if 'T' in start:
+                try:
+                    dt = datetime.fromisoformat(start.replace('Z', '+00:00'))
+                    start = dt.strftime("%H:%M")
+                except:
+                    pass
+            
+            if 'T' in end:
+                try:
+                    dt = datetime.fromisoformat(end.replace('Z', '+00:00'))
+                    end = dt.strftime("%H:%M")
+                except:
+                    pass
+            
+            processed_events.append(Event(title=event.title, start_time=start, end_time=end))
 
-        for event in sorted_events:
-            event_start = datetime.strptime(event.start_time, fmt)
-            event_end = datetime.strptime(event.end_time, fmt)
+        fmt = "%H:%M"
+        sorted_events = sorted(processed_events, key=lambda x: x.start_time)
+        
+        try:
+            current_time = datetime.strptime(start_window, fmt)
+            end_time = datetime.strptime(end_window, fmt)
 
-            if event_start > current_time:
-                duration = int((event_start - current_time).total_seconds() / 60)
+            for event in sorted_events:
+                try:
+                    event_start = datetime.strptime(event.start_time, fmt)
+                    event_end = datetime.strptime(event.end_time, fmt)
+
+                    if event_start > current_time:
+                        duration = int((event_start - current_time).total_seconds() / 60)
+                        if duration > 0:
+                            gaps.append(Gap(
+                                start_time=current_time.strftime(fmt),
+                                end_time=event_start.strftime(fmt),
+                                duration_minutes=duration
+                            ))
+                    
+                    current_time = max(current_time, event_end)
+                except ValueError:
+                    continue # Skip invalid time formats
+
+            if current_time < end_time:
+                duration = int((end_time - current_time).total_seconds() / 60)
                 if duration > 0:
                     gaps.append(Gap(
                         start_time=current_time.strftime(fmt),
-                        end_time=event_start.strftime(fmt),
+                        end_time=end_time.strftime(fmt),
                         duration_minutes=duration
                     ))
-            
-            current_time = max(current_time, event_end)
-
-        if current_time < end_time:
-            duration = int((end_time - current_time).total_seconds() / 60)
-            if duration > 0:
-                gaps.append(Gap(
-                    start_time=current_time.strftime(fmt),
-                    end_time=end_time.strftime(fmt),
-                    duration_minutes=duration
-                ))
+        except ValueError:
+            print(f"Error parsing time window: {start_window} - {end_window}")
         
         return gaps
 

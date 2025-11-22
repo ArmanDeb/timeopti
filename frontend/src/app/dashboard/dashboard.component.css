@@ -1,0 +1,42 @@
+/* Dashboard Styles */
+.dashboard-container {
+    @apply w-full h-full min-h-[calc(100vh-64px)] relative;
+}
+
+/* State A: Onboarding */
+.state-onboarding {
+    @apply flex flex-col items-center justify-center h-[calc(100vh-64px)] px-4 text-center;
+}
+
+/* State B: Input */
+.state-input {
+    @apply flex flex-col items-center justify-center h-[calc(100vh-64px)] px-4 w-full max-w-4xl mx-auto;
+}
+
+/* State C: Results */
+.state-results {
+    @apply max-w-3xl mx-auto py-8 px-4 pb-24;
+}
+
+/* Timeline */
+.timeline-item {
+    @apply flex items-start gap-4 mb-4 p-4 rounded-xl border transition-all;
+}
+
+.timeline-context {
+    @apply bg-gray-50 border-gray-100 text-gray-500;
+}
+
+.timeline-ai {
+    @apply bg-blue-50 border-blue-100 border-l-4 border-l-primary shadow-sm;
+}
+
+.timeline-time {
+    @apply w-24 font-mono text-sm flex-shrink-0 pt-1;
+}
+
+/* Bottom Bar */
+.bottom-bar {
+    @apply fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white border border-gray-200 shadow-lg rounded-full px-2 py-2 flex gap-2 z-40;
+}
+

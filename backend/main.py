@@ -69,6 +69,8 @@ def get_calendar_auth_url(request: CalendarAuthRequest):
     try:
         auth_url = gcal_service.get_authorization_url(request.redirect_uri)
         return {"auth_url": auth_url}
+    except TimeOptiException as e:
+        raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -87,6 +89,8 @@ def exchange_calendar_token(request: CalendarTokenRequest, user_data: dict = Dep
         # TODO: Store in database
         
         return {"success": True, "tokens": tokens}
+    except TimeOptiException as e:
+        raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -100,13 +104,29 @@ def get_calendar_events(request: CalendarEventsRequest):
     """Fetch events from user's Google Calendar"""
     try:
         from datetime import datetime
+        import traceback
         
-        start = datetime.fromisoformat(request.start_date) if request.start_date else None
-        end = datetime.fromisoformat(request.end_date) if request.end_date else None
+        print(f"Received request: {request}")
+        print(f"Tokens: {request.tokens}")
+        
+        # Fix: Replace 'Z' with '+00:00' for Python's fromisoformat
+        start_date_str = request.start_date.replace('Z', '+00:00') if request.start_date else None
+        end_date_str = request.end_date.replace('Z', '+00:00') if request.end_date else None
+        
+        start = datetime.fromisoformat(start_date_str) if start_date_str else None
+        end = datetime.fromisoformat(end_date_str) if end_date_str else None
+        
+        print(f"Date range: {start} to {end}")
         
         events = gcal_service.get_events(request.tokens, start, end)
+        print(f"Got {len(events)} events")
         return {"events": [e.model_dump() for e in events]}
+    except TimeOptiException as e:
+        raise e
     except Exception as e:
+        import traceback
+        print(f"ERROR in get_calendar_events: {str(e)}")
+        print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
 # Smart Optimization Endpoint
@@ -186,6 +206,9 @@ def smart_optimize(request: SmartOptimizeRequest, db: Session = Depends(get_db))
         
         return result
         
+    except TimeOptiException as e:
+        error = e.message
+        raise e
     except Exception as e:
         error = str(e)
         raise HTTPException(status_code=500, detail=error)
@@ -211,7 +234,7 @@ class GapRequest(BaseModel):
 
 class PriorityRequest(BaseModel):
     tasks: List[Task]
-
+    
 @app.post("/optimize")
 def optimize_agenda(request: AgendaRequest, db: Session = Depends(get_db)):
     start_time = time.time()

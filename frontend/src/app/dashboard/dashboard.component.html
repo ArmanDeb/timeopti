@@ -1,0 +1,157 @@
+<div class="dashboard-container">
+
+    <!-- STATE A: ONBOARDING -->
+    <div *ngIf="viewState.state() === 'onboarding'" class="state-onboarding">
+        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6 text-gray-400">
+            <!-- CalendarX Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <line x1="10" y1="14" x2="14" y2="18"></line>
+                <line x1="14" y1="14" x2="10" y2="18"></line>
+            </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Connectez votre source de vérité</h1>
+        <p class="text-gray-500 mb-8 max-w-md">
+            Pour optimiser votre temps, l'agent a besoin de voir vos disponibilités.
+        </p>
+        <button (click)="connectCalendar()" class="btn btn-primary flex items-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+            Connecter Google Calendar
+        </button>
+        
+        <!-- DEBUG BUTTON -->
+        <button (click)="forceCompleteReset()" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">
+            🔴 DEBUG: Réinitialiser complètement
+        </button>
+    </div>
+
+    <!-- STATE B: INPUT -->
+    <div *ngIf="viewState.state() === 'input'" class="h-full flex flex-col">
+        
+        <!-- Show Week View if connected -->
+        <div *ngIf="showWeekView" class="flex-1 overflow-hidden">
+            <app-week-view></app-week-view>
+        </div>
+
+        <!-- Show Input Form if not connected or no week view -->
+        <div *ngIf="!showWeekView" class="state-input">
+        <!-- Calendar Connection Status -->
+        <div *ngIf="!calendarAuth.connected()" class="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-xl max-w-2xl">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <div>
+                        <p class="font-medium text-gray-900">Connectez votre Google Calendar</p>
+                        <p class="text-sm text-gray-600">Pour voir vos créneaux libres et optimiser votre semaine</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button (click)="enableDemoMode()" class="btn btn-secondary text-sm whitespace-nowrap">
+                        Mode Démo
+                    </button>
+                    <button (click)="connectCalendar()" class="btn btn-primary text-sm whitespace-nowrap">
+                        Connecter
+                    </button>
+                </div>
+            </div>
+        </div>
+
+            <h2 class="text-3xl font-bold text-gray-900 mb-8">Que voulez-vous accomplir ?</h2>
+            
+            <div class="w-full max-w-2xl relative">
+                <input 
+                    [(ngModel)]="input" 
+                    (keyup.enter)="analyze()"
+                    type="text" 
+                    class="input-hero pl-6 pr-14" 
+                    placeholder="Ex: Finir l'API FastAPI, Sport 45min, Lire documentation Clerk..." 
+                    autofocus
+                >
+                <button 
+                    (click)="analyze()"
+                    class="absolute right-2 top-2 bottom-2 w-10 bg-primary hover:bg-primary-hover text-white rounded-lg flex items-center justify-center transition-colors"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+            <p class="mt-4 text-gray-400 text-sm">Saisissez vos 3 priorités. L'IA s'occupe du Tetris.</p>
+        </div>
+    </div>
+
+    <!-- STATE C: RESULTS -->
+    <div *ngIf="viewState.state() === 'results'" class="h-full relative">
+        
+        <!-- Toggle View (Absolute Top Right) -->
+        <div class="absolute top-4 right-4 z-10">
+            <div class="bg-gray-100 p-1 rounded-lg flex text-sm font-medium">
+                <button 
+                    (click)="showCalendarGrid = false"
+                    class="px-3 py-1 rounded-md transition-all"
+                    [ngClass]="{'bg-white shadow text-gray-900': !showCalendarGrid, 'text-gray-500 hover:text-gray-700': showCalendarGrid}"
+                >
+                    Timeline
+                </button>
+                <button 
+                    (click)="showCalendarGrid = true"
+                    class="px-3 py-1 rounded-md transition-all"
+                    [ngClass]="{'bg-white shadow text-gray-900': showCalendarGrid, 'text-gray-500 hover:text-gray-700': !showCalendarGrid}"
+                >
+                    Calendrier
+                </button>
+            </div>
+        </div>
+
+        <!-- Timeline View -->
+        <div *ngIf="!showCalendarGrid" class="state-results">
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-900">Plan Optimisé</h2>
+                <p class="text-primary font-medium">{{ viewState.results()?.summary }}</p>
+            </div>
+
+            <div class="space-y-4">
+                <div *ngFor="let item of viewState.results()?.items" class="timeline-item" 
+                    [ngClass]="item.type === 'ai' ? 'timeline-ai' : 'timeline-context'">
+                    
+                    <div class="timeline-time">
+                        <div class="font-bold">{{ item.startTime }}</div>
+                        <div class="text-xs opacity-70">{{ item.endTime }}</div>
+                    </div>
+                    
+                    <div class="flex-1">
+                        <h3 class="font-medium text-lg" [ngClass]="{'text-primary': item.type === 'ai'}">
+                            {{ item.title }}
+                        </h3>
+                        <div *ngIf="item.source" class="mt-1 flex items-center gap-1 text-xs opacity-70 uppercase tracking-wide">
+                            <span *ngIf="item.type === 'ai'">✨</span>
+                            {{ item.source }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Grid View (Embed existing component) -->
+        <div *ngIf="showCalendarGrid" class="h-[calc(100vh-64px)]">
+            <app-optimizer></app-optimizer>
+        </div>
+
+        <!-- Bottom Actions -->
+        <div class="bottom-bar">
+            <button (click)="copyPlan()" class="btn btn-secondary flex items-center gap-2 text-sm rounded-full px-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                Copier
+            </button>
+            <button (click)="reset()" class="btn btn-primary flex items-center gap-2 text-sm rounded-full px-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                Nouvelle recherche
+            </button>
+        </div>
+
+    </div>
+
+</div>

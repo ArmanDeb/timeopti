@@ -71,6 +71,17 @@ export class CalendarService {
         );
     }
 
+    getCalendarEvents(
+        tokens: any,
+        startDate: string,
+        endDate: string
+    ): Observable<{ events: any[] }> {
+        return this.http.post<{ events: any[] }>(
+            `${this.apiUrl}/calendar/events`,
+            { tokens, start_date: startDate, end_date: endDate }
+        );
+    }
+
     smartOptimize(
         tasks: any[],
         calendarTokens?: CalendarTokens,

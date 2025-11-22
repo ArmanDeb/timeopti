@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ClerkService } from '../services/clerk.service';
+import { ViewService } from '../services/view.service';
 
 @Component({
     selector: 'app-dashboard-layout',
@@ -11,26 +12,30 @@ import { ClerkService } from '../services/clerk.service';
 })
 export class DashboardLayoutComponent {
     isSidebarOpen = true;
-    currentDate: Date = new Date();
-    viewMode: 'Day' | 'Week' | 'Month' = 'Week';
-
-    constructor(public clerkService: ClerkService) { }
+    
+    constructor(
+        public clerkService: ClerkService,
+        public viewService: ViewService
+    ) { }
 
     toggleSidebar() {
         this.isSidebarOpen = !this.isSidebarOpen;
     }
 
     previousPeriod() {
-        // Logic to go back based on viewMode (placeholder for now)
-        console.log('Previous period');
+        this.viewService.previousPeriod();
     }
 
     nextPeriod() {
-        // Logic to go forward based on viewMode (placeholder for now)
-        console.log('Next period');
+        this.viewService.nextPeriod();
     }
 
     goToToday() {
-        this.currentDate = new Date();
+        this.viewService.goToToday();
+    }
+
+    toggleViewMode() {
+        const current = this.viewService.viewMode();
+        this.viewService.setViewMode(current === 'Day' ? 'Week' : 'Day');
     }
 }

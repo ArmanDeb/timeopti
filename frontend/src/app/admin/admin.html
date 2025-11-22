@@ -1,137 +1,128 @@
-<div class="admin-container">
-    <div class="admin-header">
-        <h1>Admin Dashboard</h1>
-        <button class="refresh-btn" (click)="refresh()">🔄 Refresh</button>
+<div class="p-8 max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Monitoring des Coûts & Usage</h1>
+            <p class="text-gray-500">Vue d'ensemble de l'activité système</p>
+        </div>
+        <button (click)="refresh()" class="btn btn-secondary flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            Refresh
+        </button>
     </div>
 
-    <div class="tabs">
-        <button class="tab" [class.active]="activeTab === 'overview'" (click)="setTab('overview')">
+    <!-- KPI Cards (Overview) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" *ngIf="stats">
+        <div class="card p-6">
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Total Utilisateurs</h3>
+            <div class="text-3xl font-bold text-gray-900">{{ stats.total_users }}</div>
+        </div>
+        <div class="card p-6">
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Appels API</h3>
+            <div class="text-3xl font-bold text-gray-900">{{ stats.total_logs }}</div>
+        </div>
+        <div class="card p-6">
+            <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Recommendations</h3>
+            <div class="text-3xl font-bold text-gray-900">{{ stats.total_recommendations }}</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex border-b border-gray-200 mb-6">
+        <button (click)="setTab('overview')" class="px-6 py-3 font-medium text-sm transition-colors border-b-2" 
+            [ngClass]="activeTab === 'overview' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'">
             Overview
         </button>
-        <button class="tab" [class.active]="activeTab === 'logs'" (click)="setTab('logs')">
+        <button (click)="setTab('logs')" class="px-6 py-3 font-medium text-sm transition-colors border-b-2"
+            [ngClass]="activeTab === 'logs' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'">
             Logs
         </button>
-        <button class="tab" [class.active]="activeTab === 'users'" (click)="setTab('users')">
+        <button (click)="setTab('users')" class="px-6 py-3 font-medium text-sm transition-colors border-b-2"
+            [ngClass]="activeTab === 'users' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'">
             Users
-        </button>
-        <button class="tab" [class.active]="activeTab === 'recommendations'" (click)="setTab('recommendations')">
-            Recommendations
         </button>
     </div>
 
-    <!-- Overview Tab -->
-    <div *ngIf="activeTab === 'overview'" class="tab-content">
-        <div *ngIf="loading.stats" class="loading">Loading stats...</div>
-        <div *ngIf="!loading.stats && stats" class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Users</h3>
-                <p class="stat-value">{{ stats.total_users }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Total API Calls</h3>
-                <p class="stat-value">{{ stats.total_logs }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Recommendations</h3>
-                <p class="stat-value">{{ stats.total_recommendations }}</p>
-            </div>
-        </div>
-
-        <div *ngIf="!loading.stats && stats && stats.endpoint_stats.length > 0" class="endpoint-stats">
-            <h2>Endpoint Usage</h2>
-            <table>
-                <thead>
+    <!-- Tab Content -->
+    
+    <!-- Overview Detail -->
+    <div *ngIf="activeTab === 'overview' && stats">
+        <div class="card overflow-hidden">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50 text-gray-500">
                     <tr>
-                        <th>Endpoint</th>
-                        <th>Call Count</th>
-                        <th>Avg Duration (ms)</th>
+                        <th class="px-6 py-3 font-medium">Endpoint</th>
+                        <th class="px-6 py-3 font-medium">Call Count</th>
+                        <th class="px-6 py-3 font-medium">Avg Duration (ms)</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-100">
                     <tr *ngFor="let stat of stats.endpoint_stats">
-                        <td>{{ stat.endpoint }}</td>
-                        <td>{{ stat.count }}</td>
-                        <td>{{ stat.avg_duration_ms }}</td>
+                        <td class="px-6 py-3">{{ stat.endpoint }}</td>
+                        <td class="px-6 py-3">{{ stat.count }}</td>
+                        <td class="px-6 py-3">{{ stat.avg_duration_ms }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Logs Tab -->
-    <div *ngIf="activeTab === 'logs'" class="tab-content">
-        <h2>Recent API Logs</h2>
-        <div *ngIf="loading.logs" class="loading">Loading logs...</div>
-        <div *ngIf="!loading.logs && logs.length === 0" class="empty-state">
-            No logs yet. Make some API calls to see them here!
+    <!-- Logs -->
+    <div *ngIf="activeTab === 'logs'">
+        <div class="card overflow-hidden">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50 text-gray-500">
+                    <tr>
+                        <th class="px-6 py-3 font-medium">Time</th>
+                        <th class="px-6 py-3 font-medium">Endpoint</th>
+                        <th class="px-6 py-3 font-medium">Duration</th>
+                        <th class="px-6 py-3 font-medium">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr *ngFor="let log of logs">
+                        <td class="px-6 py-3 text-gray-500">{{ formatDate(log.created_at) }}</td>
+                        <td class="px-6 py-3 font-mono text-xs">{{ log.endpoint }}</td>
+                        <td class="px-6 py-3">{{ log.duration_ms }}ms</td>
+                        <td class="px-6 py-3">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                                [ngClass]="log.error ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'">
+                                {{ log.error ? 'Error' : 'Success' }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table *ngIf="!loading.logs && logs.length > 0">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Endpoint</th>
-                    <th>Duration (ms)</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let log of logs" [class.error]="log.error">
-                    <td>{{ formatDate(log.created_at) }}</td>
-                    <td>{{ log.endpoint }}</td>
-                    <td>{{ log.duration_ms }}</td>
-                    <td>
-                        <span *ngIf="!log.error" class="status-success">✓ Success</span>
-                        <span *ngIf="log.error" class="status-error">✗ Error</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
-    <!-- Users Tab -->
-    <div *ngIf="activeTab === 'users'" class="tab-content">
-        <h2>Users</h2>
-        <div *ngIf="loading.users" class="loading">Loading users...</div>
-        <div *ngIf="!loading.users && users.length === 0" class="empty-state">
-            No users yet.
+    <!-- Users -->
+    <div *ngIf="activeTab === 'users'">
+        <div class="card overflow-hidden">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-gray-50 text-gray-500">
+                    <tr>
+                        <th class="px-6 py-3 font-medium">Email</th>
+                        <th class="px-6 py-3 font-medium">Created</th>
+                        <th class="px-6 py-3 font-medium">Logs</th>
+                        <th class="px-6 py-3 font-medium">Recs</th>
+                        <th class="px-6 py-3 font-medium">Role</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr *ngFor="let user of users">
+                        <td class="px-6 py-3 font-medium">{{ user.email }}</td>
+                        <td class="px-6 py-3 text-gray-500">{{ formatDate(user.created_at) }}</td>
+                        <td class="px-6 py-3">{{ user.total_logs }}</td>
+                        <td class="px-6 py-3">{{ user.total_recommendations }}</td>
+                        <td class="px-6 py-3">
+                            <span *ngIf="user.is_admin" class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs font-bold">ADMIN</span>
+                            <span *ngIf="!user.is_admin" class="text-gray-400">User</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table *ngIf="!loading.users && users.length > 0">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Created</th>
-                    <th>Total Logs</th>
-                    <th>Recommendations</th>
-                    <th>Admin</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of users">
-                    <td>{{ user.email }}</td>
-                    <td>{{ formatDate(user.created_at) }}</td>
-                    <td>{{ user.total_logs }}</td>
-                    <td>{{ user.total_recommendations }}</td>
-                    <td>{{ user.is_admin ? '✓' : '' }}</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
-    <!-- Recommendations Tab -->
-    <div *ngIf="activeTab === 'recommendations'" class="tab-content">
-        <h2>Recent Recommendations</h2>
-        <div *ngIf="loading.recommendations" class="loading">Loading recommendations...</div>
-        <div *ngIf="!loading.recommendations && recommendations.length === 0" class="empty-state">
-            No recommendations yet.
-        </div>
-        <div *ngIf="!loading.recommendations && recommendations.length > 0" class="recommendations-list">
-            <div *ngFor="let rec of recommendations" class="recommendation-card">
-                <div class="rec-header">
-                    <span class="rec-date">{{ formatDate(rec.created_at) }}</span>
-                    <span class="rec-tasks">{{ rec.tasks_count }} tasks</span>
-                </div>
-                <p class="rec-text">{{ rec.recommendation_text }}</p>
-            </div>
-        </div>
-    </div>
 </div>
