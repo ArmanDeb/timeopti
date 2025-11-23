@@ -16,25 +16,47 @@ export interface TimelineItem {
   source?: string; // e.g., "Google Calendar" or "Goal: Finish API"
 }
 
+export interface ScheduledTask {
+  task_name: string;
+  estimated_duration_minutes: number;
+  assigned_date: string;
+  assigned_start_time: string;
+  assigned_end_time: string;
+  slot_id: string;
+  reasoning: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ViewStateService {
-  // Core state - start with input state to allow users to use the app without connecting calendar
-  state = signal<DashboardState>('input');
+  // Core state - start with onboarding by default
+  state = signal<DashboardState>('onboarding');
   
   // Data for Input state
   inputText = signal<string>('');
   
   // Data for Results state
   results = signal<ScheduleResult | null>(null);
+  
+  // Shared optimized tasks (visible in both optimizer and week-view)
+  optimizedTasks = signal<ScheduledTask[]>([]);
 
   setState(newState: DashboardState) {
     this.state.set(newState);
   }
+  
+  setOptimizedTasks(tasks: ScheduledTask[]) {
+    this.optimizedTasks.set(tasks);
+    console.log('ViewStateService: optimizedTasks updated', tasks);
+  }
+  
+  clearOptimizedTasks() {
+    this.optimizedTasks.set([]);
+  }
 
   reset() {
-    this.state.set('input');
+    this.state.set('onboarding');
     this.inputText.set('');
     this.results.set(null);
   }

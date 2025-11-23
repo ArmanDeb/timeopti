@@ -19,18 +19,26 @@
                     </svg>
                 </button>
             </div>
-            
-            <button (click)="disconnect()" class="btn btn-secondary text-sm text-red-600 hover:bg-red-50">
-                Déconnecter
-            </button>
 
             <h2 class="text-lg font-semibold text-gray-900">
                 {{ viewService.currentDate() | date:'MMMM yyyy' }}
             </h2>
         </div>
 
-        <div *ngIf="freeSlots.length > 0" class="text-sm text-gray-600">
-            <span class="font-medium text-green-600">{{ freeSlots.length }} créneaux libres</span> trouvés cette semaine
+        <div class="flex items-center gap-3">
+            <!-- Task Panel Button -->
+            <button *ngIf="showTaskButton" 
+                    (click)="openTaskPanel.emit()" 
+                    class="btn btn-primary flex items-center gap-2 shadow-lg hover:shadow-xl transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span class="font-semibold">Add Tasks</span>
+            </button>
+            
+            <button (click)="disconnect()" class="btn btn-secondary text-sm text-red-600 hover:bg-red-50">
+                Déconnecter
+            </button>
         </div>
     </div>
 
@@ -94,7 +102,7 @@
                 <div *ngFor="let day of displayedDays()" class="flex-1 min-w-[120px] border-l border-gray-100 first:border-l-0 relative h-full z-10">
                     
                     <!-- Current Time Line -->
-                    <div *ngIf="isToday(day)" class="absolute w-full border-t-2 border-red-500 z-30 pointer-events-none" [style.top]="getTopPosition('10:30')">
+                    <div *ngIf="isToday(day)" class="absolute w-full border-t-2 border-red-500 z-30 pointer-events-none" [style.top]="getTopPosition(currentTime)">
                         <div class="absolute -left-1.5 -top-1.5 w-3 h-3 rounded-full bg-red-500"></div>
                     </div>
 
@@ -107,16 +115,34 @@
                             <div class="font-medium text-blue-900 truncate text-[11px]">{{event.title}}</div>
                             <div class="text-blue-700 text-[10px]">{{event.date | date:'HH:mm'}}</div>
                         </div>
-
-                        <!-- Free Slots -->
-                        <div *ngFor="let slot of getFreeSlotsForDate(day)"
-                            class="absolute left-1 right-1 rounded-md bg-green-50 border-2 border-dashed border-green-300 text-xs p-2 z-5 overflow-hidden flex flex-col items-center justify-center"
-                            [style.top]="getTopPosition(slot.start)"
-                            [style.height]="getHeight(slot.start, slot.end)">
-                            <svg class="w-4 h-4 text-green-600 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            <div class="text-green-700 font-medium text-[10px]">{{ slot.duration }} min libre</div>
+                        
+                        <!-- AI Optimized Tasks -->
+                        <div *ngFor="let task of getOptimizedTasksForDate(day)"
+                            class="absolute left-1 right-1 rounded-md text-xs p-1 z-20 shadow-md overflow-hidden group border border-white/50 hover:z-30 hover:shadow-lg relative cursor-pointer transition-all hover:brightness-110"
+                            [ngClass]="{
+                               'bg-red-100 text-red-900 border-red-200': task.task.priority === 'high',
+                               'bg-amber-100 text-amber-900 border-amber-200': task.task.priority === 'medium',
+                               'bg-green-100 text-green-900 border-green-200': task.task.priority === 'low'
+                             }" 
+                            [style.top]="getTopPosition(task.start_time)"
+                            [style.height]="getHeight(task.start_time, task.end_time)"
+                            [title]="task.explanation || 'AI-optimized placement'">
+                            
+                            <div class="flex justify-between items-start h-full">
+                                <div class="flex flex-col min-w-0 flex-1 h-full">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-3 h-3 opacity-50" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                        <span class="font-medium truncate leading-tight text-[10px]">{{task.task.title}}</span>
+                                    </div>
+                                    <span class="text-[9px] opacity-90 px-0.5">{{task.start_time}}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Tooltip on hover -->
+                            <div class="absolute left-full ml-2 top-0 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 max-w-xs">
+                                <div class="font-semibold mb-1">🤖 AI Explanation</div>
+                                <div class="text-gray-200">{{task.explanation || 'Optimally placed based on your schedule'}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>

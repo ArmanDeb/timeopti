@@ -6,7 +6,8 @@ sqlalchemy==2.0.25
 alembic==1.13.1
 psycopg2-binary==2.9.9
 python-dotenv==1.0.0
-google-auth==2.27.0
+google-auth==2.43.0
 google-auth-oauthlib==1.2.0
 google-auth-httplib2==0.2.0
-google-api-python-client==2.116.0
+google-api-python-client==2.187.0
+importlib-metadata==8.7.0

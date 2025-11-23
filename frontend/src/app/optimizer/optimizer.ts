@@ -1,8 +1,10 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CalendarService, CalendarEvent, ScheduleResponse } from '../services/calendar.service';
 import { ViewService } from '../services/view.service';
+import { CalendarAuthService } from '../services/calendar-auth.service';
+import { ViewStateService } from '../services/view-state.service';
 
 interface Task {
     id: string;
@@ -23,6 +25,7 @@ interface ScheduledTaskInput {
     end_time: string;
     gap_index: number;
     fit_score: number;
+    explanation?: string;  // AI explanation for placement
     date?: Date;
 }
 
@@ -34,6 +37,12 @@ interface ScheduledTaskInput {
     styleUrl: './optimizer.css'
 })
 export class OptimizerComponent {
+    @Output() close = new EventEmitter<void>();
+    
+    // Natural language input
+    naturalInput: string = '';
+    optimizationScope: 'today' | 'week' = 'today';
+    
     // Task management
     tasks: Task[] = [];
     newTask: Partial<Task> = {
@@ -51,8 +60,8 @@ export class OptimizerComponent {
     };
 
     // Time window
-    startWindow = '09:00';
-    endWindow = '17:00';
+    sleepStart = '23:00';
+    sleepEnd = '07:00';
 
     // Results
     scheduleResult: ScheduleResponse | null = null;
@@ -83,34 +92,85 @@ export class OptimizerComponent {
         return days;
     });
 
+    private calendarAuth = inject(CalendarAuthService);
+    private viewState = inject(ViewStateService);
+    
+    // Store real calendar events from Google Calendar
+    realCalendarEvents: CalendarEvent[] = [];
+
     constructor(
         private calendarService: CalendarService,
         public viewService: ViewService
     ) {
         // Add sample data for demo
         this.addSampleData();
+        
+        // Load real calendar events if connected
+        this.loadRealCalendarEvents();
     }
 
     addSampleData() {
-        this.tasks = [
-            { id: '1', title: 'Write report', duration_minutes: 60, priority: 'high' },
-            { id: '2', title: 'Email team', duration_minutes: 30, priority: 'medium' },
-            { id: '3', title: 'Review docs', duration_minutes: 45, priority: 'low' }
-        ];
+        // Don't add sample tasks by default - let user add their own
+        this.tasks = [];
 
-        // Create events relative to today to ensure they appear
+        // Don't add sample events - we'll use real calendar events
+        this.events = [];
+    }
+    
+    loadRealCalendarEvents() {
+        if (!this.calendarAuth.connected()) {
+            console.log('Calendar not connected, skipping event load');
+            return;
+        }
+        
+        const tokens = this.calendarAuth.getTokens();
+        if (!tokens) {
+            console.log('No tokens available');
+            return;
+        }
+        
+        // Get events for the current week
         const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 1);
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-
-        this.events = [
-            { id: '1', title: 'Team Meeting', start_time: '10:00', end_time: '11:00', date: today },
-            { id: '2', title: 'Lunch Break', start_time: '12:00', end_time: '13:00', date: today },
-            { id: '3', title: 'Project Sync', start_time: '14:00', end_time: '15:00', date: tomorrow },
-            { id: '4', title: 'Client Call', start_time: '09:00', end_time: '10:00', date: yesterday }
-        ];
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
+        startOfWeek.setHours(0, 0, 0, 0);
+        
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6); // Sunday
+        endOfWeek.setHours(23, 59, 59, 999);
+        
+        this.calendarService.getEvents(
+            tokens,
+            startOfWeek.toISOString(),
+            endOfWeek.toISOString()
+        ).subscribe({
+            next: (response) => {
+                console.log('Loaded calendar events:', response.events);
+                this.realCalendarEvents = response.events;
+                
+                // Convert ISO events to display format with dates
+                this.events = response.events.map((event, index) => {
+                    const startDate = new Date(event.start_time);
+                    return {
+                        id: `gcal-${index}`,
+                        title: event.title,
+                        start_time: this.extractTime(event.start_time),
+                        end_time: this.extractTime(event.end_time),
+                        date: startDate
+                    };
+                });
+            },
+            error: (err) => {
+                console.error('Failed to load calendar events:', err);
+                // Continue with empty events
+            }
+        });
+    }
+    
+    extractTime(isoString: string): string {
+        // Extract HH:MM from ISO string
+        const date = new Date(isoString);
+        return date.toTimeString().slice(0, 5);
     }
 
     // Task management methods
@@ -156,7 +216,59 @@ export class OptimizerComponent {
         this.events = this.events.filter(e => e.id !== id);
     }
 
-    // Optimization
+    // Natural language optimization
+    optimizeFromNaturalInput() {
+        if (!this.naturalInput.trim()) {
+            this.error = 'Please describe what you want to accomplish';
+            return;
+        }
+
+        this.isOptimizing = true;
+        this.error = null;
+
+        console.log('Natural input:', this.naturalInput);
+
+        // Get tokens for server-side event fetching
+        const tokens = this.calendarAuth.getTokens();
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        
+        this.calendarService.analyze(
+            this.naturalInput,
+            tokens, // Pass tokens for server-side event fetching
+            timezone,
+            this.sleepStart,
+            this.sleepEnd
+        ).subscribe({
+            next: (result) => {
+                console.log('Analysis result:', result);
+                this.isOptimizing = false;
+                
+                // Map proposals to format expected by day-view
+                const tasksWithDates = result.proposals.map((p, index) => ({
+                    task_name: p.task_name,
+                    estimated_duration_minutes: p.estimated_duration_minutes,
+                    assigned_date: p.assigned_date,
+                    assigned_start_time: p.assigned_start_time,
+                    assigned_end_time: p.assigned_end_time,
+                    slot_id: p.slot_id,
+                    reasoning: p.reasoning
+                }));
+                
+                // Share optimized tasks with day-view via ViewStateService
+                this.viewState.setOptimizedTasks(tasksWithDates as any[]);
+                
+                // Close the panel after successful optimization
+                this.close.emit();
+            },
+            error: (err) => {
+                console.error('Optimization error:', err);
+                this.error = err.error?.detail || 'Failed to optimize schedule';
+                this.isOptimizing = false;
+            }
+        });
+    }
+    
+    // Optimization (legacy - keep for manual task addition)
     optimizeSchedule() {
         if (this.tasks.length === 0) {
             this.error = 'Please add at least one task';
@@ -166,28 +278,43 @@ export class OptimizerComponent {
         this.isOptimizing = true;
         this.error = null;
 
-        // For now, optimization only runs for "today" in the backend
-        // In a real implementation, we'd pass the date or range
+        // Get today's events only for optimization
+        const today = new Date();
+        const todayEvents = this.events
+            .filter(e => this.isSameDate(e.date, today))
+            .map(e => ({
+                title: e.title,
+                start_time: e.start_time,
+                end_time: e.end_time
+            }));
+
+        console.log('Optimizing with events:', todayEvents);
+        console.log('Tasks:', this.tasks);
+        console.log('Sleep window:', this.sleepStart, '-', this.sleepEnd);
+
+        // Use real calendar events if available
         this.calendarService.smartOptimize(
             this.tasks,
-            undefined, // No calendar tokens (manual events)
-            this.events,
-            this.startWindow,
-            this.endWindow
+            undefined, // We already have events loaded
+            todayEvents.length > 0 ? todayEvents : undefined,
+            this.sleepStart,
+            this.sleepEnd
         ).subscribe({
             next: (result) => {
+                console.log('Optimization result:', result);
                 this.scheduleResult = result;
                 this.isOptimizing = false;
                 
-                // Simulate assigning date to scheduled tasks (today)
+                // Assign date to scheduled tasks (today)
                 if (this.scheduleResult?.schedule.scheduled_tasks) {
                     this.scheduleResult.schedule.scheduled_tasks = this.scheduleResult.schedule.scheduled_tasks.map(t => ({
                         ...t,
-                        date: this.viewService.currentDate()
+                        date: today
                     }));
                 }
             },
             error: (err) => {
+                console.error('Optimization error:', err);
                 this.error = err.error?.detail || 'Failed to optimize schedule';
                 this.isOptimizing = false;
             }
@@ -249,5 +376,65 @@ export class OptimizerComponent {
     
     isToday(date: Date): boolean {
         return this.isSameDate(date, new Date());
+    }
+    
+    // Drag & Drop functionality
+    draggedTask: ScheduledTaskInput | null = null;
+    
+    onDragStart(task: ScheduledTaskInput, event: DragEvent) {
+        this.draggedTask = task;
+        if (event.dataTransfer) {
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', task.task.id);
+        }
+    }
+    
+    onDragOver(event: DragEvent) {
+        event.preventDefault();
+        if (event.dataTransfer) {
+            event.dataTransfer.dropEffect = 'move';
+        }
+    }
+    
+    onDrop(event: DragEvent, day: Date) {
+        event.preventDefault();
+        
+        if (!this.draggedTask || !this.scheduleResult) return;
+        
+        // Get drop position relative to the day column
+        const target = event.currentTarget as HTMLElement;
+        const rect = target.getBoundingClientRect();
+        const y = event.clientY - rect.top;
+        
+        // Calculate new time based on Y position (1px = 1 minute)
+        const newStartMinutes = Math.floor(y);
+        const newStartHour = Math.floor(newStartMinutes / 60);
+        const newStartMin = newStartMinutes % 60;
+        const newStartTime = `${newStartHour.toString().padStart(2, '0')}:${newStartMin.toString().padStart(2, '0')}`;
+        
+        // Calculate end time
+        const duration = this.draggedTask.task.duration_minutes;
+        const endMinutes = newStartMinutes + duration;
+        const endHour = Math.floor(endMinutes / 60);
+        const endMin = endMinutes % 60;
+        const newEndTime = `${endHour.toString().padStart(2, '0')}:${endMin.toString().padStart(2, '0')}`;
+        
+        // Update the task
+        const taskIndex = this.scheduleResult.schedule.scheduled_tasks.findIndex(
+            t => (t as ScheduledTaskInput).task.id === this.draggedTask!.task.id
+        );
+        
+        if (taskIndex !== -1) {
+            const updatedTask = {
+                ...this.scheduleResult.schedule.scheduled_tasks[taskIndex],
+                start_time: newStartTime,
+                end_time: newEndTime,
+                date: day
+            } as ScheduledTaskInput;
+            
+            this.scheduleResult.schedule.scheduled_tasks[taskIndex] = updatedTask;
+        }
+        
+        this.draggedTask = null;
     }
 }

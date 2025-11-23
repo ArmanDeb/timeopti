@@ -1,9 +1,10 @@
-import { Component, OnInit, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, computed, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CalendarService } from '../services/calendar.service';
 import { CalendarAuthService } from '../services/calendar-auth.service';
 import { ViewService } from '../services/view.service';
+import { ViewStateService } from '../services/view-state.service';
 
 interface CalendarEvent {
   id: string;
@@ -27,11 +28,16 @@ interface FreeSlot {
   templateUrl: './week-view.component.html',
   styleUrl: './week-view.component.css'
 })
-export class WeekViewComponent implements OnInit {
+export class WeekViewComponent implements OnInit, OnDestroy {
+  @Input() showTaskButton = false;
+  @Output() openTaskPanel = new EventEmitter<void>();
+  
   events: CalendarEvent[] = [];
   freeSlots: FreeSlot[] = [];
   isLoading = false;
   error: string | null = null;
+  currentTime: string = '';
+  private timeInterval: any;
 
   // Work hours
   workStart = '09:00';
@@ -59,13 +65,33 @@ export class WeekViewComponent implements OnInit {
   constructor(
     private calendarService: CalendarService,
     public calendarAuth: CalendarAuthService,
-    public viewService: ViewService
+    public viewService: ViewService,
+    public viewState: ViewStateService
   ) {}
 
   ngOnInit() {
     if (this.calendarAuth.connected()) {
       this.loadCalendarEvents();
     }
+    
+    this.updateCurrentTime();
+    // Update time every minute
+    this.timeInterval = setInterval(() => {
+      this.updateCurrentTime();
+    }, 60000);
+  }
+
+  ngOnDestroy() {
+    if (this.timeInterval) {
+      clearInterval(this.timeInterval);
+    }
+  }
+
+  updateCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    this.currentTime = `${hours}:${minutes}`;
   }
 
   loadCalendarEvents() {
@@ -223,6 +249,15 @@ export class WeekViewComponent implements OnInit {
   getFreeSlotsForDate(date: Date): FreeSlot[] {
     return this.freeSlots.filter(s => this.isSameDate(s.date, date));
   }
+  
+  getOptimizedTasksForDate(date: Date): any[] {
+    const tasks = this.viewState.optimizedTasks();
+    // For MVP, we only show today's tasks
+    return tasks.filter(t => {
+      const taskDate = new Date(t.assigned_date);
+      return this.isSameDate(taskDate, date);
+    });
+  }
 
   isSameDate(d1: Date, d2: Date): boolean {
     return d1.getFullYear() === d2.getFullYear() &&
@@ -243,12 +278,20 @@ export class WeekViewComponent implements OnInit {
     
     if (time.includes('T')) {
       const date = new Date(time);
-      hours = date.getHours();
-      minutes = date.getMinutes();
+      if (!isNaN(date.getTime())) {
+        hours = date.getHours();
+        minutes = date.getMinutes();
+      } else {
+        const timeMatch = time.match(/T(\d{2}):(\d{2})/);
+        if (timeMatch) {
+          hours = parseInt(timeMatch[1], 10);
+          minutes = parseInt(timeMatch[2], 10);
+        }
+      }
     } else {
       const parts = time.split(':');
       hours = parseInt(parts[0], 10);
-      minutes = parseInt(parts[1], 10);
+      minutes = parseInt(parts[1] || '0', 10);
     }
     
     if (isNaN(hours) || isNaN(minutes)) return '0px';
@@ -262,18 +305,52 @@ export class WeekViewComponent implements OnInit {
     
     let duration = 0;
     
-    // Handle ISO string or HH:MM
+    // Handle ISO format times
     if (start.includes('T') && end.includes('T')) {
+      // For ISO format, calculate duration using time difference
       const startDate = new Date(start);
       const endDate = new Date(end);
       duration = (endDate.getTime() - startDate.getTime()) / (1000 * 60);
+    } else if (start.includes('T') || end.includes('T')) {
+      // Mixed formats - extract time from ISO and compare with HH:MM
+      let startMinutes = 0;
+      let endMinutes = 0;
+
+      if (start.includes('T')) {
+        const timeMatch = start.match(/T(\d{2}):(\d{2})/);
+        if (timeMatch) {
+          startMinutes = parseInt(timeMatch[1], 10) * 60 + parseInt(timeMatch[2], 10);
+        } else {
+           const d = new Date(start);
+           startMinutes = d.getHours() * 60 + d.getMinutes();
+        }
+      } else {
+        const [h, m] = start.split(':').map(Number);
+        startMinutes = h * 60 + (m || 0);
+      }
+
+      if (end.includes('T')) {
+        const timeMatch = end.match(/T(\d{2}):(\d{2})/);
+        if (timeMatch) {
+          endMinutes = parseInt(timeMatch[1], 10) * 60 + parseInt(timeMatch[2], 10);
+        } else {
+           const d = new Date(end);
+           endMinutes = d.getHours() * 60 + d.getMinutes();
+        }
+      } else {
+        const [h, m] = end.split(':').map(Number);
+        endMinutes = h * 60 + (m || 0);
+      }
+
+      duration = endMinutes - startMinutes;
     } else {
+      // Both are HH:MM format
       const [startH, startM] = start.split(':').map(Number);
       const [endH, endM] = end.split(':').map(Number);
-      duration = (endH * 60 + endM) - (startH * 60 + startM);
+      duration = (endH * 60 + (endM || 0)) - (startH * 60 + (startM || 0));
     }
     
-    return `${duration}px`;
+    return `${Math.max(0, duration)}px`;
   }
 
   previousWeek() {

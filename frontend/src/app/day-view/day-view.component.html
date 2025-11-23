@@ -1,0 +1,163 @@
+<div class="h-full flex flex-col bg-white">
+
+    <!-- Header -->
+    <div class="flex-none h-16 border-b border-gray-200 flex items-center justify-between px-6 bg-white">
+        <div class="flex items-center gap-4">
+            <button (click)="goToToday()" class="btn btn-secondary text-sm">
+                Aujourd'hui
+            </button>
+
+            <h2 class="text-lg font-semibold text-gray-900 capitalize">
+                {{ todayStr }}
+            </h2>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- Refresh Button -->
+            <button (click)="loadTodayEvents()" [disabled]="isLoading"
+                class="btn btn-secondary text-sm flex items-center gap-2 hover:bg-gray-100 transition-colors"
+                [class.opacity-50]="isLoading" title="Rafraîchir les événements">
+                <svg class="w-4 h-4" [class.animate-spin]="isLoading" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                    </path>
+                </svg>
+                <span *ngIf="!isLoading">Actualiser</span>
+            </button>
+
+            <!-- Task Panel Button -->
+            <button *ngIf="showTaskButton" (click)="openTaskPanel.emit()"
+                class="btn btn-primary flex items-center gap-2 shadow-lg hover:shadow-xl transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span class="font-semibold">Ajouter des tâches</span>
+            </button>
+
+            <button (click)="disconnect()" class="btn btn-secondary text-sm text-red-600 hover:bg-red-50">
+                Déconnecter
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex-1 flex items-center justify-center">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p class="text-gray-600">Chargement de votre calendrier...</p>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !isLoading" class="flex-1 flex items-center justify-center">
+        <div class="text-center max-w-md">
+            <svg class="w-16 h-16 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p class="text-gray-900 font-medium mb-2">{{ error }}</p>
+            <button *ngIf="!isAuthError" (click)="loadTodayEvents()" class="btn btn-primary text-sm mt-4">
+                Réessayer
+            </button>
+            <button *ngIf="isAuthError" (click)="reconnect()" class="btn btn-primary text-sm mt-4">
+                Se reconnecter
+            </button>
+        </div>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div *ngIf="!isLoading && !error" class="flex-1 flex flex-col overflow-hidden">
+
+        <!-- Scrollable Grid -->
+        <div class="flex-1 overflow-y-auto relative flex">
+
+            <!-- Time Axis -->
+            <div
+                class="w-16 flex-none border-r border-gray-200 bg-white text-xs text-gray-500 text-right pr-3 select-none font-medium sticky left-0 z-20 h-full relative">
+                <div *ngFor="let hour of hours; let i = index" class="absolute w-full right-0 pr-3"
+                    [style.top.px]="i * 60">
+                    <span *ngIf="i > 0">{{hour}}</span>
+                </div>
+            </div>
+
+            <!-- Grid Content -->
+            <div class="flex-1 relative min-h-[1440px] bg-white">
+
+                <!-- Background Grid Lines -->
+                <div class="absolute inset-0 w-full pointer-events-none z-0">
+                    <div *ngFor="let hour of hours" class="h-[60px] border-b border-gray-100 w-full"></div>
+                </div>
+
+                <!-- Day Column -->
+                <div class="w-full border-l border-gray-100 relative h-full z-10">
+
+                    <!-- Current Time Line -->
+                    <div class="absolute w-full border-t-2 border-red-500 z-30 pointer-events-none"
+                        [style.top]="getTopPosition(currentTime)">
+                        <div class="absolute -left-1.5 -top-1.5 w-3 h-3 rounded-full bg-red-500"></div>
+                    </div>
+
+                    <!-- Events -->
+                    <div class="absolute inset-0 w-full px-1">
+                        <!-- Empty state message -->
+                        <div *ngIf="events.length === 0 && !isLoading && !error"
+                            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10">
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <p class="text-gray-500 text-sm">Aucun événement aujourd'hui</p>
+                            <p class="text-gray-400 text-xs mt-1">Vos événements Google Calendar apparaîtront ici</p>
+                        </div>
+
+                        <!-- Real Google Calendar Events -->
+                        <div *ngFor="let event of events"
+                            class="absolute left-1 right-1 rounded-md bg-blue-100 border border-blue-200 text-xs p-2 z-10 shadow-sm overflow-hidden"
+                            [style.top]="getTopPosition(event.start_time)"
+                            [style.height]="getHeight(event.start_time, event.end_time)">
+                            <div class="font-medium text-blue-900 truncate text-[11px]">{{event.title}}</div>
+                            <div class="text-blue-700 text-[10px]">{{formatTime(event.start_time)}}</div>
+                        </div>
+
+                        <!-- AI Proposed Tasks -->
+                        <div *ngFor="let task of viewState.optimizedTasks()"
+                            class="absolute left-1 right-1 rounded-md text-xs p-1 z-20 shadow-md overflow-hidden group border border-amber-300 hover:z-30 hover:shadow-lg cursor-pointer transition-all hover:brightness-110 bg-amber-100 text-amber-900"
+                            [style.top]="getTopPosition(task.assigned_start_time)"
+                            [style.height]="getHeight(task.assigned_start_time, task.assigned_end_time)"
+                            [title]="task.reasoning || 'AI-optimized placement'">
+
+                            <div class="relative flex justify-between items-start h-full">
+                                <div class="flex flex-col min-w-0 flex-1 h-full">
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-3 h-3 opacity-50" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                        <span
+                                            class="font-medium truncate leading-tight text-[10px]">{{task.task_name}}</span>
+                                    </div>
+                                    <span class="text-[9px] opacity-90 px-0.5">
+                                        {{formatTime(task.assigned_start_time)}}
+                                    </span>
+                                </div>
+
+                                <!-- Tooltip on hover -->
+                                <div
+                                    class="absolute left-full ml-2 top-0 bg-gray-900 text-white text-xs rounded-lg px-3 py-2 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 max-w-xs">
+                                    <div class="font-semibold mb-1">🤖 AI Explanation</div>
+                                    <div class="text-gray-200">{{task.reasoning || 'Optimally placed based on your
+                                        schedule'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

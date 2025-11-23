@@ -5,12 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { ViewStateService } from '../services/view-state.service';
 import { CalendarAuthService } from '../services/calendar-auth.service';
 import { OptimizerComponent } from '../optimizer/optimizer';
-import { WeekViewComponent } from '../week-view/week-view.component';
+import { DayViewComponent } from '../day-view/day-view.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, OptimizerComponent, WeekViewComponent],
+  imports: [CommonModule, FormsModule, OptimizerComponent, DayViewComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -20,16 +20,37 @@ export class DashboardComponent implements OnInit {
   
   // View Toggle (Timeline vs Calendar vs Week)
   showCalendarGrid = false;
-  showWeekView = false;
+  
+  // Task panel toggle
+  showTaskPanel = false;
 
   constructor(
     public viewState: ViewStateService,
     public calendarAuth: CalendarAuthService,
     private route: ActivatedRoute
   ) {
-    // Initialize to input state if calendar is connected
-    if (this.viewState.state() === 'onboarding' && this.calendarAuth.connected()) {
+    // Reactively update state when connection status changes
+    effect(() => {
+      const isConnected = this.calendarAuth.connected();
+      console.log('🔄 [DASHBOARD] Connection status changed:', isConnected);
+      
+      if (isConnected) {
+        // Only set to input if we're not already in results
+        if (this.viewState.state() !== 'results') {
+          this.viewState.setState('input');
+        }
+      } else {
+        // If disconnected, go back to onboarding
+        console.log('🔴 [DASHBOARD] Disconnected, forcing onboarding state');
+        this.viewState.setState('onboarding');
+      }
+    });
+    
+    // Set initial state based on calendar connection
+    if (this.calendarAuth.connected()) {
       this.viewState.setState('input');
+    } else {
+      this.viewState.setState('onboarding');
     }
   }
 
@@ -38,7 +59,10 @@ export class DashboardComponent implements OnInit {
     console.log('🟢 [DASHBOARD] Current URL:', window.location.href);
     console.log('🟢 [DASHBOARD] Search params:', window.location.search);
     console.log('🟢 [DASHBOARD] Hash:', window.location.hash);
-    console.log('🟢 [DASHBOARD] Calendar connected:', this.calendarAuth.connected());
+    
+    // Force re-check of connection status to ensure it's up to date
+    this.calendarAuth.checkConnectionStatus();
+    console.log('🟢 [DASHBOARD] Calendar connected (after check):', this.calendarAuth.connected());
     
     // Handle OAuth callback from query params
     this.route.queryParams.subscribe(params => {
@@ -67,10 +91,15 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    // Show week view if calendar is connected
+    // Ensure state is correct based on connection
     if (this.calendarAuth.connected()) {
-      console.log('Showing week view');
-      this.showWeekView = true;
+      console.log('Calendar connected, ensuring input state');
+      this.viewState.setState('input');
+    } else {
+       // If not connected, ensure we are in onboarding (unless we are already in results or something else, but initially onboarding)
+       if (this.viewState.state() === 'input') {
+           this.viewState.setState('onboarding');
+       }
     }
   }
 
@@ -81,25 +110,6 @@ export class DashboardComponent implements OnInit {
 
   connectCalendar() {
     this.calendarAuth.connect();
-  }
-
-  enableDemoMode() {
-    // Enable demo mode with mock data
-    this.calendarAuth.mockConnect();
-    
-    // Create mock tokens
-    const mockTokens = {
-      token: 'demo_token',
-      refresh_token: 'demo_refresh',
-      token_uri: 'https://oauth2.googleapis.com/token',
-      client_id: 'demo_client',
-      client_secret: 'demo_secret',
-      scopes: ['https://www.googleapis.com/auth/calendar.readonly']
-    };
-    localStorage.setItem('calendar_tokens', JSON.stringify(mockTokens));
-    
-    // Show week view
-    this.showWeekView = true;
   }
 
   analyze() {
@@ -126,33 +136,8 @@ export class DashboardComponent implements OnInit {
   toggleView() {
     this.showCalendarGrid = !this.showCalendarGrid;
   }
-
-  // DEBUG: Force complete reset
-  forceCompleteReset() {
-    console.log('🔴 [DEBUG] === FORCING COMPLETE RESET ===');
-    console.log('🔴 [DEBUG] Current localStorage:', { ...localStorage });
-    
-    // Clear everything
-    localStorage.clear();
-    console.log('🔴 [DEBUG] ✅ LocalStorage cleared');
-    
-    // Disconnect calendar
-    this.calendarAuth.disconnect();
-    console.log('🔴 [DEBUG] ✅ Calendar disconnected');
-    
-    // Reset view state
-    this.viewState.reset();
-    console.log('🔴 [DEBUG] ✅ View state reset');
-    
-    // Hide week view
-    this.showWeekView = false;
-    console.log('🔴 [DEBUG] ✅ Week view hidden');
-    
-    console.log('🔴 [DEBUG] === RELOADING PAGE ===');
-    
-    // Reload page
-    setTimeout(() => {
-      window.location.href = '/app/dashboard';
-    }, 500);
+  
+  toggleTaskPanel() {
+    this.showTaskPanel = !this.showTaskPanel;
   }
 }

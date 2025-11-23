@@ -9,6 +9,7 @@ class ScheduledTask(BaseModel):
     end_time: str
     gap_index: int  # Which gap was used
     fit_score: float  # How well it fits
+    explanation: str  # Why this task was placed here
 
 class ScheduleResult(BaseModel):
     scheduled_tasks: List[ScheduledTask]
@@ -143,7 +144,8 @@ class TaskMatcher:
         Factors:
         - Efficiency: Prefer gaps that minimize wasted time
         - Priority: High priority tasks get preference for good slots
-        - Time of day: Morning gaps slightly preferred for high priority
+        - Time of day: Context-aware placement (breakfast in morning, etc.)
+        - Task type: Meals, study, social activities have preferred times
         """
         # Efficiency score: penalize large gaps for small tasks
         waste = gap.duration_minutes - task.duration_minutes
@@ -152,13 +154,85 @@ class TaskMatcher:
         # Priority boost
         priority_boost = self.priority_weights.get(task.priority.lower(), 1.0) / 3.0
         
-        # Time of day preference (morning = higher score for high priority)
+        # Context-aware time preference
+        time_boost = 0.0
         try:
             gap_hour = int(gap.start_time.split(':')[0])
-            if gap_hour >= 9 and gap_hour <= 11 and task.priority.lower() == "high":
-                time_boost = 0.2
-            else:
-                time_boost = 0
+            task_lower = task.title.lower()
+            
+            # Use explicit time_preference if provided by AI
+            # CRITICAL: Strong boost/penalty to enforce time preferences
+            if task.time_preference:
+                pref = task.time_preference.lower()
+                if pref == 'morning' and 7 <= gap_hour <= 12:
+                    time_boost = 2.0  # Strong boost
+                elif pref == 'afternoon' and 12 <= gap_hour <= 17:
+                    time_boost = 2.0
+                elif pref == 'evening' and 17 <= gap_hour <= 21:
+                    time_boost = 2.0
+                elif pref == 'midday' and 11 <= gap_hour <= 14:
+                    time_boost = 2.0
+                else:
+                    time_boost = -5.0  # STRONG penalty for wrong time
+            
+            # Fallback to keyword-based detection
+            
+            # Breakfast: 7-10 AM (STRICT)
+            if any(word in task_lower for word in ['breakfast', 'petit déjeuner']):
+                if 7 <= gap_hour <= 10:
+                    time_boost = 3.0  # Perfect time
+                elif gap_hour < 7 or gap_hour > 12:
+                    time_boost = -10.0  # ABSURD time - breakfast at night!
+                else:
+                    time_boost = -2.0
+            
+            # Lunch: 11 AM - 2 PM (STRICT)
+            elif any(word in task_lower for word in ['lunch', 'déjeuner midi']):
+                if 11 <= gap_hour <= 14:
+                    time_boost = 3.0
+                else:
+                    time_boost = -8.0  # Wrong meal time
+            
+            # Dinner: 6-9 PM (STRICT) - includes "dinner with friends"
+            elif any(word in task_lower for word in ['dinner', 'dîner', 'souper', 'diner']) or \
+                 ('dinner' in task_lower and 'friend' in task_lower):
+                if 18 <= gap_hour <= 21:
+                    time_boost = 3.0  # Perfect evening time
+                elif gap_hour < 12:
+                    time_boost = -10.0  # ABSURD - dinner in the morning!
+                elif 12 <= gap_hour < 17:
+                    time_boost = -7.0  # Too early for dinner
+                else:
+                    time_boost = -5.0  # Still wrong
+            
+            # Study/Work: Morning/Early afternoon preferred
+            elif any(word in task_lower for word in ['study', 'work', 'étudier', 'travailler', 'projet']):
+                if 9 <= gap_hour <= 15:
+                    time_boost = 1.5
+                elif gap_hour >= 20:
+                    time_boost = -3.0  # Too late for focused work
+            
+            # Social/Visit: Afternoon/Evening
+            elif any(word in task_lower for word in ['visit', 'friend', 'social', 'visite', 'ami', 'friends']):
+                if 14 <= gap_hour <= 21:
+                    time_boost = 1.5  # Good social time
+                elif gap_hour < 10:
+                    time_boost = -5.0  # Too early for social visits
+                else:
+                    time_boost = -1.0
+            
+            # Exercise: Morning or late afternoon
+            elif any(word in task_lower for word in ['exercise', 'gym', 'sport', 'workout']):
+                if (7 <= gap_hour <= 9) or (17 <= gap_hour <= 19):
+                    time_boost = 1.5
+                elif gap_hour >= 21:
+                    time_boost = -3.0  # Too late for exercise
+            
+            # High priority tasks: prefer morning slots
+            elif task.priority.lower() == "high":
+                if 9 <= gap_hour <= 12:
+                    time_boost = 0.2
+                    
         except:
             time_boost = 0
         
@@ -172,19 +246,23 @@ class TaskMatcher:
         gap_index: int,
         fit_score: float
     ) -> ScheduledTask:
-        """Create a scheduled task from a task and gap."""
+        """Create a scheduled task from a task and gap with explanation."""
         from datetime import datetime, timedelta
         
         # Parse gap start time
         start = datetime.strptime(gap.start_time, "%H:%M")
         end = start + timedelta(minutes=task.duration_minutes)
         
+        # Generate explanation
+        explanation = self._generate_task_explanation(task, start.strftime("%H:%M"), fit_score)
+        
         return ScheduledTask(
             task=task,
             start_time=start.strftime("%H:%M"),
             end_time=end.strftime("%H:%M"),
             gap_index=gap_index,
-            fit_score=fit_score
+            fit_score=fit_score,
+            explanation=explanation
         )
     
     def _update_gap_after_assignment(
@@ -208,6 +286,65 @@ class TaskMatcher:
         # Remove gap if no time left
         if gap.duration_minutes <= 0:
             gaps.pop(gap_index)
+    
+    def _generate_task_explanation(self, task: Task, start_time: str, fit_score: float) -> str:
+        """Generate a human-readable explanation for why this task was placed at this time."""
+        hour = int(start_time.split(':')[0])
+        task_lower = task.title.lower()
+        
+        # Use AI reasoning if available
+        if task.reasoning:
+            return task.reasoning
+        
+        # Generate contextual explanation
+        explanations = []
+        
+        # Time-based reasoning
+        if 7 <= hour <= 9:
+            if any(word in task_lower for word in ['breakfast', 'petit déjeuner']):
+                explanations.append("Optimal breakfast time for morning energy")
+            elif any(word in task_lower for word in ['exercise', 'gym', 'sport']):
+                explanations.append("Morning workout boosts metabolism and energy")
+            elif any(word in task_lower for word in ['study', 'work', 'learn']):
+                explanations.append("Morning hours offer peak cognitive performance")
+        
+        elif 9 <= hour <= 12:
+            if any(word in task_lower for word in ['study', 'work', 'project', 'code']):
+                explanations.append("Peak focus hours for deep work and complex tasks")
+            elif any(word in task_lower for word in ['meeting', 'call']):
+                explanations.append("Optimal time for collaborative work")
+        
+        elif 12 <= hour <= 14:
+            if any(word in task_lower for word in ['lunch', 'déjeuner', 'repas']):
+                explanations.append("Natural midday break for energy replenishment")
+        
+        elif 14 <= hour <= 17:
+            if any(word in task_lower for word in ['study', 'work']):
+                explanations.append("Good afternoon productivity window")
+            elif any(word in task_lower for word in ['meeting', 'social']):
+                explanations.append("Ideal for collaborative and social activities")
+        
+        elif 17 <= hour <= 19:
+            if any(word in task_lower for word in ['exercise', 'gym', 'sport']):
+                explanations.append("Evening workout helps decompress after work")
+            elif any(word in task_lower for word in ['visit', 'friend', 'social']):
+                explanations.append("Perfect time for social activities")
+        
+        elif 18 <= hour <= 21:
+            if any(word in task_lower for word in ['dinner', 'dîner', 'souper']):
+                explanations.append("Evening meal time for family and relaxation")
+            elif any(word in task_lower for word in ['visit', 'friend']):
+                explanations.append("Evening is ideal for social gatherings")
+        
+        # Priority-based reasoning
+        if task.priority == 'high' and 9 <= hour <= 12:
+            explanations.append("High priority task scheduled during peak hours")
+        
+        # Fit score reasoning
+        if fit_score > 1.5:
+            explanations.append(f"Perfect fit for this {task.duration_minutes}min time slot")
+        
+        return " • ".join(explanations) if explanations else f"Scheduled based on availability and task type"
     
     def _generate_explanation(
         self, 
