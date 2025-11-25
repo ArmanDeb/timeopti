@@ -26,6 +26,19 @@
             <div class="text-3xl font-bold text-gray-900">{{ stats.total_recommendations }}</div>
         </div>
     </div>
+    
+    <!-- Usage KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" *ngIf="stats">
+        <div class="card p-6 bg-blue-50 border-blue-100">
+            <h3 class="text-sm font-medium text-blue-600 uppercase tracking-wide mb-2">Coût Total Estimé</h3>
+            <div class="text-3xl font-bold text-gray-900">${{ getTotalCost() | number:'1.2-4' }}</div>
+            <p class="text-xs text-gray-500 mt-1">Basé sur l'usage GPT-4o</p>
+        </div>
+        <div class="card p-6 bg-purple-50 border-purple-100">
+            <h3 class="text-sm font-medium text-purple-600 uppercase tracking-wide mb-2">Total Tokens</h3>
+            <div class="text-3xl font-bold text-gray-900">{{ getTotalTokens() | number }}</div>
+        </div>
+    </div>
 
     <!-- Tabs -->
     <div class="flex border-b border-gray-200 mb-6">
@@ -54,6 +67,8 @@
                         <th class="px-6 py-3 font-medium">Endpoint</th>
                         <th class="px-6 py-3 font-medium">Call Count</th>
                         <th class="px-6 py-3 font-medium">Avg Duration (ms)</th>
+                        <th class="px-6 py-3 font-medium">Total Tokens</th>
+                        <th class="px-6 py-3 font-medium">Total Cost</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -61,6 +76,8 @@
                         <td class="px-6 py-3">{{ stat.endpoint }}</td>
                         <td class="px-6 py-3">{{ stat.count }}</td>
                         <td class="px-6 py-3">{{ stat.avg_duration_ms }}</td>
+                        <td class="px-6 py-3">{{ stat.total_tokens | number }}</td>
+                        <td class="px-6 py-3">${{ stat.total_cost | number:'1.4-4' }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -75,6 +92,9 @@
                     <tr>
                         <th class="px-6 py-3 font-medium">Time</th>
                         <th class="px-6 py-3 font-medium">Endpoint</th>
+                        <th class="px-6 py-3 font-medium">Model</th>
+                        <th class="px-6 py-3 font-medium">Tokens</th>
+                        <th class="px-6 py-3 font-medium">Cost</th>
                         <th class="px-6 py-3 font-medium">Duration</th>
                         <th class="px-6 py-3 font-medium">Status</th>
                     </tr>
@@ -83,6 +103,9 @@
                     <tr *ngFor="let log of logs">
                         <td class="px-6 py-3 text-gray-500">{{ formatDate(log.created_at) }}</td>
                         <td class="px-6 py-3 font-mono text-xs">{{ log.endpoint }}</td>
+                        <td class="px-6 py-3 text-xs">{{ log.model || '-' }}</td>
+                        <td class="px-6 py-3 text-xs">{{ log.tokens_used || 0 }}</td>
+                        <td class="px-6 py-3 text-xs">${{ (log.cost || 0) | number:'1.4-4' }}</td>
                         <td class="px-6 py-3">{{ log.duration_ms }}ms</td>
                         <td class="px-6 py-3">
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"

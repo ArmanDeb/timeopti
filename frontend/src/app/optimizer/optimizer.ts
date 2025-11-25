@@ -38,11 +38,12 @@ interface ScheduledTaskInput {
 })
 export class OptimizerComponent {
     @Output() close = new EventEmitter<void>();
-    
+
     // Natural language input
     naturalInput: string = '';
     optimizationScope: 'today' | 'week' = 'today';
-    
+    startFromNow: boolean = true; // Default to true as requested
+
     // Task management
     tasks: Task[] = [];
     newTask: Partial<Task> = {
@@ -67,22 +68,22 @@ export class OptimizerComponent {
     scheduleResult: ScheduleResponse | null = null;
     isOptimizing = false;
     error: string | null = null;
-    
+
     // Derived state for displayed days (Day or Week)
     displayedDays = computed(() => {
         const mode = this.viewService.viewMode();
         const current = this.viewService.currentDate();
-        
+
         if (mode === 'Day') {
             return [current];
         }
-        
+
         // Week Mode
         const startOfWeek = new Date(current);
         const day = startOfWeek.getDay();
         const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1); // Monday start
         startOfWeek.setDate(diff);
-        
+
         const days = [];
         for (let i = 0; i < 7; i++) {
             const d = new Date(startOfWeek);
@@ -94,7 +95,7 @@ export class OptimizerComponent {
 
     private calendarAuth = inject(CalendarAuthService);
     private viewState = inject(ViewStateService);
-    
+
     // Store real calendar events from Google Calendar
     realCalendarEvents: CalendarEvent[] = [];
 
@@ -104,7 +105,7 @@ export class OptimizerComponent {
     ) {
         // Add sample data for demo
         this.addSampleData();
-        
+
         // Load real calendar events if connected
         this.loadRealCalendarEvents();
     }
@@ -116,29 +117,29 @@ export class OptimizerComponent {
         // Don't add sample events - we'll use real calendar events
         this.events = [];
     }
-    
+
     loadRealCalendarEvents() {
         if (!this.calendarAuth.connected()) {
             console.log('Calendar not connected, skipping event load');
             return;
         }
-        
+
         const tokens = this.calendarAuth.getTokens();
         if (!tokens) {
             console.log('No tokens available');
             return;
         }
-        
+
         // Get events for the current week
         const today = new Date();
         const startOfWeek = new Date(today);
         startOfWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
         startOfWeek.setHours(0, 0, 0, 0);
-        
+
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6); // Sunday
         endOfWeek.setHours(23, 59, 59, 999);
-        
+
         this.calendarService.getEvents(
             tokens,
             startOfWeek.toISOString(),
@@ -147,7 +148,7 @@ export class OptimizerComponent {
             next: (response) => {
                 console.log('Loaded calendar events:', response.events);
                 this.realCalendarEvents = response.events;
-                
+
                 // Convert ISO events to display format with dates
                 this.events = response.events.map((event, index) => {
                     const startDate = new Date(event.start_time);
@@ -166,7 +167,7 @@ export class OptimizerComponent {
             }
         });
     }
-    
+
     extractTime(isoString: string): string {
         // Extract HH:MM from ISO string
         const date = new Date(isoString);
@@ -231,18 +232,19 @@ export class OptimizerComponent {
         // Get tokens for server-side event fetching
         const tokens = this.calendarAuth.getTokens();
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        
+
         this.calendarService.analyze(
             this.naturalInput,
             tokens, // Pass tokens for server-side event fetching
             timezone,
             this.sleepStart,
-            this.sleepEnd
+            this.sleepEnd,
+            this.startFromNow
         ).subscribe({
             next: (result) => {
                 console.log('Analysis result:', result);
                 this.isOptimizing = false;
-                
+
                 // Map proposals to format expected by day-view
                 const tasksWithDates = result.proposals.map((p, index) => ({
                     task_name: p.task_name,
@@ -253,10 +255,10 @@ export class OptimizerComponent {
                     slot_id: p.slot_id,
                     reasoning: p.reasoning
                 }));
-                
+
                 // Share optimized tasks with day-view via ViewStateService
                 this.viewState.setOptimizedTasks(tasksWithDates as any[]);
-                
+
                 // Close the panel after successful optimization
                 this.close.emit();
             },
@@ -267,7 +269,7 @@ export class OptimizerComponent {
             }
         });
     }
-    
+
     // Optimization (legacy - keep for manual task addition)
     optimizeSchedule() {
         if (this.tasks.length === 0) {
@@ -293,18 +295,33 @@ export class OptimizerComponent {
         console.log('Sleep window:', this.sleepStart, '-', this.sleepEnd);
 
         // Use real calendar events if available
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        // Calculate start window based on sleep end and startFromNow
+        let startWindow = this.sleepEnd;
+        if (this.startFromNow) {
+            const now = new Date();
+            const currentHours = now.getHours().toString().padStart(2, '0');
+            const currentMinutes = now.getMinutes().toString().padStart(2, '0');
+            const currentTime = `${currentHours}:${currentMinutes}`;
+
+            // Simple string comparison works for HH:MM format
+            if (currentTime > startWindow) {
+                startWindow = currentTime;
+            }
+        }
+
         this.calendarService.smartOptimize(
             this.tasks,
             undefined, // We already have events loaded
             todayEvents.length > 0 ? todayEvents : undefined,
-            this.sleepStart,
-            this.sleepEnd
+            startWindow,     // Start of available time (sleep end or now)
+            this.sleepStart  // End of available time (sleep start)
         ).subscribe({
             next: (result) => {
                 console.log('Optimization result:', result);
                 this.scheduleResult = result;
                 this.isOptimizing = false;
-                
+
                 // Assign date to scheduled tasks (today)
                 if (this.scheduleResult?.schedule.scheduled_tasks) {
                     this.scheduleResult.schedule.scheduled_tasks = this.scheduleResult.schedule.scheduled_tasks.map(t => ({
@@ -351,16 +368,16 @@ export class OptimizerComponent {
         const durationMinutes = (endH * 60 + endM) - (startH * 60 + startM);
         return `${durationMinutes}px`;
     }
-    
+
     // Filter events for a specific date
     getEventsForDate(date: Date): CalendarEventInput[] {
         return this.events.filter(e => this.isSameDate(e.date, date));
     }
-    
+
     // Filter scheduled tasks for a specific date
     getTasksForDate(date: Date): ScheduledTaskInput[] {
-         if (!this.scheduleResult?.schedule.scheduled_tasks) return [];
-         return (this.scheduleResult.schedule.scheduled_tasks as ScheduledTaskInput[])
+        if (!this.scheduleResult?.schedule.scheduled_tasks) return [];
+        return (this.scheduleResult.schedule.scheduled_tasks as ScheduledTaskInput[])
             .filter(t => this.isSameDate(t.date, date));
     }
 
@@ -370,17 +387,17 @@ export class OptimizerComponent {
         const date1 = new Date(d1);
         const date2 = new Date(d2);
         return date1.getFullYear() === date2.getFullYear() &&
-               date1.getMonth() === date2.getMonth() &&
-               date1.getDate() === date2.getDate();
+            date1.getMonth() === date2.getMonth() &&
+            date1.getDate() === date2.getDate();
     }
-    
+
     isToday(date: Date): boolean {
         return this.isSameDate(date, new Date());
     }
-    
+
     // Drag & Drop functionality
     draggedTask: ScheduledTaskInput | null = null;
-    
+
     onDragStart(task: ScheduledTaskInput, event: DragEvent) {
         this.draggedTask = task;
         if (event.dataTransfer) {
@@ -388,42 +405,42 @@ export class OptimizerComponent {
             event.dataTransfer.setData('text/plain', task.task.id);
         }
     }
-    
+
     onDragOver(event: DragEvent) {
         event.preventDefault();
         if (event.dataTransfer) {
             event.dataTransfer.dropEffect = 'move';
         }
     }
-    
+
     onDrop(event: DragEvent, day: Date) {
         event.preventDefault();
-        
+
         if (!this.draggedTask || !this.scheduleResult) return;
-        
+
         // Get drop position relative to the day column
         const target = event.currentTarget as HTMLElement;
         const rect = target.getBoundingClientRect();
         const y = event.clientY - rect.top;
-        
+
         // Calculate new time based on Y position (1px = 1 minute)
         const newStartMinutes = Math.floor(y);
         const newStartHour = Math.floor(newStartMinutes / 60);
         const newStartMin = newStartMinutes % 60;
         const newStartTime = `${newStartHour.toString().padStart(2, '0')}:${newStartMin.toString().padStart(2, '0')}`;
-        
+
         // Calculate end time
         const duration = this.draggedTask.task.duration_minutes;
         const endMinutes = newStartMinutes + duration;
         const endHour = Math.floor(endMinutes / 60);
         const endMin = endMinutes % 60;
         const newEndTime = `${endHour.toString().padStart(2, '0')}:${endMin.toString().padStart(2, '0')}`;
-        
+
         // Update the task
         const taskIndex = this.scheduleResult.schedule.scheduled_tasks.findIndex(
             t => (t as ScheduledTaskInput).task.id === this.draggedTask!.task.id
         );
-        
+
         if (taskIndex !== -1) {
             const updatedTask = {
                 ...this.scheduleResult.schedule.scheduled_tasks[taskIndex],
@@ -431,10 +448,10 @@ export class OptimizerComponent {
                 end_time: newEndTime,
                 date: day
             } as ScheduledTaskInput;
-            
+
             this.scheduleResult.schedule.scheduled_tasks[taskIndex] = updatedTask;
         }
-        
+
         this.draggedTask = null;
     }
 }

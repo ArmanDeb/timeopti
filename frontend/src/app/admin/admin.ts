@@ -104,4 +104,14 @@ export class AdminComponent implements OnInit {
         this.loadUsers();
         this.loadRecommendations();
     }
+
+    getTotalCost(): number {
+        if (!this.stats) return 0;
+        return this.stats.endpoint_stats.reduce((acc, curr) => acc + (curr.total_cost || 0), 0);
+    }
+
+    getTotalTokens(): number {
+        if (!this.stats) return 0;
+        return this.stats.endpoint_stats.reduce((acc, curr) => acc + (curr.total_tokens || 0), 0);
+    }
 }

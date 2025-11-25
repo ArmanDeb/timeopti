@@ -46,6 +46,18 @@ async def timeopti_exception_handler(request: Request, exc: TimeOptiException):
         content={"detail": exc.message},
     )
 
+def calculate_cost(model: str, prompt_tokens: int, completion_tokens: int) -> float:
+    """
+    Calculate cost based on model and tokens.
+    Pricing (approximate):
+    GPT-4o: Input $5.00/1M, Output $15.00/1M
+    """
+    if "gpt-4o" in model:
+        input_cost = (prompt_tokens / 1_000_000) * 5.00
+        output_cost = (completion_tokens / 1_000_000) * 15.00
+        return input_cost + output_cost
+    return 0.0
+
 # Helper function to get or create user
 def get_or_create_user(clerk_user_id: str, email: Optional[str], db: Session) -> User:
     user = db.query(User).filter(User.clerk_user_id == clerk_user_id).first()
@@ -275,11 +287,14 @@ def smart_optimize_natural(request: NaturalOptimizeRequest, db: Session = Depend
         scope_to_use = detected_scope
         
         # Step 1: Parse natural language into tasks using AI
+        usage_data = {}
         try:
-            parsed_tasks = ai_service.parse_natural_language_to_tasks(
+            parsed_tasks, parse_usage = ai_service.parse_natural_language_to_tasks(
                 request.natural_input,
                 scope_to_use
             )
+            # Accumulate usage
+            usage_data["parse"] = parse_usage
         except Exception as e:
             error_msg = f"Failed to parse natural language: {str(e)}"
             error = error_msg
@@ -315,7 +330,8 @@ def smart_optimize_natural(request: NaturalOptimizeRequest, db: Session = Depend
             "schedule": schedule.model_dump(),
             "gaps_found": [g.model_dump() for g in gaps],
             "events": [e.model_dump() for e in events],
-            "parsed_tasks": [t.model_dump() for t in parsed_tasks]
+            "parsed_tasks": [t.model_dump() for t in parsed_tasks],
+            "usage": usage_data
         }
         
         return result
@@ -330,13 +346,38 @@ def smart_optimize_natural(request: NaturalOptimizeRequest, db: Session = Depend
     finally:
         # Log to database
         duration_ms = int((time.time() - start_time) * 1000)
+        
+        # Extract usage info if available
+        tokens_used = 0
+        model = None
+        cost = 0.0
+        
+        # Calculate total usage
+        total_tokens = 0
+        total_cost = 0.0
+        model_used = "gpt-4o" # Default or mixed
+        
+        if result and "usage" in result:
+            for key, usage in result["usage"].items():
+                if usage:
+                    total_tokens += usage.get("total_tokens", 0)
+                    total_cost += calculate_cost(
+                        usage.get("model", "gpt-4o"),
+                        usage.get("prompt_tokens", 0),
+                        usage.get("completion_tokens", 0)
+                    )
+                    model_used = usage.get("model", model_used)
+
         log = AILog(
             user_id=None,
             endpoint="/smart-optimize-natural",
             request_data=request.model_dump(),
             response_data=result,
             duration_ms=duration_ms,
-            error=error
+            error=error,
+            tokens_used=total_tokens,
+            model=model_used,
+            cost=total_cost
         )
         db.add(log)
         db.commit()
@@ -351,13 +392,27 @@ def optimize_agenda(request: AgendaRequest, db: Session = Depends(get_db)):
     result = None
     
     try:
-        result = ai_service.optimize_agenda(request)
-        return {"optimized_agenda": result}
+        result, usage = ai_service.optimize_agenda(request)
+        return {"optimized_agenda": result, "usage": usage}
     except Exception as e:
         error = str(e)
         raise HTTPException(status_code=500, detail=error)
     finally:
         duration_ms = int((time.time() - start_time) * 1000)
+        
+        tokens_used = 0
+        cost = 0.0
+        model = None
+        
+        if 'usage' in locals() and usage:
+            tokens_used = usage.get("total_tokens", 0)
+            model = usage.get("model")
+            cost = calculate_cost(
+                model,
+                usage.get("prompt_tokens", 0),
+                usage.get("completion_tokens", 0)
+            )
+            
         # Log to database (anonymous for now, will add user tracking later)
         log = AILog(
             user_id=None,  # Will be populated when user auth is integrated
@@ -365,7 +420,10 @@ def optimize_agenda(request: AgendaRequest, db: Session = Depends(get_db)):
             request_data=request.model_dump(),
             response_data={"result": result} if result else None,
             duration_ms=duration_ms,
-            error=error
+            error=error,
+            tokens_used=tokens_used,
+            model=model,
+            cost=cost
         )
         db.add(log)
         db.commit()
@@ -403,21 +461,38 @@ def analyze_priorities(request: PriorityRequest, db: Session = Depends(get_db)):
     result = None
     
     try:
-        priorities = ai_service.get_priority_tasks(request.tasks)
-        result = {"priorities": priorities}
+        priorities, usage = ai_service.get_priority_tasks(request.tasks)
+        result = {"priorities": priorities, "usage": usage}
         return result
     except Exception as e:
         error = str(e)
         raise HTTPException(status_code=500, detail=error)
     finally:
         duration_ms = int((time.time() - start_time) * 1000)
+        
+        tokens_used = 0
+        cost = 0.0
+        model = None
+        
+        if 'usage' in locals() and usage:
+            tokens_used = usage.get("total_tokens", 0)
+            model = usage.get("model")
+            cost = calculate_cost(
+                model,
+                usage.get("prompt_tokens", 0),
+                usage.get("completion_tokens", 0)
+            )
+
         log = AILog(
             user_id=None,
             endpoint="/analyze/priorities",
             request_data=request.model_dump(),
             response_data=result,
             duration_ms=duration_ms,
-            error=error
+            error=error,
+            tokens_used=tokens_used,
+            model=model,
+            cost=cost
         )
         db.add(log)
         db.commit()
@@ -427,7 +502,9 @@ class AnalyzeRequest(BaseModel):
     tokens: Optional[dict] = None  # Calendar tokens for fetching events
     timezone: Optional[str] = "UTC"
     sleep_start: Optional[str] = "23:00"
+    sleep_start: Optional[str] = "23:00"
     sleep_end: Optional[str] = "07:00"
+    start_from_now: Optional[bool] = True
 
 class TodayEventsRequest(BaseModel):
     tokens: dict
@@ -513,12 +590,13 @@ def analyze_schedule(request: AnalyzeRequest, user_data: dict = Depends(get_curr
             target_date, 
             sleep_start=request.sleep_start, 
             sleep_end=request.sleep_end, 
-            min_slot_minutes=15
+            min_slot_minutes=15,
+            start_from_now=request.start_from_now
         )
         
         # 4. Call LLM to assign tasks to slots
         # Pass FreeSlot objects directly (they have .id, .start, .end, .duration_minutes attributes)
-        proposals_data = ai_service.llm_assign_tasks_to_slots(
+        proposals_data, usage = ai_service.llm_assign_tasks_to_slots(
             request.natural_input,
             free_slots,  # Pass FreeSlot objects directly
             target_date_str,
@@ -534,7 +612,8 @@ def analyze_schedule(request: AnalyzeRequest, user_data: dict = Depends(get_curr
             "free_slots": free_slots_response,
             "events": events,
             "target_date": target_date_str,
-            "warning": warning
+            "warning": warning,
+            "usage": usage
         }
         
         return result
@@ -549,13 +628,30 @@ def analyze_schedule(request: AnalyzeRequest, user_data: dict = Depends(get_curr
         try:
             duration_ms = int((time.time() - start_time) * 1000)
             user_id = user.id if 'user' in locals() and user else None
+            
+            tokens_used = 0
+            cost = 0.0
+            model = None
+            
+            if 'usage' in locals() and usage:
+                tokens_used = usage.get("total_tokens", 0)
+                model = usage.get("model")
+                cost = calculate_cost(
+                    model,
+                    usage.get("prompt_tokens", 0),
+                    usage.get("completion_tokens", 0)
+                )
+            
             log = AILog(
                 user_id=user_id,
                 endpoint="/analyze",
                 request_data=request.model_dump() if 'request' in locals() else {},
                 response_data=result,
                 duration_ms=duration_ms,
-                error=error
+                error=error,
+                tokens_used=tokens_used,
+                model=model,
+                cost=cost
             )
             db.add(log)
             db.commit()
@@ -636,7 +732,9 @@ def get_admin_stats(db: Session = Depends(get_db)):
     endpoint_stats = db.query(
         AILog.endpoint,
         func.count(AILog.id).label('count'),
-        func.avg(AILog.duration_ms).label('avg_duration')
+        func.avg(AILog.duration_ms).label('avg_duration'),
+        func.sum(AILog.cost).label('total_cost'),
+        func.sum(AILog.tokens_used).label('total_tokens')
     ).group_by(AILog.endpoint).all()
     
     return {
@@ -647,7 +745,9 @@ def get_admin_stats(db: Session = Depends(get_db)):
             {
                 "endpoint": stat.endpoint,
                 "count": stat.count,
-                "avg_duration_ms": round(stat.avg_duration, 2) if stat.avg_duration else 0
+                "avg_duration_ms": round(stat.avg_duration, 2) if stat.avg_duration else 0,
+                "total_cost": round(stat.total_cost, 4) if stat.total_cost else 0,
+                "total_tokens": stat.total_tokens if stat.total_tokens else 0
             }
             for stat in endpoint_stats
         ]
@@ -665,6 +765,9 @@ def get_admin_logs(limit: int = 50, db: Session = Depends(get_db)):
                 "user_id": str(log.user_id) if log.user_id else None,
                 "endpoint": log.endpoint,
                 "duration_ms": log.duration_ms,
+                "tokens_used": log.tokens_used,
+                "model": log.model,
+                "cost": log.cost,
                 "error": log.error,
                 "created_at": log.created_at.isoformat()
             }

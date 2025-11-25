@@ -25,7 +25,8 @@ def calculate_free_slots(
     day_end: str = "23:59",
     sleep_start: str = "23:00",
     sleep_end: str = "07:00",
-    min_slot_minutes: int = 15
+    min_slot_minutes: int = 15,
+    start_from_now: bool = False
 ) -> List[FreeSlot]:
     """
     Calculate free time slots for a specific day by subtracting events and sleep from the full day.
@@ -39,6 +40,20 @@ def calculate_free_slots(
     
     start_dt = datetime.combine(base_date, parse_time(day_start))
     end_dt = datetime.combine(base_date, parse_time(day_end))
+
+    # If start_from_now is True and target_date is today, adjust start_dt
+    if start_from_now:
+        now = datetime.now()
+        # Check if target_date is today (ignoring time)
+        if base_date.date() == now.date():
+            # Round up to next 15 mins for cleaner slots
+            # or just use current time. Let's use current time but ensure it's not past day_end
+            if now > start_dt:
+                start_dt = max(start_dt, now)
+            
+            # If now is already past end_dt, no free slots today
+            if start_dt >= end_dt:
+                return []
     
     # 2. Collect all busy intervals (events + sleep)
     busy_intervals: List[TimeInterval] = []

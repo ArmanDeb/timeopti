@@ -11,6 +11,8 @@ export interface AdminStats {
         endpoint: string;
         count: number;
         avg_duration_ms: number;
+        total_cost: number;
+        total_tokens: number;
     }[];
 }
 
@@ -21,6 +23,9 @@ export interface AdminLog {
     duration_ms: number;
     error: string | null;
     created_at: string;
+    tokens_used?: number;
+    model?: string;
+    cost?: number;
 }
 
 export interface AdminUser {

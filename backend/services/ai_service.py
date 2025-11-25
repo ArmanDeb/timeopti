@@ -46,7 +46,7 @@ class AIService:
             base_url=base_url
         )
 
-    def optimize_agenda(self, request: AgendaRequest) -> str:
+    def optimize_agenda(self, request: AgendaRequest) -> tuple[str, dict]:
         prompt = self._build_prompt(request)
         
         try:
@@ -58,10 +58,18 @@ class AIService:
                 ],
                 temperature=0.7
             )
-            return response.choices[0].message.content
+            
+            usage = {
+                "prompt_tokens": response.usage.prompt_tokens,
+                "completion_tokens": response.usage.completion_tokens,
+                "total_tokens": response.usage.total_tokens,
+                "model": response.model
+            }
+            
+            return response.choices[0].message.content, usage
         except Exception as e:
             print(f"Error calling OpenAI: {e}")
-            return "Failed to optimize agenda."
+            return "Failed to optimize agenda.", {}
 
     def analyze_calendar_gaps(self, events: List[Event], start_window: str, end_window: str) -> List[Gap]:
         # Analyze gaps based on events
@@ -133,7 +141,7 @@ class AIService:
         
         return gaps
 
-    def get_priority_tasks(self, tasks: List[Task]) -> str:
+    def get_priority_tasks(self, tasks: List[Task]) -> tuple[str, dict]:
         tasks_str = "\n".join([f"- {t.title} (Priority: {t.priority})" for t in tasks])
         prompt = f"""
         Analyze the following tasks and identify the top 3 highest priority tasks based on the Eisenhower Matrix.
@@ -152,10 +160,18 @@ class AIService:
                 ],
                 temperature=0.7
             )
-            return response.choices[0].message.content
+            
+            usage = {
+                "prompt_tokens": response.usage.prompt_tokens,
+                "completion_tokens": response.usage.completion_tokens,
+                "total_tokens": response.usage.total_tokens,
+                "model": response.model
+            }
+            
+            return response.choices[0].message.content, usage
         except Exception as e:
             print(f"Error calling OpenAI: {e}")
-            return "Failed to prioritize tasks."
+            return "Failed to prioritize tasks.", {}
 
     def detect_scope_from_input(self, natural_input: str) -> tuple[str, str]:
         """
@@ -182,7 +198,7 @@ class AIService:
         # Default to today if not specified
         return ('today', 'today')
     
-    def parse_natural_language_to_tasks(self, natural_input: str, scope: str) -> List[Task]:
+    def parse_natural_language_to_tasks(self, natural_input: str, scope: str) -> tuple[List[Task], dict]:
         """
         Parse natural language input into structured tasks with context awareness.
         
@@ -312,7 +328,14 @@ CRITICAL RULES:
                 tasks.append(task)
                 print(f"Task {i+1}: {task.title} ({task.duration_minutes}min)")
             
-            return tasks
+            usage = {
+                "prompt_tokens": response.usage.prompt_tokens,
+                "completion_tokens": response.usage.completion_tokens,
+                "total_tokens": response.usage.total_tokens,
+                "model": response.model
+            }
+            
+            return tasks, usage
             
         except Exception as e:
             print(f"Error parsing natural language: {e}")
@@ -322,7 +345,7 @@ CRITICAL RULES:
                 title=natural_input[:50],
                 duration_minutes=60,
                 priority="medium"
-            )]
+            )], {}
 
     def _build_prompt(self, request: AgendaRequest) -> str:
         tasks_str = "\n".join([f"- {t.title} ({t.duration_minutes}m) [{t.priority}]" for t in request.tasks])
@@ -343,7 +366,7 @@ CRITICAL RULES:
         free_slots: List, 
         target_date: str, 
         timezone: str = "UTC"
-    ) -> dict:
+    ) -> tuple[dict, dict]:
         """
         Probabilistic layer: Use LLM to split tasks and assign them to provided free slots.
         """
@@ -407,8 +430,16 @@ CRITICAL RULES:
             )
             
             content = response.choices[0].message.content
-            return json.loads(content)
+            
+            usage = {
+                "prompt_tokens": response.usage.prompt_tokens,
+                "completion_tokens": response.usage.completion_tokens,
+                "total_tokens": response.usage.total_tokens,
+                "model": response.model
+            }
+            
+            return json.loads(content), usage
             
         except Exception as e:
             print(f"Error in llm_assign_tasks_to_slots: {e}")
-            return {"proposals": []}
+            return {"proposals": []}, {}

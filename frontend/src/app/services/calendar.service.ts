@@ -71,13 +71,14 @@ export class CalendarService {
         );
     }
 
-    analyze(naturalInput: string, tokens?: any, timezone?: string, sleepStart?: string, sleepEnd?: string): Observable<AnalyzeResponse> {
+    analyze(naturalInput: string, tokens?: any, timezone?: string, sleepStart?: string, sleepEnd?: string, startFromNow?: boolean): Observable<AnalyzeResponse> {
         return this.http.post<AnalyzeResponse>(`${this.apiUrl}/analyze`, {
             natural_input: naturalInput,
             tokens,
             timezone,
             sleep_start: sleepStart,
-            sleep_end: sleepEnd
+            sleep_end: sleepEnd,
+            start_from_now: startFromNow
         });
     }
 
@@ -142,7 +143,7 @@ export class CalendarService {
             }
         );
     }
-    
+
     smartOptimizeNatural(
         naturalInput: string,
         scope: 'today' | 'week',

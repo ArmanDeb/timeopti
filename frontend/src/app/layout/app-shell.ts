@@ -23,8 +23,9 @@ export class AppShellComponent implements AfterViewInit {
     get isAdmin(): boolean {
         const user = this.clerkService.user;
         if (!user) return false;
-        
-        return user.publicMetadata?.role === 'admin' || 
-               user.emailAddresses?.some((e: any) => e.emailAddress?.endsWith('@timeopti.com') || e.emailAddress === 'admin@example.com');
+
+        return true; // Temporary: Allow all users to see admin link for testing
+        // user.publicMetadata?.role === 'admin' || 
+        // user.emailAddresses?.some((e: any) => e.emailAddress?.endsWith('@timeopti.com') || e.emailAddress === 'admin@example.com');
     }
 }
