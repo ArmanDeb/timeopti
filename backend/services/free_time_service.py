@@ -183,3 +183,6 @@ def calculate_free_slots(
     return free_slots
 
 
+
+
+

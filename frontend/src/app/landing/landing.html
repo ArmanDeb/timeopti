@@ -1,80 +1,188 @@
-<div class="min-h-screen bg-white text-gray-900 font-sans">
-    
+<div class="min-h-screen bg-[#FDFBF7] text-[#2D2A26] font-sans">
+
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-2">
-                    <span class="font-bold text-xl tracking-tight text-gray-900">TimeAgent</span>
+    <nav class="fixed w-full z-50 bg-[#FDFBF7]/90 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl tracking-tight font-sans">TimeAgent</span>
                 </div>
-                <div class="hidden md:flex items-center gap-8">
-                    <a routerLink="/pricing" class="text-gray-500 hover:text-primary transition-colors font-medium">Tarifs</a>
-                    <button *ngIf="!clerkService.user" (click)="clerkService.signIn()" class="text-gray-500 hover:text-primary font-medium transition-colors">Se connecter</button>
-                    <a *ngIf="clerkService.user" routerLink="/app/dashboard" class="btn btn-primary text-sm">Dashboard</a>
-                    <button *ngIf="!clerkService.user" (click)="clerkService.signIn()" class="btn btn-primary text-sm">S'inscrire</button>
+                <div class="flex items-center gap-6">
+                    <button *ngIf="!clerkService.user" (click)="clerkService.signIn()"
+                        class="text-sm font-medium hover:text-gray-600 transition-colors">Se connecter</button>
+                    <button *ngIf="!clerkService.user" (click)="clerkService.signIn()"
+                        class="bg-[#2D2A26] text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-black transition-colors">S'inscrire</button>
+                    <a *ngIf="clerkService.user" routerLink="/app/dashboard"
+                        class="bg-[#2D2A26] text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-black transition-colors">Dashboard</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="pt-32 pb-20 lg:pt-48 lg:pb-32">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight mb-6 text-gray-900">
-                Votre agenda est plein.<br>
-                <span class="text-primary">Votre temps est vide.</span>
+    <header class="pt-40 pb-24 lg:pt-56 lg:pb-32 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl lg:text-7xl font-serif font-medium leading-tight mb-8 text-[#2D2A26]">
+                Votre temps, enfin optimisé
             </h1>
-            <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed font-sans">
                 L'IA qui planifie vos objectifs à votre place. Finissez-en avec le Tetris calendaire.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button (click)="clerkService.signIn()" class="btn btn-primary text-lg px-8 py-4 rounded-xl">
-                    Optimiser ma semaine
+            <div class="flex justify-center">
+                <button (click)="clerkService.signIn()"
+                    class="bg-[#2D2A26] text-white px-8 py-3.5 rounded-full text-base font-medium hover:bg-black transition-all transform hover:scale-105 duration-200">
+                    Commencer
                 </button>
-            </div>
-
-            <!-- Demo Visual (CSS Animation Placeholder) -->
-            <div class="mt-16 max-w-4xl mx-auto bg-gray-50 rounded-2xl border border-gray-200 p-8 shadow-xl h-64 flex items-center justify-center">
-                <div class="text-gray-400 animate-pulse">
-                    [Démo: Input "Finir le rapport" -> Bloc Calendrier]
-                </div>
             </div>
         </div>
     </header>
 
     <!-- Features Grid -->
-    <section class="py-24 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-                    <div class="text-3xl mb-4 text-primary">⚡</div>
-                    <h3 class="text-xl font-bold mb-2">Analyse des trous</h3>
-                    <p class="text-gray-500">Nous trouvons les créneaux invisibles entre vos réunions pour y glisser vos tâches.</p>
+    <section class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+                <!-- Card 1 -->
+                <div class="bg-white p-10 rounded-xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] text-center">
+                    <div class="flex justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#2D2A26]" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4 font-sans">Conformité RGPD</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Vos données sont protégées selon les normes
+                        européennes les plus strictes.</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-                    <div class="text-3xl mb-4 text-primary">🎯</div>
-                    <h3 class="text-xl font-bold mb-2">Priorisation IA</h3>
-                    <p class="text-gray-500">Dites simplement ce qui compte. L'algorithme réorganise votre journée pour l'accomplir.</p>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-10 rounded-xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] text-center">
+                    <div class="flex justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#2D2A26]" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4 font-sans">Sécurité Maximale</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Nous utilisons un chiffrement de bout en bout pour
+                        garantir la sécurité de vos informations.</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-                    <div class="text-3xl mb-4 text-primary">🔒</div>
-                    <h3 class="text-xl font-bold mb-2">Privé par défaut</h3>
-                    <p class="text-gray-500">Vos données calendrier ne servent qu'à vous optimiser. Rien n'est partagé.</p>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-10 rounded-xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] text-center">
+                    <div class="flex justify-center mb-6">
+                        <svg class="w-8 h-8 text-[#2D2A26]" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-4 font-sans">Éthique & Transparence</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed">Notre IA est conçue pour être équitable,
+                        transparente et à votre service.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif font-medium mb-6 text-[#2D2A26]">Un tarif simple et transparent.</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Choisissez le plan qui vous convient et commencez à reprendre
+                    le contrôle de votre agenda.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Free Plan -->
+                <div
+                    class="bg-white p-10 rounded-xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col">
+                    <h3 class="text-2xl font-serif font-medium mb-2">Essentiel</h3>
+                    <p class="text-gray-500 text-sm mb-8">Pour commencer à vous organiser.</p>
+
+                    <div class="mb-8">
+                        <span class="text-5xl font-bold font-sans">0€</span>
+                    </div>
+
+                    <ul class="space-y-4 mb-10 flex-1">
+                        <li class="flex items-start gap-3 text-sm text-gray-600">
+                            <svg class="w-5 h-5 text-[#2D2A26] flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            5 optimisations / semaine
+                        </li>
+                        <li class="flex items-start gap-3 text-sm text-gray-600">
+                            <svg class="w-5 h-5 text-[#2D2A26] flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Synchronisation 1 calendrier
+                        </li>
+                    </ul>
+
+                    <button (click)="clerkService.signIn()"
+                        class="w-full border border-[#2D2A26] text-[#2D2A26] py-3 rounded-full text-sm font-medium hover:bg-gray-50 transition-colors">
+                        Commencer gratuitement
+                    </button>
+                </div>
+
+                <!-- Premium Plan -->
+                <div
+                    class="bg-white p-10 rounded-xl shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-gray-100 flex flex-col relative overflow-hidden">
+                    <h3 class="text-2xl font-serif font-medium mb-2">Premium</h3>
+                    <p class="text-gray-500 text-sm mb-8">Pour les experts de la productivité.</p>
+
+                    <div class="mb-8 flex items-baseline gap-1">
+                        <span class="text-5xl font-bold font-sans">9€</span>
+                        <span class="text-gray-500 text-sm">/mois</span>
+                    </div>
+
+                    <ul class="space-y-4 mb-10 flex-1">
+                        <li class="flex items-start gap-3 text-sm text-gray-600">
+                            <svg class="w-5 h-5 text-[#2D2A26] flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Optimisations illimitées
+                        </li>
+                        <li class="flex items-start gap-3 text-sm text-gray-600">
+                            <svg class="w-5 h-5 text-[#2D2A26] flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Export Google Calendar
+                        </li>
+                        <li class="flex items-start gap-3 text-sm text-gray-600">
+                            <svg class="w-5 h-5 text-[#2D2A26] flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Support prioritaire
+                        </li>
+                    </ul>
+
+                    <button (click)="clerkService.signIn()"
+                        class="w-full bg-[#2D2A26] text-white py-3 rounded-full text-sm font-medium hover:bg-black transition-colors">
+                        Passer Premium
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="font-bold text-lg text-gray-900">TimeAgent</div>
-            <div class="flex gap-8 text-gray-500 text-sm">
-                <a routerLink="/legal/mentions" class="hover:text-primary transition-colors">Mentions Légales</a>
-                <a routerLink="/legal/privacy" class="hover:text-primary transition-colors">Confidentialité</a>
+    <footer class="py-12 px-6 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-sm text-gray-400">
+                © 2024 TimeAgent. Tous droits réservés.
             </div>
-            <div class="text-gray-400 text-sm">
-                © 2024 TimeAgent.
+            <div class="flex gap-8 text-sm text-gray-500">
+                <a href="#" class="hover:text-[#2D2A26] transition-colors">Conditions</a>
+                <a href="#" class="hover:text-[#2D2A26] transition-colors">Confidentialité</a>
             </div>
         </div>
     </footer>

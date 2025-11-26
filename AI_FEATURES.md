@@ -228,3 +228,6 @@ When you hover over a scheduled task:
 **The AI handles the Tetris. You focus on what matters.** ✨
 
 
+
+
+

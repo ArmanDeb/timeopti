@@ -1,30 +1,37 @@
-<div class="dashboard-container flex h-full">
+<div class="dashboard-container flex h-full bg-[#FDFBF7]">
 
     <!-- STATE A: ONBOARDING (Not Connected) -->
-    <div *ngIf="viewState.state() === 'onboarding'" class="state-onboarding flex flex-col items-center justify-center h-[80vh] w-full">
-        <div class="w-20 h-20 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mb-6 text-white shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <div *ngIf="viewState.state() === 'onboarding'"
+        class="state-onboarding flex flex-col items-center justify-center h-[80vh] w-full">
+        <div
+            class="w-20 h-20 bg-[#2D2A26] rounded-2xl flex items-center justify-center mb-8 text-white shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                 <line x1="16" y1="2" x2="16" y2="6"></line>
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
         </div>
-        <h1 class="text-3xl font-bold text-gray-900 mb-3">Bienvenue sur TimeOpti</h1>
-        <p class="text-gray-600 mb-8 max-w-md text-center">
+        <h1 class="text-4xl font-serif font-medium text-[#2D2A26] mb-4">Bienvenue sur TimeAgent</h1>
+        <p class="text-gray-500 mb-10 max-w-md text-center text-lg">
             Connectez votre Google Calendar pour commencer à optimiser votre journée avec l'IA.
         </p>
-        <button (click)="connectCalendar()" class="btn btn-primary flex items-center gap-2 px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
+        <button (click)="connectCalendar()"
+            class="bg-[#2D2A26] text-white flex items-center gap-3 px-8 py-4 rounded-full text-base font-medium hover:bg-black transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                    d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
+            </svg>
             Connecter Google Calendar
         </button>
     </div>
 
     <!-- STATE B: DASHBOARD (Connected) -->
     <div *ngIf="viewState.state() === 'input'" class="h-full flex w-full overflow-hidden relative">
-        
+
         <!-- Main Content: Day View (Full Width) -->
-        <div class="flex-1 flex flex-col relative bg-white">
+        <div class="flex-1 flex flex-col relative bg-[#FDFBF7]">
             <!-- Day View (Today's Schedule) -->
             <div class="flex-1 overflow-hidden relative z-10">
                 <app-day-view [showTaskButton]="true" (openTaskPanel)="toggleTaskPanel()"></app-day-view>
@@ -32,15 +39,13 @@
         </div>
 
         <!-- Task Panel Overlay (Slides from right) -->
-        <div *ngIf="showTaskPanel" 
-             class="fixed inset-0 z-50 flex items-center justify-end"
-             (click)="toggleTaskPanel()">
+        <div *ngIf="showTaskPanel" class="fixed inset-0 z-50 flex items-center justify-end" (click)="toggleTaskPanel()">
             <!-- Backdrop -->
-            <div class="absolute inset-0 bg-black bg-opacity-50 transition-opacity"></div>
-            
+            <div class="absolute inset-0 bg-[#2D2A26]/20 backdrop-blur-sm transition-opacity"></div>
+
             <!-- Panel -->
-            <div class="relative w-96 h-full bg-white shadow-2xl transform transition-transform"
-                 (click)="$event.stopPropagation()">
+            <div class="relative w-[450px] h-full bg-white shadow-2xl transform transition-transform border-l border-gray-100"
+                (click)="$event.stopPropagation()">
                 <app-optimizer (close)="toggleTaskPanel()"></app-optimizer>
             </div>
         </div>

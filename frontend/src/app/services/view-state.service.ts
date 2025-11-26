@@ -17,6 +17,7 @@ export interface TimelineItem {
 }
 
 export interface ScheduledTask {
+  id?: string;
   task_name: string;
   estimated_duration_minutes: number;
   assigned_date: string;
@@ -32,25 +33,32 @@ export interface ScheduledTask {
 export class ViewStateService {
   // Core state - start with onboarding by default
   state = signal<DashboardState>('onboarding');
-  
+
   // Data for Input state
   inputText = signal<string>('');
-  
+
   // Data for Results state
   results = signal<ScheduleResult | null>(null);
-  
+
   // Shared optimized tasks (visible in both optimizer and week-view)
   optimizedTasks = signal<ScheduledTask[]>([]);
+
+  // Selected date for day view
+  selectedDate = signal<Date>(new Date());
 
   setState(newState: DashboardState) {
     this.state.set(newState);
   }
-  
+
+  setSelectedDate(date: Date) {
+    this.selectedDate.set(date);
+  }
+
   setOptimizedTasks(tasks: ScheduledTask[]) {
     this.optimizedTasks.set(tasks);
     console.log('ViewStateService: optimizedTasks updated', tasks);
   }
-  
+
   clearOptimizedTasks() {
     this.optimizedTasks.set([]);
   }
@@ -101,7 +109,7 @@ export class ViewStateService {
         }
       ]
     };
-    
+
     this.results.set(mockResults);
     this.setState('results');
   }

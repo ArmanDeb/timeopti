@@ -18,6 +18,8 @@ class User(Base):
     # Relationships
     ai_logs = relationship("AILog", back_populates="user", cascade="all, delete-orphan")
     recommendations = relationship("Recommendation", back_populates="user", cascade="all, delete-orphan")
+    tasks = relationship("Task", back_populates="user", cascade="all, delete-orphan")
+    scheduled_tasks = relationship("ScheduledTask", back_populates="user", cascade="all, delete-orphan")
 
 
 class AILog(Base):
@@ -52,3 +54,36 @@ class Recommendation(Base):
     # Relationships
     user = relationship("User", back_populates="recommendations")
     log = relationship("AILog", back_populates="recommendation")
+
+class Task(Base):
+    __tablename__ = "tasks"
+    
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id = Column(Uuid, ForeignKey("users.id"), nullable=True)
+    title = Column(String, nullable=False)
+    duration_minutes = Column(Integer, nullable=False)
+    priority = Column(String, nullable=False, default='medium')  # 'high', 'medium', 'low'
+    deadline = Column(String, nullable=True)  # Optional deadline date string
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    user = relationship("User", back_populates="tasks")
+
+class ScheduledTask(Base):
+    __tablename__ = "scheduled_tasks"
+    
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id = Column(Uuid, ForeignKey("users.id"), nullable=True)
+    task_name = Column(String, nullable=False)
+    estimated_duration_minutes = Column(Integer, nullable=False)
+    assigned_date = Column(String, nullable=False)  # YYYY-MM-DD format
+    assigned_start_time = Column(String, nullable=False)  # HH:MM format
+    assigned_end_time = Column(String, nullable=False)  # HH:MM format
+    slot_id = Column(String, nullable=True)
+    reasoning = Column(Text, nullable=True)  # AI explanation for placement
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    user = relationship("User", back_populates="scheduled_tasks")

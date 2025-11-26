@@ -7,14 +7,14 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: '#2563EB', // Blue 600
-                    hover: '#1D4ED8',   // Blue 700
+                    DEFAULT: '#2D2A26', // Dark Brown/Black from design
+                    hover: '#1A1A1A',
                 },
-                // We can rely on default gray/slate, but let's ensure we have the requested palette if needed.
-                // Using default Tailwind colors is usually fine for "Minimalisme radical".
+                accent: '#FDFBF7', // Light cream background
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
+                serif: ['Merriweather', 'serif'],
             }
         },
     },

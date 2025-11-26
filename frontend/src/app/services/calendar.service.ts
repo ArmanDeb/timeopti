@@ -71,14 +71,15 @@ export class CalendarService {
         );
     }
 
-    analyze(naturalInput: string, tokens?: any, timezone?: string, sleepStart?: string, sleepEnd?: string, startFromNow?: boolean): Observable<AnalyzeResponse> {
+    analyze(naturalInput: string, tokens?: any, timezone?: string, sleepStart?: string, sleepEnd?: string, startFromNow?: boolean, targetDate?: string): Observable<AnalyzeResponse> {
         return this.http.post<AnalyzeResponse>(`${this.apiUrl}/analyze`, {
             natural_input: naturalInput,
             tokens,
             timezone,
             sleep_start: sleepStart,
             sleep_end: sleepEnd,
-            start_from_now: startFromNow
+            start_from_now: startFromNow,
+            target_date: targetDate
         });
     }
 
@@ -160,6 +161,46 @@ export class CalendarService {
                 end_window: endWindow,
                 events: events || []
             }
+        );
+    }
+
+    // Task Management Methods
+    fetchTasks(): Observable<{ tasks: any[] }> {
+        return this.http.get<{ tasks: any[] }>(`${this.apiUrl}/tasks`);
+    }
+
+    addTask(task: { title: string; duration_minutes: number; priority: string; deadline?: string }): Observable<any> {
+        return this.http.post(`${this.apiUrl}/tasks`, task);
+    }
+
+    deleteTask(taskId: string): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/tasks/${taskId}`);
+    }
+
+    resetTasks(): Observable<{ success: boolean; deleted_count: number }> {
+        return this.http.delete<{ success: boolean; deleted_count: number }>(`${this.apiUrl}/tasks/all`);
+    }
+
+    // Scheduled Tasks (Optimized Tasks) Methods
+    fetchScheduledTasks(): Observable<{ tasks: any[] }> {
+        return this.http.get<{ tasks: any[] }>(`${this.apiUrl}/scheduled-tasks`);
+    }
+
+    saveScheduledTasks(tasks: any[]): Observable<{ success: boolean; count: number }> {
+        return this.http.post<{ success: boolean; count: number }>(`${this.apiUrl}/scheduled-tasks`, tasks);
+    }
+
+    resetScheduledTasks(): Observable<{ success: boolean; deleted_count: number }> {
+        return this.http.delete<{ success: boolean; deleted_count: number }>(`${this.apiUrl}/scheduled-tasks/all`);
+    }
+
+    updateScheduledTask(
+        taskId: string,
+        updates: { assigned_date?: string; assigned_start_time?: string; assigned_end_time?: string }
+    ): Observable<{ success: boolean; task: any }> {
+        return this.http.patch<{ success: boolean; task: any }>(
+            `${this.apiUrl}/scheduled-tasks/${taskId}`,
+            updates
         );
     }
 }

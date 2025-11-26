@@ -1,6 +1,11 @@
 /* Dashboard Styles */
+:host {
+    display: block;
+    height: 100%;
+}
+
 .dashboard-container {
-    @apply w-full h-full min-h-[calc(100vh-64px)] relative;
+    @apply w-full h-full relative;
 }
 
 /* State A: Onboarding */

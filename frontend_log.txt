@@ -1,0 +1,3169 @@
+
+> timeopti@0.0.0 start
+> ng serve
+
+❯ Building...
+✔ Building...
+Application bundle generation failed. [1.237 seconds] - 2025-11-26T15:35:25.638Z
+
+✘ [ERROR] TS2306: File '/Users/arman/Documents/Projects/timeopti/frontend/src/app/dashboard/dashboard.component.ts' is not a module. [plugin angular-compiler]
+
+    src/app/app.routes.ts:6:35:
+      6 │ import { DashboardComponent } from './dashboard/dashboard.component';
+        ╵                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Watch mode enabled. Watching for file changes...
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.655 seconds] - 2025-11-26T15:35:43.505Z
+
+✘ [ERROR] TS2339: Property 'subscribe' does not exist on type 'void'. [plugin angular-compiler]
+
+    src/app/dashboard/dashboard.component.ts:29:36:
+      29 │         this.calendarAuth.connect().subscribe({
+         ╵                                     ~~~~~~~~~
+
+
+✘ [ERROR] TS7006: Parameter 'err' implicitly has an 'any' type. [plugin angular-compiler]
+
+    src/app/dashboard/dashboard.component.ts:33:20:
+      33 │             error: (err) => {
+         ╵                     ~~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 209.33 kB | 
+styles.css          | styles        |  37.70 kB | 
+polyfills.js        | polyfills     |  95 bytes | 
+
+                    | Initial total | 247.13 kB
+
+Application bundle generation complete. [0.242 seconds] - 2025-11-26T15:35:58.046Z
+
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  ➜  Local:   http://localhost:4200/
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 209.33 kB | 
+styles.css          | styles        |  37.70 kB | 
+polyfills.js        | polyfills     |  95 bytes | 
+
+                    | Initial total | 247.13 kB
+
+Application bundle generation complete. [0.067 seconds] - 2025-11-26T15:36:19.760Z
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 209.67 kB | 
+
+Application bundle generation complete. [0.279 seconds] - 2025-11-26T15:38:08.977Z
+
+Page reload sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 209.98 kB | 
+
+Application bundle generation complete. [0.174 seconds] - 2025-11-26T15:38:12.632Z
+
+Page reload sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.451 seconds] - 2025-11-26T15:38:13.698Z
+
+✘ [ERROR] TS2339: Property 'loadScheduledTasks' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:95:9:
+      95 │     this.loadScheduledTasks();
+         ╵          ~~~~~~~~~~~~~~~~~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 210.41 kB | 
+styles.css          | styles        |  37.70 kB | 
+polyfills.js        | polyfills     |  95 bytes | 
+
+                    | Initial total | 248.21 kB
+
+Application bundle generation complete. [0.176 seconds] - 2025-11-26T15:38:14.326Z
+
+Page reload sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 210.73 kB | 
+
+Application bundle generation complete. [0.135 seconds] - 2025-11-26T15:38:35.873Z
+
+Page reload sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 210.73 kB | 
+styles.css          | styles        |  37.70 kB | 
+polyfills.js        | polyfills     |  95 bytes | 
+
+                    | Initial total | 248.53 kB
+
+Application bundle generation complete. [0.166 seconds] - 2025-11-26T15:38:49.763Z
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.217 seconds] - 2025-11-26T15:40:08.043Z
+
+✘ [ERROR] TS2339: Property 'resetTasks' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:53:52:
+      53 │             <button *ngIf="showTaskButton" (click)="resetTasks()"
+         ╵                                                     ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 213.78 kB | 
+styles.css          | styles        |  37.70 kB | 
+polyfills.js        | polyfills     |  95 bytes | 
+
+                    | Initial total | 251.57 kB
+
+Application bundle generation complete. [0.177 seconds] - 2025-11-26T15:40:10.825Z
+
+Page reload sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 213.78 kB | 
+styles.css          | styles        |  37.70 kB | 
+polyfills.js        | polyfills     |  95 bytes | 
+
+                    | Initial total | 251.57 kB
+
+Application bundle generation complete. [0.191 seconds] - 2025-11-26T15:40:29.268Z
+
+Component update sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 211.79 kB | 
+
+Application bundle generation complete. [0.127 seconds] - 2025-11-26T15:41:06.380Z
+
+Component update sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+main.js             | main          | 211.79 kB | 
+styles.css          | styles        |  37.70 kB | 
+polyfills.js        | polyfills     |  95 bytes | 
+
+                    | Initial total | 249.59 kB
+
+Application bundle generation complete. [0.100 seconds] - 2025-11-26T15:41:12.267Z
+
+Component update sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Initial chunk files | Names |  Raw size
+main.js             | main  | 211.91 kB | 
+
+Application bundle generation complete. [0.104 seconds] - 2025-11-26T15:46:25.653Z
+
+Page reload sent to client(s).
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.258 seconds] - 2025-11-26T15:46:30.037Z
+
+✘ [ERROR] TS2339: Property 'draggedTaskId' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:152:68:
+      152 │ ...    'opacity-50': item.type === 'ai' && draggedTaskId === item.id
+          ╵                                            ~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragStart' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:163:63:
+      163 │ ...    (dragstart)="item.type === 'ai' && onDragStart($event, item)"
+          ╵                                           ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragEnd' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:164:61:
+      164 │ ...              (dragend)="item.type === 'ai' && onDragEnd($event)"
+          ╵                                                   ~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.224 seconds] - 2025-11-26T15:46:30.698Z
+
+✘ [ERROR] TS2339: Property 'onDragOver' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:115:28:
+      115 │                 (dragover)="onDragOver($event)"
+          ╵                             ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'isDragOver' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:35:
+      117 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'draggedTaskId' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:155:68:
+      155 │ ...    'opacity-50': item.type === 'ai' && draggedTaskId === item.id
+          ╵                                            ~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragStart' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:166:63:
+      166 │ ...    (dragstart)="item.type === 'ai' && onDragStart($event, item)"
+          ╵                                           ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragEnd' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:167:61:
+      167 │ ...              (dragend)="item.type === 'ai' && onDragEnd($event)"
+          ╵                                                   ~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.215 seconds] - 2025-11-26T15:46:33.441Z
+
+✘ [ERROR] TS2551: Property 'onDragOver' does not exist on type 'DayViewComponent'. Did you mean 'isDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:115:28:
+      115 │                 (dragover)="onDragOver($event)"
+          ╵                             ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragStart' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:166:63:
+      166 │ ...    (dragstart)="item.type === 'ai' && onDragStart($event, item)"
+          ╵                                           ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragEnd' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:167:61:
+      167 │ ...              (dragend)="item.type === 'ai' && onDragEnd($event)"
+          ╵                                                   ~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.198 seconds] - 2025-11-26T15:47:01.574Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:646:13:
+      646 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.150 seconds] - 2025-11-26T15:47:08.069Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:646:13:
+      646 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.170 seconds] - 2025-11-26T15:47:11.245Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:646:13:
+      646 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.201 seconds] - 2025-11-26T15:47:22.901Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:646:13:
+      646 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.239 seconds] - 2025-11-26T15:51:32.202Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:646:13:
+      646 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.214 seconds] - 2025-11-26T15:51:34.529Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:655:13:
+      655 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.173 seconds] - 2025-11-26T15:51:36.534Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:670:13:
+      670 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.167 seconds] - 2025-11-26T15:51:37.872Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:690:13:
+      690 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.154 seconds] - 2025-11-26T15:51:39.279Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:719:13:
+      719 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.171 seconds] - 2025-11-26T15:51:45.868Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:719:13:
+      719 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.160 seconds] - 2025-11-26T15:51:49.343Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:719:13:
+      719 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.158 seconds] - 2025-11-26T15:52:06.826Z
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:719:13:
+      719 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.196 seconds] - 2025-11-26T15:52:09.052Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:744:13:
+      744 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.161 seconds] - 2025-11-26T15:52:16.194Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:744:13:
+      744 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.227 seconds] - 2025-11-26T15:53:59.970Z
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:188:71:
+      188 │ ...ass.text-blue-900]="item.type === 'google'">{{item.title}}</span>
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:190:108:
+      190 │ ...inter-events-none" [class.text-blue-700]="item.type === 'google'"
+          ╵                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:744:13:
+      744 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.250 seconds] - 2025-11-26T15:54:06.618Z
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:188:71:
+      188 │ ...ass.text-blue-900]="item.type === 'google'">{{item.title}}</span>
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:190:108:
+      190 │ ...inter-events-none" [class.text-blue-700]="item.type === 'google'"
+          ╵                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:219:63:
+      219 │ ...ass.text-blue-900]="item.type === 'google'">{{item.title}}</span>
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:221:63:
+      221 │ ...                   [class.text-blue-700]="item.type === 'google'"
+          ╵                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:744:13:
+      744 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.208 seconds] - 2025-11-26T15:54:09.923Z
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:188:71:
+      188 │ ...ass.text-blue-900]="item.type === 'google'">{{item.title}}</span>
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:190:108:
+      190 │ ...inter-events-none" [class.text-blue-700]="item.type === 'google'"
+          ╵                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:219:63:
+      219 │ ...ass.text-blue-900]="item.type === 'google'">{{item.title}}</span>
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:221:63:
+      221 │ ...                   [class.text-blue-700]="item.type === 'google'"
+          ╵                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:756:13:
+      756 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.211 seconds] - 2025-11-26T15:54:22.838Z
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:216:63:
+      216 │ ...ass.text-blue-900]="item.type === 'google'">{{item.title}}</span>
+          ╵                        ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2367: This comparison appears to be unintentional because the types '"ai"' and '"google"' have no overlap. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:218:63:
+      218 │ ...                   [class.text-blue-700]="item.type === 'google'"
+          ╵                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:756:13:
+      756 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.190 seconds] - 2025-11-26T15:54:27.495Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:756:13:
+      756 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.166 seconds] - 2025-11-26T15:54:44.183Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:756:13:
+      756 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.238 seconds] - 2025-11-26T15:57:01.164Z
+
+✘ [ERROR] TS2339: Property 'onMouseDown' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:169:63:
+      169 │ ...    (mousedown)="item.type === 'ai' && onMouseDown($event, item)"
+          ╵                                           ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:325:14:
+      325 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:28:
+      330 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:756:13:
+      756 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.225 seconds] - 2025-11-26T15:57:02.288Z
+
+✘ [ERROR] TS2339: Property 'onMouseDown' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:169:63:
+      169 │ ...    (mousedown)="item.type === 'ai' && onMouseDown($event, item)"
+          ╵                                           ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:758:13:
+      758 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.168 seconds] - 2025-11-26T15:57:08.394Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:789:13:
+      789 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.195 seconds] - 2025-11-26T15:57:20.835Z
+
+✘ [ERROR] TS2339: Property 'trackByItemId' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:152:73:
+      152 │ ...  <div *ngFor="let item of displayEvents; trackBy: trackByItemId"
+          ╵                                                       ~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'console' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:170:59:
+      170 │ ...ick)="item.type === 'ai' && console.log('Click on AI task:', i...
+          ╵                                ~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:789:13:
+      789 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.196 seconds] - 2025-11-26T15:57:21.549Z
+
+✘ [ERROR] TS2339: Property 'console' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:170:59:
+      170 │ ...ick)="item.type === 'ai' && console.log('Click on AI task:', i...
+          ╵                                ~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:793:13:
+      793 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.244 seconds] - 2025-11-26T15:57:40.199Z
+
+✘ [ERROR] TS2339: Property 'console' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:170:59:
+      170 │ ...ick)="item.type === 'ai' && console.log('Click on AI task:', i...
+          ╵                                ~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:660:13:
+      660 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:930:13:
+      930 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.215 seconds] - 2025-11-26T15:57:46.178Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:660:13:
+      660 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:930:13:
+      930 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.205 seconds] - 2025-11-26T15:57:53.557Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2554: Expected 1 arguments, but got 2. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:596:29:
+      596 │           this.handleDrop(y, e);
+          ╵                              ^
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:660:13:
+      660 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:930:13:
+      930 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.213 seconds] - 2025-11-26T15:58:01.223Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:678:13:
+      678 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:948:13:
+      948 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.190 seconds] - 2025-11-26T15:58:11.662Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:679:13:
+      679 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:949:13:
+      949 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.191 seconds] - 2025-11-26T15:58:18.232Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:679:13:
+      679 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:949:13:
+      949 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.338 seconds] - 2025-11-26T15:59:39.063Z
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:679:13:
+      679 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:949:13:
+      949 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.236 seconds] - 2025-11-26T16:02:09.951Z
+
+✘ [ERROR] TS2339: Property 'dragPreviewOffset' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:169:91:
+      169 │ ...m.id ? 'translateY(' + dragPreviewOffset + 'px)' : 'translateY...
+          ╵                           ~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:679:13:
+      679 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:949:13:
+      949 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.227 seconds] - 2025-11-26T16:03:24.528Z
+
+✘ [ERROR] TS2339: Property 'dragPreviewOffset' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:169:91:
+      169 │ ...m.id ? 'translateY(' + dragPreviewOffset + 'px)' : 'translateY...
+          ╵                           ~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:679:13:
+      679 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:905:13:
+      905 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.173 seconds] - 2025-11-26T16:03:33.912Z
+
+✘ [ERROR] TS2339: Property 'dragPreviewOffset' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:169:91:
+      169 │ ...m.id ? 'translateY(' + dragPreviewOffset + 'px)' : 'translateY...
+          ╵                           ~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:679:13:
+      679 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:873:13:
+      873 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.219 seconds] - 2025-11-26T16:04:51.279Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'dragPreviewOffset' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:169:91:
+      169 │ ...m.id ? 'translateY(' + dragPreviewOffset + 'px)' : 'translateY...
+          ╵                           ~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:327:14:
+      327 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:332:28:
+      332 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:679:13:
+      679 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:772:0:
+      772 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.190 seconds] - 2025-11-26T16:05:03.456Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'dragPreviewOffset' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:169:91:
+      169 │ ...m.id ? 'translateY(' + dragPreviewOffset + 'px)' : 'translateY...
+          ╵                           ~~~~~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:326:14:
+      326 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:331:28:
+      331 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:678:13:
+      678 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:739:19:
+      739 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:724:2:
+      724 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:752:17:
+      752 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:724:2:
+      724 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:771:0:
+      771 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.205 seconds] - 2025-11-26T16:05:41.049Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:328:14:
+      328 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:333:28:
+      333 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:680:13:
+      680 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:741:19:
+      741 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:726:2:
+      726 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:754:17:
+      754 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:726:2:
+      726 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:773:0:
+      773 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.218 seconds] - 2025-11-26T16:06:16.718Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:14:
+      330 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:335:28:
+      335 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:682:13:
+      682 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:743:19:
+      743 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:728:2:
+      728 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:756:17:
+      756 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:728:2:
+      728 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:775:0:
+      775 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.183 seconds] - 2025-11-26T16:06:33.262Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:14:
+      330 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:335:28:
+      335 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:688:13:
+      688 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:749:19:
+      749 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:734:2:
+      734 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:762:17:
+      762 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:734:2:
+      734 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:781:0:
+      781 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.184 seconds] - 2025-11-26T16:06:49.932Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:14:
+      330 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:335:28:
+      335 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2554: Expected 1 arguments, but got 0. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:602:13:
+      602 │         this.handleDrop();
+          ╵              ~~~~~~~~~~
+
+  An argument for 'y' was not provided.
+
+    src/app/day-view/day-view.component.ts:620:21:
+      620 │   private handleDrop(y: number) {
+          ╵                      ~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:672:13:
+      672 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:733:19:
+      733 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:718:2:
+      718 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:746:17:
+      746 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:718:2:
+      718 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:765:0:
+      765 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.163 seconds] - 2025-11-26T16:07:07.824Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:14:
+      330 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:335:28:
+      335 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:666:13:
+      666 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:736:19:
+      736 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:721:2:
+      721 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:749:17:
+      749 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:721:2:
+      721 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:768:0:
+      768 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.157 seconds] - 2025-11-26T16:07:21.367Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:14:
+      330 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:335:28:
+      335 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:668:13:
+      668 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:738:19:
+      738 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:723:2:
+      723 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:751:17:
+      751 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:723:2:
+      723 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:770:0:
+      770 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.163 seconds] - 2025-11-26T16:07:57.813Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:14:
+      330 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:335:28:
+      335 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:668:13:
+      668 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:738:19:
+      738 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:723:2:
+      723 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:751:17:
+      751 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:723:2:
+      723 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:770:0:
+      770 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.234 seconds] - 2025-11-26T16:12:09.789Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onPointerDown' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:168:65:
+      168 │ ...(pointerdown)="item.type === 'ai' && onPointerDown($event, item)"
+          ╵                                         ~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:14:
+      330 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:335:28:
+      335 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:668:13:
+      668 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:738:19:
+      738 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:723:2:
+      723 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:751:17:
+      751 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:723:2:
+      723 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:770:0:
+      770 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.178 seconds] - 2025-11-26T16:12:16.645Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onPointerDown' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:168:65:
+      168 │ ...(pointerdown)="item.type === 'ai' && onPointerDown($event, item)"
+          ╵                                         ~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:330:14:
+      330 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:335:28:
+      335 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:668:13:
+      668 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:738:19:
+      738 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:723:2:
+      723 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:751:17:
+      751 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:723:2:
+      723 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:770:0:
+      770 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.177 seconds] - 2025-11-26T16:12:22.551Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onPointerDown' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:168:65:
+      168 │ ...(pointerdown)="item.type === 'ai' && onPointerDown($event, item)"
+          ╵                                         ~~~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:331:14:
+      331 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:336:28:
+      336 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:669:13:
+      669 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:739:19:
+      739 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:724:2:
+      724 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:752:17:
+      752 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:724:2:
+      724 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:771:0:
+      771 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.154 seconds] - 2025-11-26T16:12:39.880Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:331:14:
+      331 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:336:28:
+      336 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:692:13:
+      692 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:762:19:
+      762 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:747:2:
+      747 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:775:17:
+      775 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:747:2:
+      747 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:794:0:
+      794 │ 
+          ╵ ^
+
+
+❯ Changes detected. Rebuilding...
+✔ Changes detected. Rebuilding...
+Application bundle generation failed. [0.153 seconds] - 2025-11-26T16:13:10.171Z
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:116:24:
+      116 │                 (drop)="onDrop($event)"
+          ╵                         ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDragLeave' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:117:29:
+      117 │                 (dragleave)="onDragLeave($event)"
+          ╵                              ~~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:118:35:
+      118 │                 [class.drag-over]="isDragOver">
+          ╵                                    ~~~~~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'onDrop' does not exist on type 'DayViewComponent'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.html:128:28:
+      128 │                     (drop)="onDrop($event)">
+          ╵                             ~~~~~~
+
+  Error occurs in the template of component DayViewComponent.
+
+    src/app/day-view/day-view.component.ts:44:15:
+      44 │   templateUrl: './day-view.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:331:14:
+      331 │         id: t.id || t.slot_id || Math.random().toString(),
+          ╵               ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:336:28:
+      336 │         data: { ...t, id: t.id || t.slot_id || Math.random().toSt...
+          ╵                             ~~
+
+
+✘ [ERROR] TS2339: Property 'id' does not exist on type 'ScheduledTask'. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:692:13:
+      692 │           (t.id === taskId || t.slot_id === taskId)
+          ╵              ~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:762:19:
+      762 │               this.isDragOver = true;
+          ╵                    ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:747:2:
+      747 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS2551: Property 'isDragOver' does not exist on type 'DayViewComponent'. Did you mean 'onDragOver'? [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:775:17:
+      775 │             this.isDragOver = true;
+          ╵                  ~~~~~~~~~~
+
+  'onDragOver' is declared here.
+
+    src/app/day-view/day-view.component.ts:747:2:
+      747 │   onDragOver(event: DragEvent) {
+          ╵   ~~~~~~~~~~
+
+
+✘ [ERROR] TS1005: '}' expected. [plugin angular-compiler]
+
+    src/app/day-view/day-view.component.ts:794:0:
+      794 │ 
+          ╵ ^
+
+

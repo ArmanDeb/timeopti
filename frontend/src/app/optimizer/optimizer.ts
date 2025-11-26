@@ -103,11 +103,23 @@ export class OptimizerComponent {
         private calendarService: CalendarService,
         public viewService: ViewService
     ) {
+        // Set startFromNow based on selected date
+        const selectedDate = this.viewState.selectedDate();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        selectedDate.setHours(0, 0, 0, 0);
+
+        // If viewing future date, turn off startFromNow
+        this.startFromNow = selectedDate.getTime() <= today.getTime();
+
         // Add sample data for demo
         this.addSampleData();
 
         // Load real calendar events if connected
         this.loadRealCalendarEvents();
+
+        // Load tasks from database
+        this.loadTasks();
     }
 
     addSampleData() {
@@ -175,24 +187,118 @@ export class OptimizerComponent {
     }
 
     // Task management methods
+    loadTasks() {
+        this.calendarService.fetchTasks().subscribe({
+            next: (response) => {
+                console.log('Loaded tasks from database:', response.tasks);
+                this.tasks = response.tasks.map(t => ({
+                    id: t.id,
+                    title: t.title,
+                    duration_minutes: t.duration_minutes,
+                    priority: t.priority as 'high' | 'medium' | 'low',
+                    deadline: t.deadline
+                }));
+            },
+            error: (err) => {
+                console.error('Failed to load tasks:', err);
+                // Continue with empty tasks array
+            }
+        });
+    }
+
     addTask() {
         if (!this.newTask.title || !this.newTask.duration_minutes) {
             return;
         }
 
-        const task: Task = {
-            id: Date.now().toString(),
+        // Create task object for API
+        const taskData = {
             title: this.newTask.title,
-            duration_minutes: this.newTask.duration_minutes,
-            priority: this.newTask.priority || 'medium'
+            duration_minutes: this.newTask.duration_minutes!,
+            priority: this.newTask.priority || 'medium',
+            deadline: this.newTask.deadline
         };
 
-        this.tasks.push(task);
-        this.newTask = { title: '', duration_minutes: 30, priority: 'medium' };
+        // Save to database first
+        this.calendarService.addTask(taskData).subscribe({
+            next: (savedTask) => {
+                console.log('Task saved to database:', savedTask);
+                // Add to local array after successful save
+                const task: Task = {
+                    id: savedTask.id,
+                    title: savedTask.title,
+                    duration_minutes: savedTask.duration_minutes,
+                    priority: savedTask.priority as 'high' | 'medium' | 'low',
+                    deadline: savedTask.deadline
+                };
+                this.tasks.push(task);
+                this.newTask = { title: '', duration_minutes: 30, priority: 'medium' };
+            },
+            error: (err) => {
+                console.error('Failed to save task:', err);
+                // Still add to local array for immediate feedback, but warn user
+                const task: Task = {
+                    id: Date.now().toString(),
+                    title: this.newTask.title!,
+                    duration_minutes: this.newTask.duration_minutes || 30,
+                    priority: this.newTask.priority || 'medium',
+                    deadline: this.newTask.deadline
+                };
+                this.tasks.push(task);
+                this.newTask = { title: '', duration_minutes: 30, priority: 'medium' };
+                this.error = 'Erreur lors de la sauvegarde de la tâche. Elle pourrait être perdue au rafraîchissement.';
+            }
+        });
     }
 
     removeTask(id: string) {
-        this.tasks = this.tasks.filter(t => t.id !== id);
+        // Try to delete from database first
+        this.calendarService.deleteTask(id).subscribe({
+            next: () => {
+                console.log('Task deleted from database');
+                // Remove from local array after successful deletion
+                this.tasks = this.tasks.filter(t => t.id !== id);
+            },
+            error: (err) => {
+                console.error('Failed to delete task from database:', err);
+                // Still remove from local array
+                this.tasks = this.tasks.filter(t => t.id !== id);
+            }
+        });
+    }
+
+    resetTasks() {
+        if (!window.confirm('Êtes-vous sûr de vouloir supprimer toutes les tâches ? Cette action est irréversible.')) {
+            return;
+        }
+
+        // Reset both manual tasks and scheduled tasks
+        this.calendarService.resetTasks().subscribe({
+            next: (response) => {
+                console.log('All tasks deleted:', response);
+                // Clear local array
+                this.tasks = [];
+                
+                // Also reset scheduled tasks (optimized tasks)
+                this.calendarService.resetScheduledTasks().subscribe({
+                    next: () => {
+                        console.log('All scheduled tasks deleted');
+                        // Clear optimized tasks from ViewStateService
+                        this.viewState.clearOptimizedTasks();
+                    },
+                    error: (err) => {
+                        console.error('Failed to reset scheduled tasks:', err);
+                    }
+                });
+                
+                // Clear any error messages
+                this.error = null;
+            },
+            error: (err) => {
+                console.error('Failed to reset tasks:', err);
+                this.error = 'Erreur lors de la suppression des tâches.';
+            }
+        });
     }
 
     // Event management methods
@@ -232,14 +338,24 @@ export class OptimizerComponent {
         // Get tokens for server-side event fetching
         const tokens = this.calendarAuth.getTokens();
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
+        
+        // Get the selected date from ViewStateService and format it as YYYY-MM-DD
+        const selectedDate = this.viewState.selectedDate();
+        const year = selectedDate.getFullYear();
+        const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(selectedDate.getDate()).padStart(2, '0');
+        const targetDateStr = `${year}-${month}-${day}`;
+        
+        console.log(`[Optimizer] Planning for date: ${targetDateStr} (selected date: ${selectedDate.toLocaleDateString()})`);
+        
         this.calendarService.analyze(
             this.naturalInput,
             tokens, // Pass tokens for server-side event fetching
             timezone,
             this.sleepStart,
             this.sleepEnd,
-            this.startFromNow
+            this.startFromNow,
+            targetDateStr // Pass the selected date
         ).subscribe({
             next: (result) => {
                 console.log('Analysis result:', result);
@@ -258,6 +374,17 @@ export class OptimizerComponent {
 
                 // Share optimized tasks with day-view via ViewStateService
                 this.viewState.setOptimizedTasks(tasksWithDates as any[]);
+
+                // Save optimized tasks to database for persistence
+                this.calendarService.saveScheduledTasks(tasksWithDates).subscribe({
+                    next: (response) => {
+                        console.log('Optimized tasks saved to database:', response);
+                    },
+                    error: (err) => {
+                        console.error('Failed to save optimized tasks:', err);
+                        // Continue anyway - tasks are in memory
+                    }
+                });
 
                 // Close the panel after successful optimization
                 this.close.emit();

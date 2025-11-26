@@ -25,28 +25,33 @@ html,
 body {
     height: 100%;
     margin: 0;
-    background-color: #F9FAFB; /* gray-50 */
-    color: #1F2937; /* gray-800 */
+    background-color: #FDFBF7; /* Cream background */
+    color: #2D2A26; /* Dark text */
     font-family: 'Inter', sans-serif;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', serif;
 }
 
 /* App Shell Styles */
 .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary;
+    @apply px-5 py-2.5 rounded-full font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transform active:scale-95;
 }
 
 .btn-primary {
-    @apply bg-primary text-white hover:bg-primary-hover;
+    @apply bg-primary text-white hover:bg-black shadow-lg shadow-primary/20;
 }
 
 .btn-secondary {
-    @apply bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-gray-200;
+    @apply bg-white text-primary border border-gray-200 hover:bg-gray-50 focus:ring-gray-200 shadow-sm;
 }
 
 .input-hero {
-    @apply w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm text-lg;
+    @apply w-full px-5 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm text-lg bg-white/50 backdrop-blur-sm transition-all;
 }
 
 .card {
-    @apply bg-white rounded-xl border border-gray-100 shadow-sm;
+    @apply bg-white rounded-2xl border border-gray-100 shadow-[0_2px_20px_rgba(0,0,0,0.02)] transition-shadow hover:shadow-[0_4px_25px_rgba(0,0,0,0.04)];
 }

@@ -13,9 +13,12 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from database import get_db, Base, engine
 from models import User, AILog, Recommendation
+from models import Task as TaskModel, ScheduledTask as ScheduledTaskModel
 import time
 import json
 import os
+import uuid
+from datetime import datetime
 
 # Create tables on startup
 Base.metadata.create_all(bind=engine)
@@ -505,6 +508,7 @@ class AnalyzeRequest(BaseModel):
     sleep_start: Optional[str] = "23:00"
     sleep_end: Optional[str] = "07:00"
     start_from_now: Optional[bool] = True
+    target_date: Optional[str] = None  # YYYY-MM-DD format, defaults to today if not provided
 
 class TodayEventsRequest(BaseModel):
     tokens: dict
@@ -563,8 +567,15 @@ def analyze_schedule(request: AnalyzeRequest, user_data: dict = Depends(get_curr
         clerk_user_id = user_data.get("sub")
         user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
         
-        # 1. Always use TODAY for MVP
-        target_date = datetime.now()
+        # 1. Use target_date if provided, otherwise use TODAY
+        if request.target_date:
+            try:
+                target_date = datetime.strptime(request.target_date, "%Y-%m-%d")
+            except ValueError:
+                # Invalid date format, fallback to today
+                target_date = datetime.now()
+        else:
+            target_date = datetime.now()
         target_date_str = target_date.strftime("%Y-%m-%d")
             
         # 2. Fetch events from Google Calendar (server-side)
@@ -816,3 +827,302 @@ def get_admin_recommendations(limit: int = 50, db: Session = Depends(get_db)):
             for rec in recommendations
         ]
     }
+
+# Task Management Endpoints
+class TaskCreateRequest(BaseModel):
+    title: str
+    duration_minutes: int
+    priority: str = 'medium'  # 'high', 'medium', 'low'
+    deadline: Optional[str] = None
+
+class TaskResponse(BaseModel):
+    id: str
+    title: str
+    duration_minutes: int
+    priority: str
+    deadline: Optional[str] = None
+    created_at: str
+    updated_at: str
+
+@app.get("/tasks")
+def get_tasks(user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Get all tasks for the current user"""
+    try:
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        tasks = db.query(TaskModel).filter(TaskModel.user_id == user.id).order_by(TaskModel.created_at.desc()).all()
+        
+        return {
+            "tasks": [
+                {
+                    "id": str(task.id),
+                    "title": task.title,
+                    "duration_minutes": task.duration_minutes,
+                    "priority": task.priority,
+                    "deadline": task.deadline,
+                    "created_at": task.created_at.isoformat(),
+                    "updated_at": task.updated_at.isoformat()
+                }
+                for task in tasks
+            ]
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/tasks")
+def create_task(request: TaskCreateRequest, user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Create a new task"""
+    try:
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        # Validate priority
+        if request.priority not in ['high', 'medium', 'low']:
+            request.priority = 'medium'
+        
+        task = TaskModel(
+            user_id=user.id,
+            title=request.title,
+            duration_minutes=request.duration_minutes,
+            priority=request.priority,
+            deadline=request.deadline
+        )
+        
+        db.add(task)
+        db.commit()
+        db.refresh(task)
+        
+        return {
+            "id": str(task.id),
+            "title": task.title,
+            "duration_minutes": task.duration_minutes,
+            "priority": task.priority,
+            "deadline": task.deadline,
+            "created_at": task.created_at.isoformat(),
+            "updated_at": task.updated_at.isoformat()
+        }
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/tasks/all")
+def delete_all_tasks(user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Delete all tasks for the current user"""
+    try:
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        deleted_count = db.query(TaskModel).filter(TaskModel.user_id == user.id).delete()
+        db.commit()
+        
+        return {
+            "success": True,
+            "deleted_count": deleted_count
+        }
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/tasks/{task_id}")
+def delete_task(task_id: str, user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Delete a specific task"""
+    try:
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        task = db.query(TaskModel).filter(TaskModel.id == task_id, TaskModel.user_id == user.id).first()
+        if not task:
+            raise HTTPException(status_code=404, detail="Task not found")
+        
+        db.delete(task)
+        db.commit()
+        
+        return {
+            "success": True,
+            "message": "Task deleted successfully"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Scheduled Tasks Endpoints (for optimized tasks displayed in calendar)
+class ScheduledTaskCreateRequest(BaseModel):
+    task_name: str
+    estimated_duration_minutes: int
+    assigned_date: str  # YYYY-MM-DD
+    assigned_start_time: str  # HH:MM
+    assigned_end_time: str  # HH:MM
+    slot_id: Optional[str] = None
+    reasoning: Optional[str] = None
+
+@app.get("/scheduled-tasks")
+def get_scheduled_tasks(user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Get all scheduled tasks (optimized tasks) for the current user"""
+    try:
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        scheduled_tasks = db.query(ScheduledTaskModel).filter(
+            ScheduledTaskModel.user_id == user.id
+        ).order_by(ScheduledTaskModel.assigned_date, ScheduledTaskModel.assigned_start_time).all()
+        
+        return {
+            "tasks": [
+                {
+                    "id": str(st.id),
+                    "task_name": st.task_name,
+                    "estimated_duration_minutes": st.estimated_duration_minutes,
+                    "assigned_date": st.assigned_date,
+                    "assigned_start_time": st.assigned_start_time,
+                    "assigned_end_time": st.assigned_end_time,
+                    "slot_id": st.slot_id,
+                    "reasoning": st.reasoning
+                }
+                for st in scheduled_tasks
+            ]
+        }
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/scheduled-tasks")
+def create_scheduled_tasks(
+    tasks: List[ScheduledTaskCreateRequest],
+    user_data: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Save multiple scheduled tasks (optimized tasks)"""
+    try:
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        # Delete existing scheduled tasks for this user
+        db.query(ScheduledTaskModel).filter(ScheduledTaskModel.user_id == user.id).delete()
+        
+        # Create new scheduled tasks
+        scheduled_tasks = []
+        for task_data in tasks:
+            scheduled_task = ScheduledTaskModel(
+                user_id=user.id,
+                task_name=task_data.task_name,
+                estimated_duration_minutes=task_data.estimated_duration_minutes,
+                assigned_date=task_data.assigned_date,
+                assigned_start_time=task_data.assigned_start_time,
+                assigned_end_time=task_data.assigned_end_time,
+                slot_id=task_data.slot_id,
+                reasoning=task_data.reasoning
+            )
+            scheduled_tasks.append(scheduled_task)
+            db.add(scheduled_task)
+        
+        db.commit()
+        
+        return {
+            "success": True,
+            "count": len(scheduled_tasks)
+        }
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/scheduled-tasks/all")
+def delete_all_scheduled_tasks(user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Delete all scheduled tasks for the current user"""
+    try:
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        deleted_count = db.query(ScheduledTaskModel).filter(ScheduledTaskModel.user_id == user.id).delete()
+        db.commit()
+        
+        return {
+            "success": True,
+            "deleted_count": deleted_count
+        }
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+class ScheduledTaskUpdateRequest(BaseModel):
+    assigned_date: Optional[str] = None  # YYYY-MM-DD
+    assigned_start_time: Optional[str] = None  # HH:MM
+    assigned_end_time: Optional[str] = None  # HH:MM
+
+@app.patch("/scheduled-tasks/{task_id}")
+def update_scheduled_task(
+    task_id: str,
+    request: ScheduledTaskUpdateRequest,
+    user_data: dict = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Update a scheduled task's time/date"""
+    try:
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        # Try to find task by UUID first, then by slot_id
+        try:
+            task_uuid = uuid.UUID(task_id)
+            scheduled_task = db.query(ScheduledTaskModel).filter(
+                ScheduledTaskModel.id == task_uuid,
+                ScheduledTaskModel.user_id == user.id
+            ).first()
+        except ValueError:
+            # If not a valid UUID, try slot_id
+            scheduled_task = db.query(ScheduledTaskModel).filter(
+                ScheduledTaskModel.slot_id == task_id,
+                ScheduledTaskModel.user_id == user.id
+            ).first()
+        
+        if not scheduled_task:
+            raise HTTPException(status_code=404, detail="Scheduled task not found")
+        
+        # Update fields if provided
+        if request.assigned_date is not None:
+            scheduled_task.assigned_date = request.assigned_date
+        if request.assigned_start_time is not None:
+            scheduled_task.assigned_start_time = request.assigned_start_time
+        if request.assigned_end_time is not None:
+            scheduled_task.assigned_end_time = request.assigned_end_time
+        
+        scheduled_task.updated_at = datetime.utcnow()
+        
+        db.commit()
+        db.refresh(scheduled_task)
+        
+        return {
+            "success": True,
+            "task": {
+                "id": str(scheduled_task.id),
+                "task_name": scheduled_task.task_name,
+                "estimated_duration_minutes": scheduled_task.estimated_duration_minutes,
+                "assigned_date": scheduled_task.assigned_date,
+                "assigned_start_time": scheduled_task.assigned_start_time,
+                "assigned_end_time": scheduled_task.assigned_end_time,
+                "slot_id": scheduled_task.slot_id,
+                "reasoning": scheduled_task.reasoning
+            }
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))

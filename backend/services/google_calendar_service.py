@@ -103,16 +103,8 @@ class GoogleCalendarService:
         print(f"[exchange_code_for_tokens] Returning tokens. Access token length: {len(credentials.token) if credentials.token else 0}")
         return token_data
     
-    def get_events(
-        self, 
-        user_tokens: dict,
-        start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None,
-        max_results: int = 50
-    ) -> List[Event]:
-        """
-        Fetch calendar events from user's Google Calendar.
-        """
+    def _get_calendar_service(self, user_tokens: dict):
+        """Helper to build the Calendar service from tokens."""
         try:
             # Get the actual access token
             token = user_tokens.get('token') or user_tokens.get('access_token', '')
@@ -121,21 +113,19 @@ class GoogleCalendarService:
             # Use the access_token for the token field (Google OAuth format)
             actual_token = access_token or token
             
-            print(f"[get_events] Token length: {len(actual_token) if actual_token else 0}, starts with: {actual_token[:10] if actual_token else 'None'}...")
-            
             # Check for demo/mock tokens
             if not actual_token or len(actual_token) < 10 or actual_token.startswith('demo_') or actual_token.startswith('mock_'):
-                print(f"[get_events] Invalid token detected. Length: {len(actual_token) if actual_token else 0}")
+                print(f"[_get_calendar_service] Invalid token detected. Length: {len(actual_token) if actual_token else 0}")
                 raise AuthenticationError(
-                    f"Invalid or expired calendar tokens detected (Length: {len(actual_token) if actual_token else 0}). Please reconnect your Google Calendar."
+                    f"Invalid or expired calendar tokens detected. Please reconnect your Google Calendar."
                 )
             
             # Validate required fields for refresh
             if not user_tokens.get('client_id') or not user_tokens.get('client_secret'):
-                print("⚠️ [get_events] Missing client_id or client_secret in tokens! Token refresh will fail.")
+                print("⚠️ [_get_calendar_service] Missing client_id or client_secret in tokens! Token refresh will fail.")
             
             if not user_tokens.get('refresh_token'):
-                print("⚠️ [get_events] Missing refresh_token! Token refresh will fail if access token is expired.")
+                print("⚠️ [_get_calendar_service] Missing refresh_token! Token refresh will fail if access token is expired.")
 
             # Create credentials from stored tokens
             try:
@@ -170,22 +160,33 @@ class GoogleCalendarService:
             
             # Refresh if expired
             if credentials.expired and credentials.refresh_token:
-                print("[get_events] Token expired, refreshing...")
+                print("[_get_calendar_service] Token expired, refreshing...")
                 credentials.refresh(Request())
-                print("[get_events] Token refreshed successfully.")
+                print("[_get_calendar_service] Token refreshed successfully.")
+                
+            return build('calendar', 'v3', credentials=credentials)
+            
         except AuthenticationError:
-            # Re-raise AuthenticationError as-is
             raise
         except RefreshError as e:
             print(f"Token refresh failed: {e}")
             raise AuthenticationError("Token expired or invalid. Please reconnect your calendar.")
         except Exception as e:
             print(f"Error creating credentials: {e}")
-            print(f"User tokens keys: {user_tokens.keys()}")
             raise CalendarError(f"Failed to initialize calendar credentials: {str(e)}")
-        
+
+    def get_events(
+        self, 
+        user_tokens: dict,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        max_results: int = 50
+    ) -> List[Event]:
+        """
+        Fetch calendar events from user's Google Calendar.
+        """
         try:
-            service = build('calendar', 'v3', credentials=credentials)
+            service = self._get_calendar_service(user_tokens)
             
             # Default time range: now to 7 days from now
             if not start_date:
@@ -236,7 +237,6 @@ class GoogleCalendarService:
                 )
             
             if error.resp.status == 401:
-                print(f"Authentication failed. Token: {actual_token[:10]}...")
                 raise AuthenticationError("Calendar access revoked or expired. Please reconnect.")
                 
             raise CalendarError(f"Failed to fetch calendar events: {error}")

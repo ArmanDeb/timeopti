@@ -1,3 +1,33 @@
 /* Day View Component Styles */
+:host {
+    display: block;
+    height: 100%;
+}
+
+/* Drag & Drop Styles */
+.drag-over {
+    background-color: rgba(45, 42, 38, 0.05);
+}
+
+/* Ensure draggable elements work properly */
+[draggable="true"] {
+    -webkit-user-drag: element;
+    cursor: move;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.drag-enabled {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.drag-enabled * {
+    user-select: none;
+    -webkit-user-select: none;
+}
 
 

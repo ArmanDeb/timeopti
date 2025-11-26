@@ -22,7 +22,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/..')
 
 from database import Base, DATABASE_URL
-from models import User, AILog, Recommendation  # Import all models
+from models import User, AILog, Recommendation, Task, ScheduledTask  # Import all models
 
 target_metadata = Base.metadata
 
