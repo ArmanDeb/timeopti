@@ -21,8 +21,8 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/..')
 
-from database import Base, DATABASE_URL
-from models import User, AILog, Recommendation, Task, ScheduledTask  # Import all models
+from app.db.base import Base
+from app.db.session import DATABASE_URL, engine
 
 target_metadata = Base.metadata
 
@@ -63,7 +63,7 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    from database import engine
+# from database import engine (already imported)
     
     with engine.connect() as connection:
         context.configure(

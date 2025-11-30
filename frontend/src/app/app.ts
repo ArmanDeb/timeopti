@@ -1,10 +1,10 @@
 import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ClerkService } from './services/clerk.service';
+import { ClerkService } from './core/services/clerk.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { AgendaService, AgendaRequest, Task } from './services/agenda.service';
+import { AgendaService, AgendaRequest, Task } from './core/services/agenda.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({

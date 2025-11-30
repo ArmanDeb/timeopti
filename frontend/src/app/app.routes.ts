@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { LandingComponent } from './landing/landing';
-import { PricingComponent } from './pricing/pricing.component';
-import { LegalComponent } from './legal/legal.component';
+import { LandingComponent } from './features/landing/landing';
+import { PricingComponent } from './features/pricing/pricing.component';
+import { LegalComponent } from './features/legal/legal.component';
 import { AppShellComponent } from './layout/app-shell';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { AdminComponent } from './admin/admin';
-import { authGuard } from './guards/auth.guard';
-import { adminGuard } from './guards/admin.guard';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { AdminComponent } from './features/admin/admin';
+import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
     // Public Routes

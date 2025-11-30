@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ClerkService } from '../services/clerk.service';
+import { ClerkService } from '../core/services/clerk.service';
 
 @Component({
     selector: 'app-shell',

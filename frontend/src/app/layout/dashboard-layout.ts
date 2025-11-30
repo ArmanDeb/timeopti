@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ClerkService } from '../services/clerk.service';
-import { ViewService } from '../services/view.service';
+import { ClerkService } from '../core/services/clerk.service';
+import { ViewService } from '../core/services/view.service';
 
 @Component({
     selector: 'app-dashboard-layout',
@@ -12,7 +12,7 @@ import { ViewService } from '../services/view.service';
 })
 export class DashboardLayoutComponent {
     isSidebarOpen = true;
-    
+
     constructor(
         public clerkService: ClerkService,
         public viewService: ViewService

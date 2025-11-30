@@ -77,7 +77,7 @@ cd ..
 echo -e "${BLUE}🚀 Starting Backend...${NC}"
 cd backend
 # Run in background, redirect output to log
-nohup ./venv/bin/python -m uvicorn main:app --reload --port 8001 > backend_log.txt 2>&1 &
+nohup ./venv/bin/python -m uvicorn main:app --reload --port 8000 > backend_log.txt 2>&1 &
 BACKEND_PID=$!
 echo -e "${GREEN}   Backend started (PID: $BACKEND_PID). Logs in backend/backend_log.txt${NC}"
 
@@ -85,7 +85,7 @@ echo -e "${GREEN}   Backend started (PID: $BACKEND_PID). Logs in backend/backend
 echo -e "${YELLOW}   Waiting for backend to be ready...${NC}"
 BACKEND_READY=false
 for i in {1..30}; do
-    if curl -s http://localhost:8001/ > /dev/null 2>&1; then
+    if curl -s http://localhost:8000/ > /dev/null 2>&1; then
         echo -e "${GREEN}   ✅ Backend is ready!${NC}"
         BACKEND_READY=true
         break
@@ -110,7 +110,7 @@ cd ..
 
 echo ""
 echo -e "${GREEN}✨ All systems go!${NC}"
-echo -e "${BLUE}   Backend:  http://localhost:8001 (PID: $BACKEND_PID)${NC}"
+echo -e "${BLUE}   Backend:  http://localhost:8000 (PID: $BACKEND_PID)${NC}"
 echo -e "${BLUE}   Frontend: http://localhost:4200 (PID: $FRONTEND_PID)${NC}"
 echo -e "${YELLOW}   Please wait ~15-30 seconds for the frontend to compile.${NC}"
 echo -e "${YELLOW}   Then refresh your browser at http://localhost:4200${NC}"
