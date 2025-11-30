@@ -40,6 +40,8 @@ class ScheduledTaskUpdate(BaseModel):
     assigned_date: Optional[str] = None
     assigned_start_time: Optional[str] = None
     assigned_end_time: Optional[str] = None
+    task_name: Optional[str] = None
+    estimated_duration_minutes: Optional[int] = None
 
 class ScheduledTaskResponse(ScheduledTaskCreate):
     id: uuid.UUID
@@ -136,6 +138,29 @@ def delete_all_scheduled_tasks(user_data: dict = Depends(get_current_user), db: 
     db.commit()
     return {"success": True, "deleted_count": count}
 
+@router.delete("/scheduled-tasks/{task_id}")
+def delete_scheduled_task(task_id: str, user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
+    user = get_user(db, user_data)
+    
+    # Try to find by ID (if it's a valid UUID)
+    task = None
+    try:
+        uuid_obj = uuid.UUID(task_id)
+        task = db.query(ScheduledTask).filter(ScheduledTask.id == uuid_obj, ScheduledTask.user_id == user.id).first()
+    except ValueError:
+        pass 
+
+    # Fallback to slot_id
+    if not task:
+        task = db.query(ScheduledTask).filter(ScheduledTask.slot_id == task_id, ScheduledTask.user_id == user.id).first()
+        
+    if not task:
+        raise HTTPException(status_code=404, detail="Scheduled task not found")
+        
+    db.delete(task)
+    db.commit()
+    return {"success": True}
+
 @router.patch("/scheduled-tasks/{task_id}")
 def update_scheduled_task(task_id: str, updates: ScheduledTaskUpdate, user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
     user = get_user(db, user_data)
@@ -161,6 +186,10 @@ def update_scheduled_task(task_id: str, updates: ScheduledTaskUpdate, user_data:
         task.assigned_start_time = updates.assigned_start_time
     if updates.assigned_end_time:
         task.assigned_end_time = updates.assigned_end_time
+    if updates.task_name:
+        task.task_name = updates.task_name
+    if updates.estimated_duration_minutes:
+        task.estimated_duration_minutes = updates.estimated_duration_minutes
         
     db.commit()
     db.refresh(task)

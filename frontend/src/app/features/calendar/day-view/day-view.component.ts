@@ -7,6 +7,8 @@ import { ScheduledTask, ViewStateService } from '../../../core/services/view-sta
 import { environment } from '../../../../environments/environment';
 import { CalendarLayoutService, CalendarEvent, DisplayEvent } from './calendar-layout.service';
 
+import { ClerkService } from '../../../core/services/clerk.service';
+
 @Component({
   selector: 'app-day-view',
   standalone: true,
@@ -15,6 +17,7 @@ import { CalendarLayoutService, CalendarEvent, DisplayEvent } from './calendar-l
   styleUrl: './day-view.component.css'
 })
 export class DayViewComponent implements OnInit, OnDestroy {
+  protected Math = Math;
   @Input() showTaskButton = false;
   @Output() openTaskPanel = new EventEmitter<void>();
 
@@ -36,6 +39,7 @@ export class DayViewComponent implements OnInit, OnDestroy {
   selectedDateLabel = "Aujourd'hui";
 
   hours: string[] = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
+  timeOptions: string[] = [];
 
   // Drag & Drop state
   draggedTaskId: string | null = null;
@@ -59,7 +63,8 @@ export class DayViewComponent implements OnInit, OnDestroy {
     private calendarService: CalendarService,
     public calendarAuth: CalendarAuthService,
     public viewState: ViewStateService,
-    private layoutService: CalendarLayoutService
+    private layoutService: CalendarLayoutService,
+    public clerkService: ClerkService
   ) {
     if (!environment.production && typeof window !== 'undefined') {
       (window as any).__timeoptiViewState = this.viewState;
@@ -69,6 +74,13 @@ export class DayViewComponent implements OnInit, OnDestroy {
       const tasks = this.viewState.optimizedTasks();
       this.calculateLayout(tasks);
     });
+
+    // Generate time options (every 15 minutes)
+    for (let h = 0; h < 24; h++) {
+      for (let m = 0; m < 60; m += 15) {
+        this.timeOptions.push(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`);
+      }
+    }
   }
 
   ngOnInit() {
@@ -79,8 +91,8 @@ export class DayViewComponent implements OnInit, OnDestroy {
     this.viewState.setSelectedDate(this.currentDate);
     this.persistSelectedDate();
 
-    // Load scheduled tasks from database
-    this.loadScheduledTasks();
+    // Wait for Clerk to be loaded before fetching tasks
+    this.waitForClerkAndLoadTasks();
 
     if (this.calendarAuth.connected()) {
       this.loadEvents();
@@ -104,6 +116,18 @@ export class DayViewComponent implements OnInit, OnDestroy {
     // Initial layout calculation (will be empty initially)
     this.calculateLayout();
 
+  }
+
+  waitForClerkAndLoadTasks() {
+    const checkClerk = setInterval(() => {
+      if (this.clerkService.user) {
+        clearInterval(checkClerk);
+        this.loadScheduledTasks();
+      }
+    }, 100);
+
+    // Timeout after 10 seconds
+    setTimeout(() => clearInterval(checkClerk), 10000);
   }
 
   ngOnDestroy() {
@@ -640,6 +664,131 @@ export class DayViewComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.warn('Unable to restore selected date', error);
     }
+  }
+
+  // Task Modal State
+  isTaskModalOpen = false;
+  selectedTask: ScheduledTask | null = null;
+  editForm = {
+    title: '',
+    startTime: '',
+    endTime: ''
+  };
+
+  onTaskClick(event: Event, item: DisplayEvent) {
+    if (item.type !== 'ai' || this.isDragging) return;
+
+    event.stopPropagation();
+    console.log('Task clicked:', item);
+
+    // Find the full task object
+    const task = item.data as ScheduledTask;
+    this.selectedTask = task;
+
+    // Calculate end time
+    const [startH, startM] = task.assigned_start_time.split(':').map(Number);
+    const startMinutes = startH * 60 + startM;
+    const endMinutes = startMinutes + task.estimated_duration_minutes;
+    const endH = Math.floor(endMinutes / 60);
+    const endM = endMinutes % 60;
+    const endTime = `${endH.toString().padStart(2, '0')}:${endM.toString().padStart(2, '0')}`;
+
+    this.editForm = {
+      title: task.task_name,
+      startTime: task.assigned_start_time,
+      endTime: endTime
+    };
+    this.isTaskModalOpen = true;
+  }
+
+  closeTaskModal() {
+    this.isTaskModalOpen = false;
+    this.selectedTask = null;
+  }
+
+  saveTaskChanges() {
+    if (!this.selectedTask) return;
+
+    const newTitle = this.editForm.title;
+    const newStartTime = this.editForm.startTime;
+    const newEndTime = this.editForm.endTime;
+
+    // Calculate new duration
+    const [startH, startM] = newStartTime.split(':').map(Number);
+    const [endH, endM] = newEndTime.split(':').map(Number);
+
+    const startMinutes = startH * 60 + startM;
+    const endMinutes = endH * 60 + endM;
+
+    let newDuration = endMinutes - startMinutes;
+
+    // Handle overnight or invalid times (basic validation)
+    if (newDuration <= 0) {
+      alert('L\'heure de fin doit être après l\'heure de début');
+      return;
+    }
+
+    const taskId = this.selectedTask.id || this.selectedTask.slot_id;
+    if (!taskId) return;
+
+    // Optimistic update
+    const optimizedTasks = this.viewState.optimizedTasks();
+    const taskIndex = optimizedTasks.findIndex(t => (t.id === taskId || t.slot_id === taskId));
+
+    if (taskIndex !== -1) {
+      const updatedTasks = [...optimizedTasks];
+      updatedTasks[taskIndex] = {
+        ...updatedTasks[taskIndex],
+        task_name: newTitle,
+        estimated_duration_minutes: newDuration,
+        assigned_start_time: newStartTime,
+        assigned_end_time: newEndTime
+      };
+      this.viewState.setOptimizedTasks(updatedTasks);
+      this.calculateLayout();
+    }
+
+    this.calendarService.updateScheduledTask(taskId, {
+      task_name: newTitle,
+      estimated_duration_minutes: newDuration,
+      assigned_start_time: newStartTime,
+      assigned_end_time: newEndTime
+    }).subscribe({
+      next: (response) => {
+        console.log('Task updated:', response);
+        this.closeTaskModal();
+      },
+      error: (err) => {
+        console.error('Failed to update task:', err);
+        this.error = 'Erreur lors de la mise à jour de la tâche';
+        // Revert optimistic update if needed (omitted for brevity)
+      }
+    });
+  }
+
+  deleteTask() {
+    if (!this.selectedTask || !confirm('Supprimer cette tâche ?')) return;
+
+    const taskId = this.selectedTask.id || this.selectedTask.slot_id;
+    if (!taskId) return;
+
+    // Optimistic delete
+    const optimizedTasks = this.viewState.optimizedTasks();
+    const updatedTasks = optimizedTasks.filter(t => (t.id !== taskId && t.slot_id !== taskId));
+    this.viewState.setOptimizedTasks(updatedTasks);
+    this.calculateLayout();
+
+    this.calendarService.deleteScheduledTask(taskId).subscribe({
+      next: () => {
+        console.log('Task deleted');
+        this.closeTaskModal();
+      },
+      error: (err) => {
+        console.error('Failed to delete task:', err);
+        this.error = 'Erreur lors de la suppression de la tâche';
+        // Revert...
+      }
+    });
   }
 
 }

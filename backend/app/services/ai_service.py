@@ -375,12 +375,22 @@ CRITICAL RULES:
         
         Rules:
         - Assign times strictly within the start/end of a free slot.
+        - Start and End times MUST be multiples of 15 minutes (e.g., 00, 15, 30, 45). Never use 13:20, 14:10, etc.
         - Do not overlap tasks.
         - Respect context: 
           * Dinner -> Evening (18:00+)
           * Shopping -> Business hours (09:00-19:00)
           * Gym -> Flexible (Morning/Evening preferred)
           * Study -> Morning/Afternoon
+        - Act as a Productivity Strategist (Coach Exécutif).
+        - Reasoning MUST be analytical, motivating but serious, and performance-oriented.
+        - Briefly explain WHY this task is placed at this time (e.g., "morning energy peak", "avoiding fragmentation").
+        - Use formal/sophisticated language.
+        - Reasoning MUST be in the SAME LANGUAGE as the "User Input".
+        - Reasoning MUST be personal (use "you", "your").
+        - **IMPORTANT**: Include healthy breaks (5-15 minutes) between tasks to prevent burnout, especially after long deep work sessions.
+        - Avoid back-to-back tasks if possible, unless they are related or short.
+        - Ensure the schedule is realistic and sustainable.
         
         Output JSON Schema:
         {{
@@ -392,7 +402,7 @@ CRITICAL RULES:
               "assigned_start_time": "HH:MM",
               "assigned_end_time": "HH:MM",
               "slot_id": "string",
-              "reasoning": "string"
+              "reasoning": "string (Analytical, performance-oriented, personal, formal, and in the detected language. E.g., 'Placed at 09:00 to leverage your morning concentration peak.')"
             }}
           ]
         }}

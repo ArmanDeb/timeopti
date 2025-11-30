@@ -71,7 +71,7 @@ export class CalendarService {
         );
     }
 
-    analyze(naturalInput: string, tokens?: any, timezone?: string, sleepStart?: string, sleepEnd?: string, startFromNow?: boolean, targetDate?: string): Observable<AnalyzeResponse> {
+    analyze(naturalInput: string, tokens?: any, timezone?: string, sleepStart?: string, sleepEnd?: string, startFromNow?: boolean, targetDate?: string, existingTasks: any[] = []): Observable<AnalyzeResponse> {
         return this.http.post<AnalyzeResponse>(`${this.apiUrl}/analyze`, {
             natural_input: naturalInput,
             tokens,
@@ -79,7 +79,8 @@ export class CalendarService {
             sleep_start: sleepStart,
             sleep_end: sleepEnd,
             start_from_now: startFromNow,
-            target_date: targetDate
+            target_date: targetDate,
+            existing_tasks: existingTasks
         });
     }
 
@@ -195,9 +196,19 @@ export class CalendarService {
         return this.http.delete<{ success: boolean; deleted_count: number }>(`${this.apiUrl}/scheduled-tasks/all`);
     }
 
+    deleteScheduledTask(taskId: string): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/scheduled-tasks/${taskId}`);
+    }
+
     updateScheduledTask(
         taskId: string,
-        updates: { assigned_date?: string; assigned_start_time?: string; assigned_end_time?: string }
+        updates: {
+            assigned_date?: string;
+            assigned_start_time?: string;
+            assigned_end_time?: string;
+            task_name?: string;
+            estimated_duration_minutes?: number;
+        }
     ): Observable<{ success: boolean; task: any }> {
         return this.http.patch<{ success: boolean; task: any }>(
             `${this.apiUrl}/scheduled-tasks/${taskId}`,

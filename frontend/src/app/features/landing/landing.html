@@ -14,6 +14,7 @@
                         class="bg-[#2D2A26] text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-black transition-colors">S'inscrire</button>
                     <a *ngIf="clerkService.user" routerLink="/app/dashboard"
                         class="bg-[#2D2A26] text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-black transition-colors">Dashboard</a>
+                    <div #userButton></div>
                 </div>
             </div>
         </div>
@@ -29,10 +30,14 @@
                 L'IA qui planifie vos objectifs à votre place. Finissez-en avec le Tetris calendaire.
             </p>
             <div class="flex justify-center">
-                <button (click)="clerkService.signIn()"
+                <button *ngIf="!clerkService.user" (click)="clerkService.signIn()"
                     class="bg-[#2D2A26] text-white px-8 py-3.5 rounded-full text-base font-medium hover:bg-black transition-all transform hover:scale-105 duration-200">
                     Commencer
                 </button>
+                <a *ngIf="clerkService.user" routerLink="/app/dashboard"
+                    class="inline-block bg-[#2D2A26] text-white px-8 py-3.5 rounded-full text-base font-medium hover:bg-black transition-all transform hover:scale-105 duration-200 cursor-pointer">
+                    Commencer
+                </a>
             </div>
         </div>
     </header>

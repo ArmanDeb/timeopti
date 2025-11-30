@@ -335,6 +335,25 @@ def analyze_schedule(request: AnalyzeRequest, user_data: dict = Depends(get_curr
                 print(f"Warning: {warning}")
         else:
             warning = "No calendar tokens provided. Planning without existing events."
+            
+        # Add existing scheduled tasks to events to prevent overlap
+        if request.existing_tasks:
+            print(f"Adding {len(request.existing_tasks)} existing tasks to busy slots")
+            for task in request.existing_tasks:
+                # Task from frontend has assigned_start_time (HH:MM) and assigned_end_time (HH:MM)
+                # We need to convert to ISO format or whatever calculate_free_slots expects
+                # calculate_free_slots handles Event objects or dicts with start_time/end_time
+                
+                # Construct full ISO string for the target date
+                start_iso = f"{target_date_str}T{task.get('assigned_start_time')}:00"
+                end_iso = f"{target_date_str}T{task.get('assigned_end_time')}:00"
+                
+                events.append({
+                    "title": task.get('task_name', 'Existing Task'),
+                    "start_time": start_iso,
+                    "end_time": end_iso,
+                    "description": "Already scheduled task"
+                })
         
         free_slots = calculate_free_slots(
             events, 

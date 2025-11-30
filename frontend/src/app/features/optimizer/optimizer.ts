@@ -323,6 +323,10 @@ export class OptimizerComponent {
         this.events = this.events.filter(e => e.id !== id);
     }
 
+    // Confirmation Modal State
+    showConfirmationModal = false;
+    pendingOptimization = false;
+
     // Natural language optimization
     optimizeFromNaturalInput() {
         if (!this.naturalInput.trim()) {
@@ -330,6 +334,52 @@ export class OptimizerComponent {
             return;
         }
 
+        // Check if there are already scheduled tasks for the selected date
+        const selectedDate = this.viewState.selectedDate();
+
+        // Check ViewStateService for existing tasks (source of truth)
+        const viewStateTasks = this.viewState.optimizedTasks();
+        const existingTasks = viewStateTasks.filter(t =>
+            this.isSameDate(new Date(t.assigned_date), selectedDate)
+        );
+
+        if (existingTasks.length > 0) {
+            this.showConfirmationModal = true;
+            return;
+        }
+
+        this.proceedWithOptimization();
+    }
+
+    onConfirmRestart() {
+        this.showConfirmationModal = false;
+
+        // Clear existing tasks for the selected date
+        // For now, we'll use the resetScheduledTasks which clears everything
+        // Ideally, we should have a method to clear only for a specific date
+        this.calendarService.resetScheduledTasks().subscribe({
+            next: () => {
+                console.log('Previous tasks cleared');
+                this.viewState.clearOptimizedTasks();
+                this.proceedWithOptimization();
+            },
+            error: (err) => {
+                console.error('Failed to clear tasks:', err);
+                this.error = 'Failed to clear previous tasks';
+            }
+        });
+    }
+
+    onConfirmAdd() {
+        this.showConfirmationModal = false;
+        this.proceedWithOptimization();
+    }
+
+    cancelOptimization() {
+        this.showConfirmationModal = false;
+    }
+
+    proceedWithOptimization() {
         this.isOptimizing = true;
         this.error = null;
 
@@ -348,6 +398,12 @@ export class OptimizerComponent {
 
         console.log(`[Optimizer] Planning for date: ${targetDateStr} (selected date: ${selectedDate.toLocaleDateString()})`);
 
+        // Get existing tasks to prevent overlap
+        const viewStateTasks = this.viewState.optimizedTasks();
+        const existingTasks = viewStateTasks.filter(t =>
+            this.isSameDate(new Date(t.assigned_date), selectedDate)
+        );
+
         this.calendarService.analyze(
             this.naturalInput,
             tokens, // Pass tokens for server-side event fetching
@@ -355,7 +411,8 @@ export class OptimizerComponent {
             this.sleepStart,
             this.sleepEnd,
             this.startFromNow,
-            targetDateStr // Pass the selected date
+            targetDateStr, // Pass the selected date
+            existingTasks // Pass existing tasks
         ).subscribe({
             next: (result) => {
                 console.log('Analysis result:', result);
@@ -373,16 +430,33 @@ export class OptimizerComponent {
                 }));
 
                 // Share optimized tasks with day-view via ViewStateService
-                this.viewState.setOptimizedTasks(tasksWithDates as any[]);
+                // If we are adding, we should merge with existing tasks
+                // But ViewStateService.setOptimizedTasks replaces the list
+                // So we need to get current tasks, append new ones, and set back
+                // However, since we are persisting to DB, maybe we should just reload from DB?
+                // For now, let's just append to the view state if we didn't restart
 
-                // Save optimized tasks to database for persistence
+                // Note: The backend 'analyze' currently returns NEW tasks.
+                // It doesn't know about existing tasks unless we pass them (which we don't yet).
+                // So 'tasksWithDates' only contains the new tasks.
+
+                // We need to save these new tasks to the DB.
                 this.calendarService.saveScheduledTasks(tasksWithDates).subscribe({
                     next: (response) => {
                         console.log('Optimized tasks saved to database:', response);
+
+                        // After saving, let's refresh the view state with ALL tasks for the date
+                        // We can do this by fetching from the service or manually merging
+                        // For simplicity and correctness, let's fetch all tasks again
+                        this.calendarService.fetchScheduledTasks().subscribe(res => {
+                            const allTasks = res.tasks.filter(t => this.isSameDate(new Date(t.assigned_date), selectedDate));
+                            this.viewState.setOptimizedTasks(allTasks);
+                        });
                     },
                     error: (err) => {
                         console.error('Failed to save optimized tasks:', err);
-                        // Continue anyway - tasks are in memory
+                        // Fallback: just show new tasks (this might hide old ones temporarily in the view)
+                        this.viewState.setOptimizedTasks(tasksWithDates as any[]);
                     }
                 });
 

@@ -38,6 +38,7 @@ class AnalyzeRequest(BaseModel):
     sleep_end: Optional[str] = "07:00"
     start_from_now: Optional[bool] = True
     target_date: Optional[str] = None  # YYYY-MM-DD format, defaults to today if not provided
+    existing_tasks: Optional[List[Dict]] = []  # Tasks already scheduled for this day
 
 class ScheduledTaskProposal(BaseModel):
     task_name: str
