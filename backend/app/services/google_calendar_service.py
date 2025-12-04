@@ -25,30 +25,44 @@ class GoogleCalendarService:
         os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
         
         self.credentials_path = os.getenv('GOOGLE_CALENDAR_CREDENTIALS_PATH', 'google_credentials.json')
-        self.credentials_available = os.path.exists(self.credentials_path)
+        self.credentials_json = os.getenv('GOOGLE_CREDENTIALS_JSON')
+        
+        # Check if we have credentials either as file or env var
+        self.credentials_available = os.path.exists(self.credentials_path) or bool(self.credentials_json)
         
         if not self.credentials_available:
-            print(f"Warning: Google Calendar credentials not found at {self.credentials_path}")
+            print(f"Warning: Google Calendar credentials not found at {self.credentials_path} and GOOGLE_CREDENTIALS_JSON not set.")
             print("Google Calendar features will not be available until credentials are configured.")
         else:
-            # Try to log client ID for debugging
-            try:
-                with open(self.credentials_path) as f:
-                    creds = json.load(f)
-                    client_id = creds.get('installed', {}).get('client_id') or creds.get('web', {}).get('client_id')
-                    if client_id:
-                        print(f"Google Calendar Service initialized with Client ID: {client_id[:15]}...")
-            except Exception as e:
-                print(f"Error reading credentials file: {e}")
-    
+            print("Google Calendar Service initialized with credentials.")
+
     def _check_credentials(self):
         """Check if credentials are available before operations"""
         if not self.credentials_available:
             raise CalendarError(
                 f"Google Calendar credentials not found. "
-                f"Please create '{self.credentials_path}' with your OAuth credentials from Google Cloud Console."
+                f"Please set GOOGLE_CREDENTIALS_JSON env var or create '{self.credentials_path}'."
             )
     
+    def _get_flow(self, redirect_uri: str):
+        """Helper to create Flow from file or env var"""
+        if self.credentials_json:
+            try:
+                config = json.loads(self.credentials_json)
+                return Flow.from_client_config(
+                    config,
+                    scopes=self.SCOPES,
+                    redirect_uri=redirect_uri
+                )
+            except json.JSONDecodeError as e:
+                raise CalendarError(f"Invalid JSON in GOOGLE_CREDENTIALS_JSON: {str(e)}")
+        else:
+            return Flow.from_client_secrets_file(
+                self.credentials_path,
+                scopes=self.SCOPES,
+                redirect_uri=redirect_uri
+            )
+
     def get_authorization_url(self, redirect_uri: str) -> str:
         """
         Get the Google OAuth authorization URL.
@@ -56,11 +70,7 @@ class GoogleCalendarService:
         """
         self._check_credentials()
         
-        flow = Flow.from_client_secrets_file(
-            self.credentials_path,
-            scopes=self.SCOPES,
-            redirect_uri=redirect_uri
-        )
+        flow = self._get_flow(redirect_uri)
         
         authorization_url, state = flow.authorization_url(
             access_type='offline',
@@ -77,11 +87,7 @@ class GoogleCalendarService:
         """
         self._check_credentials()
         
-        flow = Flow.from_client_secrets_file(
-            self.credentials_path,
-            scopes=self.SCOPES,
-            redirect_uri=redirect_uri
-        )
+        flow = self._get_flow(redirect_uri)
         
         flow.fetch_token(code=code)
         credentials = flow.credentials

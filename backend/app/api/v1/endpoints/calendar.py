@@ -42,7 +42,7 @@ def get_calendar_auth_url(request: CalendarAuthRequest):
         auth_url = gcal_service.get_authorization_url(request.redirect_uri)
         return {"auth_url": auth_url}
     except TimeOptiException as e:
-        raise e
+        raise HTTPException(status_code=e.status_code, detail=e.message)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -53,7 +53,7 @@ def exchange_calendar_token(request: CalendarTokenRequest, user_data: dict = Dep
         tokens = gcal_service.exchange_code_for_tokens(request.code, request.redirect_uri)
         return {"success": True, "tokens": tokens}
     except TimeOptiException as e:
-        raise e
+        raise HTTPException(status_code=e.status_code, detail=e.message)
     except Exception as e:
         import traceback
         print(f"ERROR in exchange_calendar_token: {str(e)}")
@@ -75,7 +75,7 @@ def get_calendar_events(request: CalendarEventsRequest):
         events = gcal_service.get_events(request.tokens, start, end)
         return {"events": [e.model_dump() for e in events]}
     except TimeOptiException as e:
-        raise e
+        raise HTTPException(status_code=e.status_code, detail=e.message)
     except Exception as e:
         import traceback
         print(f"ERROR in get_calendar_events: {str(e)}")
@@ -103,7 +103,7 @@ def get_today_events(request: TodayEventsRequest, user_data: dict = Depends(get_
         return {"events": [e.model_dump() for e in events]}
         
     except TimeOptiException as e:
-        raise e
+        raise HTTPException(status_code=e.status_code, detail=e.message)
     except Exception as e:
         import traceback
         traceback.print_exc()
