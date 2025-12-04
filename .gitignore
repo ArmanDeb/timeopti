@@ -7,7 +7,7 @@ venv/
 *.db
 *.db-journal
 google_credentials.json
-test_*.py
+
 
 # Node.js
 node_modules/

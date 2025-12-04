@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from services.ai_service import AIService, AgendaRequest, Task
+from app.services.ai_service import AIService, AgendaRequest, Task
 
 # Load env vars
 load_dotenv()
