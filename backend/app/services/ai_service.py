@@ -19,12 +19,13 @@ class AIService:
                 base_url = "https://openrouter.ai/api/v1"
         
         if not api_key:
-            print("Warning: No API Key found (OPENAI_API_KEY or OPENROUTER_API_KEY)")
-
-        self.client = OpenAI(
-            api_key=api_key,
-            base_url=base_url
-        )
+            print("Warning: No API Key found (OPENAI_API_KEY or OPENROUTER_API_KEY). AI features will be disabled.")
+            self.client = None
+        else:
+            self.client = OpenAI(
+                api_key=api_key,
+                base_url=base_url
+            )
 
     def optimize_agenda(self, request: AgendaRequest) -> tuple[str, dict]:
         prompt = self._build_prompt(request)
