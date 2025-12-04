@@ -62,7 +62,11 @@ jobs:
       run: npx playwright install --with-deps chromium
 
     - name: Run tests
+      env:
+        CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
       run: npm run test -- --watch=false --browsers=ChromiumHeadless
 
     - name: Build
+      env:
+        CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
       run: npm run build
