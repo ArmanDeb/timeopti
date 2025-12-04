@@ -43,7 +43,7 @@ export class CalendarAuthService {
   }
 
   connect() {
-    const redirectUri = 'http://localhost:4200/app/dashboard';
+    const redirectUri = `${window.location.origin}/app/dashboard`;
     console.log('🔵 [CONNECT] Starting Google Calendar OAuth flow');
     console.log('🔵 [CONNECT] Redirect URI:', redirectUri);
 
