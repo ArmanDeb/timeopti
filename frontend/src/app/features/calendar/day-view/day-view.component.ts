@@ -643,7 +643,7 @@ export class DayViewComponent implements OnInit, OnDestroy {
       return;
     }
     try {
-      localStorage.setItem(this.SELECTED_DATE_STORAGE_KEY, this.currentDate.toISOString());
+      sessionStorage.setItem(this.SELECTED_DATE_STORAGE_KEY, this.currentDate.toISOString());
     } catch (error) {
       console.warn('Unable to persist selected date', error);
     }
@@ -654,7 +654,7 @@ export class DayViewComponent implements OnInit, OnDestroy {
       return;
     }
     try {
-      const stored = localStorage.getItem(this.SELECTED_DATE_STORAGE_KEY);
+      const stored = sessionStorage.getItem(this.SELECTED_DATE_STORAGE_KEY);
       if (stored) {
         const parsed = new Date(stored);
         if (!isNaN(parsed.getTime())) {
