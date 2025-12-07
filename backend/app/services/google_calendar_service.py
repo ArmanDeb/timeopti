@@ -126,6 +126,24 @@ class GoogleCalendarService:
                     f"Invalid or expired calendar tokens detected. Please reconnect your Google Calendar."
                 )
             
+            # Check if this is a Clerk-sourced token
+            is_clerk_token = user_tokens.get('source') == 'clerk'
+            
+            if is_clerk_token:
+                # Clerk tokens: use access token directly, no refresh capability
+                # Clerk manages token refresh on their side
+                print("[_get_calendar_service] Using Clerk-sourced token (no refresh)")
+                
+                # Create credentials with just the access token
+                credentials = Credentials(
+                    token=actual_token,
+                    # No refresh token, client_id, or client_secret needed
+                    # Clerk handles refresh
+                )
+                
+                return build('calendar', 'v3', credentials=credentials)
+            
+            # Standard OAuth flow tokens (from our own OAuth)
             # Validate required fields for refresh
             if not user_tokens.get('client_id') or not user_tokens.get('client_secret'):
                 print("⚠️ [_get_calendar_service] Missing client_id or client_secret in tokens! Token refresh will fail.")
@@ -180,6 +198,7 @@ class GoogleCalendarService:
         except Exception as e:
             print(f"Error creating credentials: {e}")
             raise CalendarError(f"Failed to initialize calendar credentials: {str(e)}")
+
 
     def get_events(
         self, 
