@@ -209,23 +209,21 @@ export class DayViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadEvents(isBackgroundRefresh = false) {
+  async loadEvents(isBackgroundRefresh = false) {
     if (!isBackgroundRefresh) {
       this.isLoading = true;
     }
     this.error = null;
     this.isAuthError = false;
 
-    // Get tokens from localStorage
-    const tokensStr = localStorage.getItem('calendar_tokens');
-    if (!tokensStr) {
+    // Get tokens from backend via CalendarAuthService
+    const tokens = await this.calendarAuth.getTokens();
+    if (!tokens) {
       console.warn('No tokens found in DayView, redirecting to connect...');
       this.calendarAuth.disconnect();
       window.location.href = '/app/dashboard';
       return;
     }
-
-    const tokens = JSON.parse(tokensStr);
 
     // Calculate start and end of the selected day
     const start = new Date(this.currentDate);
@@ -363,16 +361,15 @@ export class DayViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  exportToGoogleCalendar() {
+  async exportToGoogleCalendar() {
     if (this.isExporting) return;
 
-    const tokensStr = localStorage.getItem('calendar_tokens');
-    if (!tokensStr) {
+    // Get tokens from backend via CalendarAuthService
+    const tokens = await this.calendarAuth.getTokens();
+    if (!tokens) {
       this.error = 'Vous devez être connecté à Google Calendar pour exporter.';
       return;
     }
-
-    const tokens = JSON.parse(tokensStr);
 
     // Get all AI tasks (not just for current day, but all proposed tasks)
     // We sanitize the date format to ensure YYYY-MM-DD

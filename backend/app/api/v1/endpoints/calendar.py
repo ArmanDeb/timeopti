@@ -48,9 +48,25 @@ def get_calendar_auth_url(request: CalendarAuthRequest):
 
 @router.post("/calendar/exchange-token")
 def exchange_calendar_token(request: CalendarTokenRequest, user_data: dict = Depends(get_current_user), db: Session = Depends(get_db)):
-    """Exchange OAuth code for tokens and store them"""
+    """Exchange OAuth code for tokens and store them in the database"""
+    from app.core.encryption import encrypt_tokens
+    
     try:
         tokens = gcal_service.exchange_code_for_tokens(request.code, request.redirect_uri)
+        
+        # Store encrypted tokens in user's record
+        clerk_user_id = user_data.get("sub")
+        user = get_or_create_user(clerk_user_id, user_data.get("email"), db)
+        
+        try:
+            encrypted = encrypt_tokens(tokens)
+            user.calendar_tokens = encrypted
+            db.commit()
+            print(f"[exchange_calendar_token] Tokens stored in database for user {clerk_user_id}")
+        except ValueError as e:
+            # ENCRYPTION_KEY not set - log warning but still return tokens for backward compatibility
+            print(f"Warning: Could not encrypt tokens - {e}. Tokens returned but not stored.")
+        
         return {"success": True, "tokens": tokens}
     except TimeOptiException as e:
         raise HTTPException(status_code=e.status_code, detail=e.message)

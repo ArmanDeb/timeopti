@@ -94,7 +94,7 @@ export class WeekViewComponent implements OnInit, OnDestroy {
     this.currentTime = `${hours}:${minutes}`;
   }
 
-  loadCalendarEvents() {
+  async loadCalendarEvents() {
     this.isLoading = true;
     this.error = null;
 
@@ -102,18 +102,17 @@ export class WeekViewComponent implements OnInit, OnDestroy {
     const startDate = days[0].toISOString();
     const endDate = days[days.length - 1].toISOString();
 
-    // Get tokens from localStorage (temporary solution)
-    const tokensStr = localStorage.getItem('calendar_tokens');
-    if (!tokensStr) {
+    // Get tokens from backend via CalendarAuthService
+    const tokens = await this.calendarAuth.getTokens();
+    if (!tokens) {
       this.error = 'Tokens non trouvés. Veuillez reconnecter votre calendrier.';
       this.isLoading = false;
       return;
     }
 
-    const tokens = JSON.parse(tokensStr);
-
     // Check if demo mode (tokens contain 'demo' or 'mock')
-    if (tokens.token.includes('demo') || tokens.token.includes('mock')) {
+    const token = tokens.token || tokens.access_token || '';
+    if (token.includes('demo') || token.includes('mock')) {
       // Load demo data
       this.loadDemoData();
       return;

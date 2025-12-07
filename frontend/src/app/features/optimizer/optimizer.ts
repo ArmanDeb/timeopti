@@ -130,13 +130,13 @@ export class OptimizerComponent {
         this.events = [];
     }
 
-    loadRealCalendarEvents() {
+    async loadRealCalendarEvents() {
         if (!this.calendarAuth.connected()) {
             console.log('Calendar not connected, skipping event load');
             return;
         }
 
-        const tokens = this.calendarAuth.getTokens();
+        const tokens = await this.calendarAuth.getTokens();
         if (!tokens) {
             console.log('No tokens available');
             return;
@@ -379,14 +379,14 @@ export class OptimizerComponent {
         this.showConfirmationModal = false;
     }
 
-    proceedWithOptimization() {
+    async proceedWithOptimization() {
         this.isOptimizing = true;
         this.error = null;
 
         console.log('Natural input:', this.naturalInput);
 
         // Get tokens for server-side event fetching
-        const tokens = this.calendarAuth.getTokens();
+        const tokens = await this.calendarAuth.getTokens();
         const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         // Get the selected date from ViewStateService and format it as YYYY-MM-DD

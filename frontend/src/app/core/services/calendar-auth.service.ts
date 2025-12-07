@@ -1,44 +1,58 @@
 import { Injectable, signal } from '@angular/core';
-import { CalendarService } from './calendar.service'; // Existing service
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { CalendarService } from './calendar.service';
+import { environment } from '../../../environments/environment';
+
+interface TokenResponse {
+  connected: boolean;
+  tokens: any;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarAuthService {
   connected = signal<boolean>(false);
+  private apiUrl = environment.apiUrl;
+  private cachedTokens: any = null;
 
-  constructor(private calendarService: CalendarService) {
-    // Check initial status (mock for now or check local storage/user profile)
+  constructor(
+    private calendarService: CalendarService,
+    private http: HttpClient
+  ) {
+    // Check initial status
     this.checkConnectionStatus();
   }
 
-  checkConnectionStatus() {
-    // Check if user has valid tokens (not demo tokens)
-    const tokensStr = localStorage.getItem('calendar_tokens');
+  async checkConnectionStatus() {
+    // First check localStorage flag for quick UI update
     const hasConnectedFlag = localStorage.getItem('calendar_connected') === 'true';
 
-    if (!tokensStr || !hasConnectedFlag) {
+    if (!hasConnectedFlag) {
       this.connected.set(false);
+      this.cachedTokens = null;
       return;
     }
 
+    // Verify with backend
     try {
-      const tokens = JSON.parse(tokensStr);
-      const token = tokens.token || tokens.access_token || '';
+      const response = await firstValueFrom(
+        this.http.get<TokenResponse>(`${this.apiUrl}/auth/calendar-tokens`)
+      );
 
-      // Check if tokens are valid (not demo tokens)
-      if (!token || token.length < 10 || token.startsWith('demo_') || token.startsWith('mock_')) {
-        console.log(`⚠️ [AUTH] Invalid tokens detected (Length: ${token ? token.length : 0}), clearing...`);
-        this.disconnect();
+      if (response.connected && response.tokens) {
+        this.connected.set(true);
+        this.cachedTokens = response.tokens;
+      } else {
         this.connected.set(false);
-        return;
+        this.cachedTokens = null;
+        localStorage.removeItem('calendar_connected');
       }
-
-      this.connected.set(true);
     } catch (e) {
-      console.error('Failed to parse tokens:', e);
-      this.disconnect();
-      this.connected.set(false);
+      console.error('Failed to check calendar connection:', e);
+      // Keep localStorage flag for offline/unauthenticated scenarios
+      this.connected.set(hasConnectedFlag);
     }
   }
 
@@ -50,9 +64,7 @@ export class CalendarAuthService {
     this.calendarService.getAuthUrl(redirectUri).subscribe({
       next: (res) => {
         console.log('✅ [CONNECT] Auth URL received from backend');
-        console.log('🔵 [CONNECT] Full auth URL:', res.auth_url);
         console.log('🔵 [CONNECT] Redirecting to Google OAuth page...');
-        console.log('⚠️ [CONNECT] IMPORTANT: After authorizing on Google, you should be redirected back to:', redirectUri + '?code=...');
         window.location.href = res.auth_url;
       },
       error: (err) => {
@@ -67,16 +79,16 @@ export class CalendarAuthService {
     console.log('🔄 [AUTH] Exchanging code for tokens...');
     this.calendarService.exchangeToken(code, redirectUri).subscribe({
       next: (res) => {
-        console.log('✅ [AUTH] Tokens received successfully');
-        const tokens = res.tokens as any; // Type assertion for flexibility
-        console.log('🔐 [AUTH] Token length:', tokens?.token?.length || tokens?.access_token?.length || 0);
+        console.log('✅ [AUTH] Tokens received and stored in backend');
 
-        // Store tokens in localStorage
-        localStorage.setItem('calendar_tokens', JSON.stringify(res.tokens));
+        // Cache tokens locally for immediate use
+        this.cachedTokens = res.tokens;
+
+        // Set localStorage flag for quick UI status (tokens are in DB, not localStorage)
         localStorage.setItem('calendar_connected', 'true');
         this.connected.set(true);
 
-        console.log('✅ [AUTH] Tokens stored, redirecting to dashboard...');
+        console.log('✅ [AUTH] Connection complete, redirecting to dashboard...');
 
         // Redirect to dashboard without query params
         window.location.replace('/app/dashboard');
@@ -84,7 +96,7 @@ export class CalendarAuthService {
       error: (err) => {
         console.error('❌ [AUTH] Failed to exchange token', err);
 
-        // Clear any existing tokens
+        // Clear connection status
         this.disconnect();
 
         // Show error message to user
@@ -102,22 +114,55 @@ export class CalendarAuthService {
     localStorage.setItem('calendar_connected', 'true');
   }
 
-  disconnect() {
+  async disconnect() {
     this.connected.set(false);
+    this.cachedTokens = null;
     localStorage.removeItem('calendar_connected');
-    localStorage.removeItem('calendar_tokens');
-  }
 
-  getTokens() {
-    const tokensStr = localStorage.getItem('calendar_tokens');
-    if (!tokensStr) return null;
-
+    // Also clear from backend
     try {
-      return JSON.parse(tokensStr);
+      await firstValueFrom(
+        this.http.delete(`${this.apiUrl}/auth/calendar-tokens`)
+      );
+      console.log('✅ [AUTH] Tokens deleted from backend');
     } catch (e) {
-      console.error('Failed to parse tokens:', e);
-      return null;
+      console.error('Failed to delete tokens from backend:', e);
     }
   }
-}
 
+  /**
+   * Get calendar tokens. Fetches from backend if not cached.
+   * Returns null if not connected.
+   */
+  async getTokens(): Promise<any> {
+    // Return cached tokens if available
+    if (this.cachedTokens) {
+      return this.cachedTokens;
+    }
+
+    // Fetch from backend
+    try {
+      const response = await firstValueFrom(
+        this.http.get<TokenResponse>(`${this.apiUrl}/auth/calendar-tokens`)
+      );
+
+      if (response.connected && response.tokens) {
+        this.cachedTokens = response.tokens;
+        return response.tokens;
+      }
+    } catch (e) {
+      console.error('Failed to fetch tokens:', e);
+    }
+
+    return null;
+  }
+
+  /**
+   * Synchronous getter for cached tokens (for backward compatibility).
+   * May return null if tokens haven't been fetched yet.
+   * Prefer using getTokens() async method.
+   */
+  getTokensSync(): any {
+    return this.cachedTokens;
+  }
+}
