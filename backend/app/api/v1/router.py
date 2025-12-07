@@ -12,8 +12,8 @@ api_router.include_router(optimization.router, tags=["optimization"])
 # Admin routes (consistent /admin prefix)
 api_router.include_router(admin.router, prefix="/admin", tags=["admin"])
 
-# Auth routes (mounted at root)
-api_router.include_router(auth.router, tags=["auth"])
+# Auth routes (mounted at /auth)
+api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 
 # Task routes (mounted at root)
 api_router.include_router(tasks.router, tags=["tasks"])
