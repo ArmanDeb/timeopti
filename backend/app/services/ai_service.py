@@ -420,6 +420,7 @@ CRITICAL RULES:
             )
             
             content = response.choices[0].message.content
+            print(f"[llm_assign_tasks_to_slots] Raw LLM Response: {content}")
             
             usage = {
                 "prompt_tokens": response.usage.prompt_tokens,
@@ -432,4 +433,6 @@ CRITICAL RULES:
             
         except Exception as e:
             print(f"Error in llm_assign_tasks_to_slots: {e}")
+            import traceback
+            traceback.print_exc()
             return {"proposals": []}, {}
