@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import calendar, optimization, admin, auth, tasks
+from app.api.v1.endpoints import calendar, optimization, admin, auth, tasks, clerk_tokens
 
 api_router = APIRouter()
 
@@ -14,6 +14,9 @@ api_router.include_router(admin.router, prefix="/admin", tags=["admin"])
 
 # Auth routes (mounted at /auth)
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
+
+# Clerk token routes (mounted at /auth for auto-connect)
+api_router.include_router(clerk_tokens.router, prefix="/auth", tags=["auth"])
 
 # Task routes (mounted at root)
 api_router.include_router(tasks.router, tags=["tasks"])

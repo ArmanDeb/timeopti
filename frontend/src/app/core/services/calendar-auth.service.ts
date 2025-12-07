@@ -9,6 +9,19 @@ interface TokenResponse {
   tokens: any;
 }
 
+interface GoogleConnectionStatus {
+  has_google_sso: boolean;
+  calendar_connected: boolean;
+  needs_connect: boolean;
+}
+
+interface ClerkTokenResponse {
+  success: boolean;
+  connected: boolean;
+  message: string;
+  has_calendar_scopes?: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +29,9 @@ export class CalendarAuthService {
   connected = signal<boolean>(false);
   private apiUrl = environment.apiUrl;
   private cachedTokens: any = null;
+
+  // Track if user signed in with Google (for conditional UI)
+  hasGoogleSSO = signal<boolean>(false);
 
   constructor(
     private calendarService: CalendarService,
@@ -53,6 +69,68 @@ export class CalendarAuthService {
       console.error('Failed to check calendar connection:', e);
       // Keep localStorage flag for offline/unauthenticated scenarios
       this.connected.set(hasConnectedFlag);
+    }
+  }
+
+  /**
+   * Try to auto-connect calendar using Clerk's Google OAuth token.
+   * Call this after user authentication to automatically connect
+   * calendar for users who signed in with Google.
+   * 
+   * Returns true if successfully auto-connected.
+   */
+  async tryAutoConnectFromClerk(): Promise<boolean> {
+    // Skip if already connected
+    if (this.connected()) {
+      console.log('📅 [AUTO-CONNECT] Already connected, skipping');
+      return true;
+    }
+
+    try {
+      // Check if user has Google SSO
+      const statusResponse = await firstValueFrom(
+        this.http.get<GoogleConnectionStatus>(`${this.apiUrl}/auth/check-google-connection`)
+      );
+
+      this.hasGoogleSSO.set(statusResponse.has_google_sso);
+
+      if (statusResponse.calendar_connected) {
+        // Already connected via database
+        this.connected.set(true);
+        localStorage.setItem('calendar_connected', 'true');
+        console.log('📅 [AUTO-CONNECT] Already connected in database');
+        return true;
+      }
+
+      if (!statusResponse.has_google_sso) {
+        // User didn't sign in with Google, manual connect needed
+        console.log('📅 [AUTO-CONNECT] User did not sign in with Google');
+        return false;
+      }
+
+      // Fetch Google token from Clerk and store it
+      console.log('📅 [AUTO-CONNECT] Fetching Google token from Clerk...');
+      const tokenResponse = await firstValueFrom(
+        this.http.get<ClerkTokenResponse>(`${this.apiUrl}/auth/google-token`)
+      );
+
+      if (tokenResponse.success && tokenResponse.connected) {
+        this.connected.set(true);
+        localStorage.setItem('calendar_connected', 'true');
+        console.log('✅ [AUTO-CONNECT] Calendar connected automatically!');
+
+        if (!tokenResponse.has_calendar_scopes) {
+          console.warn('⚠️ [AUTO-CONNECT] Token may not have calendar scopes');
+        }
+
+        return true;
+      } else {
+        console.log('📅 [AUTO-CONNECT] Could not auto-connect:', tokenResponse.message);
+        return false;
+      }
+    } catch (e) {
+      console.error('❌ [AUTO-CONNECT] Error:', e);
+      return false;
     }
   }
 
