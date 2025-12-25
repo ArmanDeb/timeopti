@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ViewStateService } from '../../core/services/view-state.service';
@@ -25,6 +25,15 @@ export class DashboardComponent implements OnInit {
         if (this.calendarAuth.connected()) {
             this.viewState.setState('input');
         }
+        
+        // React to calendar connection changes
+        effect(() => {
+            const connected = this.calendarAuth.connected();
+            console.log('📅 [DASHBOARD] Calendar connected status changed:', connected);
+            if (connected && this.viewState.state() === 'onboarding') {
+                this.viewState.setState('input');
+            }
+        });
     }
 
     ngOnInit() {

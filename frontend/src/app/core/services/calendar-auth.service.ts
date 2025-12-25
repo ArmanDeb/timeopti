@@ -134,9 +134,21 @@ export class CalendarAuthService {
     }
   }
 
-  connect() {
+  async connect() {
+    console.log('🔵 [CONNECT] Starting calendar connection...');
+    
+    // First, try to connect via Clerk (simpler, more reliable)
+    const clerkSuccess = await this.tryAutoConnectFromClerk();
+    if (clerkSuccess) {
+      console.log('✅ [CONNECT] Connected via Clerk successfully!');
+      // Reload the page to update UI state
+      window.location.reload();
+      return;
+    }
+    
+    // Fall back to custom OAuth flow if Clerk doesn't work
+    console.log('🔵 [CONNECT] Clerk flow not available, trying custom OAuth...');
     const redirectUri = `${window.location.origin}/app/dashboard`;
-    console.log('🔵 [CONNECT] Starting Google Calendar OAuth flow');
     console.log('🔵 [CONNECT] Redirect URI:', redirectUri);
 
     this.calendarService.getAuthUrl(redirectUri).subscribe({
@@ -147,8 +159,7 @@ export class CalendarAuthService {
       },
       error: (err) => {
         console.error('❌ [CONNECT] Failed to get auth URL from backend:', err);
-        console.log('⚠️ [CONNECT] Falling back to mock mode (demo data)');
-        this.mockConnect();
+        alert('Impossible de se connecter à Google Calendar. Veuillez vous connecter avec Google via Clerk.');
       }
     });
   }
@@ -197,14 +208,19 @@ export class CalendarAuthService {
     this.cachedTokens = null;
     localStorage.removeItem('calendar_connected');
 
-    // Also clear from backend
+    // Only try to delete from backend if we have a valid session
+    // (prevents 403 errors during page load before auth is ready)
     try {
       await firstValueFrom(
         this.http.delete(`${this.apiUrl}/auth/calendar-tokens`)
       );
       console.log('✅ [AUTH] Tokens deleted from backend');
-    } catch (e) {
-      console.error('Failed to delete tokens from backend:', e);
+    } catch (e: any) {
+      // Silently ignore auth errors (403) during disconnect
+      // This can happen if called before Clerk auth is ready
+      if (e?.status !== 403) {
+        console.error('Failed to delete tokens from backend:', e);
+      }
     }
   }
 
