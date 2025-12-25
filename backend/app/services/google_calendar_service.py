@@ -1,6 +1,7 @@
 import os
 import json
 from google.oauth2.credentials import Credentials
+from google.auth.credentials import Credentials as BaseCredentials
 from google.auth.transport.requests import Request
 from google.auth.exceptions import RefreshError
 from google_auth_oauthlib.flow import Flow
@@ -10,6 +11,41 @@ from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 from app.schemas.common import Event
 from app.core.exceptions import AuthenticationError, CalendarError
+
+
+class StaticCredentials(BaseCredentials):
+    """
+    Credentials class for static access tokens (like from Clerk).
+    These tokens don't support refresh - Clerk handles refresh on their side.
+    """
+    
+    def __init__(self, token):
+        super().__init__()
+        self.token = token
+    
+    @property
+    def expired(self):
+        # Never report as expired - Clerk manages token lifecycle
+        return False
+    
+    @property
+    def valid(self):
+        # Always valid if we have a token
+        return self.token is not None
+    
+    def refresh(self, request):
+        # Clerk tokens can't be refreshed by us - just pass (don't raise)
+        # The token is assumed to be valid since Clerk manages its lifecycle
+        pass
+    
+    def apply(self, headers, token=None):
+        # Apply the access token to the request headers
+        headers['authorization'] = f'Bearer {token or self.token}'
+    
+    def before_request(self, request, method, url, headers):
+        # Override to skip refresh logic entirely
+        # Just apply the token to headers without any refresh attempt
+        self.apply(headers, token=self.token)
 
 class GoogleCalendarService:
     """
@@ -134,12 +170,8 @@ class GoogleCalendarService:
                 # Clerk manages token refresh on their side
                 print("[_get_calendar_service] Using Clerk-sourced token (no refresh)")
                 
-                # Create credentials with just the access token
-                credentials = Credentials(
-                    token=actual_token,
-                    # No refresh token, client_id, or client_secret needed
-                    # Clerk handles refresh
-                )
+                # Use StaticCredentials which won't try to refresh
+                credentials = StaticCredentials(token=actual_token)
                 
                 return build('calendar', 'v3', credentials=credentials)
             
